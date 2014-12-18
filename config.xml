@@ -13,8 +13,8 @@
   </author>
 
 
-  <!--<access origin="*" />-->
-  <access origin="http://serviceretail.createalytics.com" subdomains="true" />
+ <access origin="*" />
+  <!-- <access origin="http://serviceretail.createalytics.com" subdomains="true" />-->
   <preference name="orientation"      value="portrait" />
   <preference name="target-device"    value="universal" />
   <preference name="fullscreen"       value="false" />  
