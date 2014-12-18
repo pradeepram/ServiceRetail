@@ -1,0 +1,295 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>jQuery Mobile: Theme Download</title>
+	<link rel="stylesheet" href="themes/JobSheet1.min.css" />
+	<link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile.structure-1.4.5.min.css" />
+	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            debugger;
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset:utf-8",
+                url: localStorage.getItem('WcfURL') + "/GetOrderDetailsByWeek",
+                data: "{}",
+                dataType: "json",
+                async: true,
+                cache: false,
+                success: function (response) {
+                    debugger;
+                    var data = jQuery.parseJSON(response.d.toString());
+                    var tr;
+                    tr = $("<tr></tr>");
+                    tr.append("<th>Job_ID</th><th>Cust_Name</th><th>DueDate</th><th>Status</th>"); // bind table header row
+                    debugger;
+                    $("#table-column-toggle").append(tr);
+                    if (data.NewDataSet.Table.length == undefined) {
+                        tr = $("<tr></tr>");
+
+                        tr.append("<td><a href='#popupDialog1' data-rel='popup' onclick='popup(" + data.NewDataSet.Table.Job_ID + ")'>" + data.NewDataSet.Table.Job_ID + "</a></td><td>" +
+                                    data.NewDataSet.Table.FirstName + "</td><td>" +
+                                    data.NewDataSet.Table.DueDate + "</td><td>" +
+                                    data.NewDataSet.Table.Status + "</td><td>");
+
+                        $("#table-column-toggle").append(tr);
+                        debugger;
+                    } else {
+                        for (var i = 0; i < data.NewDataSet.Table.length; i++) {
+                            debugger;
+                            tr = $("<tr></tr>");
+
+                            tr.append("<td><a href='#popupDialog1' data-rel='popup' onclick='popup(" + data.NewDataSet.Table[i].Job_ID + ")'>" + data.NewDataSet.Table[i].Job_ID + "</a></td><td>" +
+                                        data.NewDataSet.Table[i].FirstName + "</td><td>" +
+                                        data.NewDataSet.Table[i].DueDate + "</td><td>" +
+                                        data.NewDataSet.Table[i].Status + "</td><td>");
+
+                            $("#table-column-toggle").append(tr);
+                            debugger;
+                        }
+                    }
+                },
+                error: function (response) {
+                    debugger;
+                    alert(response.d.toString());
+                }
+            });
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset:utf-8",
+                url: localStorage.getItem('WcfURL') + "/GetOrderDetailsByToday",
+                data: "{}",
+                dataType: "json",
+                async: true,
+                cache: false,
+                success: function (response) {
+                    debugger;
+                    var data = jQuery.parseJSON(response.d.toString());
+                    var tr;
+                    tr = $("<tr></tr>");
+                    tr.append("<th>Job_ID</th><th>Cust_Name</th><th>DueDate</th><th>Status</th>"); // bind table header row                    
+                    $("#table-column-toggle1").append(tr);
+                    if (data.NewDataSet.Table.length == undefined) {
+                        tr = $("<tr></tr>");
+
+                        tr.append("<td><a href='#' data-rel='popup' onclick='popup(" + data.NewDataSet.Table.Job_ID + ")'>" + data.NewDataSet.Table.Job_ID + "</a></td><td>" +
+                                    data.NewDataSet.Table.FirstName + "</td><td>" +
+                                    data.NewDataSet.Table.DueDate + "</td><td>" +
+                                    data.NewDataSet.Table.Status + "</td><td>");
+
+                        $("#table-column-toggle1").append(tr);
+                        debugger;
+                    } else {
+                        for (var i = 0; i < data.NewDataSet.Table.length; i++) {
+                            debugger;
+                            tr = $("<tr></tr>");
+
+                            tr.append("<td><a href='#' data-rel='popup' onclick='popup(" + data.NewDataSet.Table[i].Job_ID + ")'>" + data.NewDataSet.Table[i].Job_ID + "</a></td><td>" +
+                                        data.NewDataSet.Table[i].FirstName + "</td><td>" +
+                                        data.NewDataSet.Table[i].DueDate + "</td><td>" +
+                                        data.NewDataSet.Table[i].Status + "</td><td>");
+
+                            $("#table-column-toggle1").append(tr);
+                            debugger;
+                        }
+                    }
+                },
+                error: function (response) {
+                    debugger;
+                    alert(response.d.toString());
+                }
+            });
+            $("#submit").click(function (event) {
+                debugger;
+                $.ajax({
+                    type: "POST",
+                    url: localStorage.getItem('WcfURL') + "/UpdateStatus",
+                    data: "callconfirm=" + $('input[name=radio-choice-2]:checked').val() + "&job_id=" + parseInt($('#txtJobId').val(), 10),
+                    dataType: "text",
+                    success: function (data) {
+                        debugger;
+                        alert(data);
+                    },
+                    error: function (data) {
+                        debugger;
+                        alert(data);
+                    }
+                });
+            });
+            $("#cancel").click(function (event) {
+                debugger;
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: localStorage.getItem('WcfURL') + "/CancelOrder",
+                    data: "{'job_id': '" + $('input[id=txtJobId]').val() + "'}",
+                    dataType: "json",
+                    success: function (data) {
+                        debugger;
+                        $.each(data.d, function (key, value) {
+                            alert(d);
+                        });
+                    },
+                    error: function (data) {
+                        debugger;
+                        alert(data);
+                    }
+                });
+            });
+        });
+        function popup(e) {
+            debugger;
+            var url = "JobDetails.htm";
+            localStorage.setItem('jobid', e);
+            $(location).attr('href', url);
+//            $('#txtJobId').val(e);
+//            $.ajax({
+//                type: "POST",
+//                contentType: "application/json; charset=utf-8",
+//                url: "MyWebService.asmx/OrderDetailList",
+//                data: "{'DetailListJobID': '" + e + "'}",
+
+//                dataType: "json",
+
+//                success: function (data) {
+//                    debugger;
+//                    $.each(data.d, function (key, value) {                        
+//                        $("#txtPhone").val(value.phoneno);
+//                        $("#txtBrand").val(value.brand);                        
+//                        $("#txtModel").val(value.model);
+//                        $("#txtWarranty").val(value.warranty);
+//                        $("#txtProblem").val(value.problem);
+//                        $("#txtIdeProblem").val(value.complaint);
+//                        $("#txtCost").val(value.servicecharge);
+//                    });
+//                },
+//                error: function (data) {
+//                    debugger;
+//                    alert(data);
+//                }
+
+//            });
+        }
+    </script>
+</head>
+<body >
+	<div data-role="page" data-theme="a">
+		<div data-role="header" data-position="fixed">
+			<h1>Service Management</h1>                  
+           <a href="jobsheet.html" data-rel="popup" data-transition="slide" data-position-to="window" data-theme="b" data-inline="true" data-icon="home" data-iconpos="notext" data-direction="reverse" rel="external">Home</a>
+          <a href="index.html" data-transition="slide" data-theme="b" data-inline="true" data-icon="power" data-iconpos="notext" data-direction="reverse" rel="external">Logout</a>
+            <div data-role="popup" id="popupPanel" data-corners="false" data-theme="none" data-shadow="false" data-tolerance="0,0">
+				<button data-theme="a" data-icon="back" data-mini="true">Back</button>
+				<button data-theme="a" data-icon="grid" data-mini="true">Menu</button>
+				<button data-theme="a" data-icon="search" data-mini="true">Search</button>
+			</div>
+            <div data-role="navbar" data-grid="d">
+			<ul>
+				<li><a href="jobsheet.html" rel="external">Job Sheet</a></li>
+				<li><a href="Order_Details.html"  class="ui-btn-active">Order Details</a></li>
+                <li><a href="Service.htm" rel="external">Service</a></li>								
+				<li><a href="Company.html" rel="external">Company</a></li>
+                <li><a href="Invoice.html" rel="external">Invoice</a></li>
+			</ul>
+		</div>      
+            <div data-role="navbar" data-grid="b">
+			<ul>
+				<li><a href="Order_Details.html" rel="external">All Orders</a></li>
+			    <li><a href="Sort_Orders.html" class="ui-btn-active">Sort Orders</a></li>				
+                <li><a href="AddToFollowUp.html" rel="external">Follow Up</a></li>					
+			</ul>
+		</div>
+		</div>
+		
+          <div data-role="content" >	
+              <form>
+		<ul data-role="listview" data-inset="true">
+			<li data-role="fieldcontain">
+      
+              <h4>Due By Week</h4>	        
+	    <table data-role="table" id="table-column-toggle"  class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-btn-theme="b" 
+                    data-column-btn-text="Columns">
+  
+   </table>
+			  <div data-role="popup" id="popupDialogByWeek" data-overlay-theme="a" data-theme="c" style="max-width:400px;" class="ui-corner-all">
+			<div data-role="header" data-theme="a" class="ui-corner-top">
+				<h1>Order Status</h1>
+			</div>
+			<div data-role="content" data-theme="d" class="ui-corner-bottom ui-content">
+				<h3 class="ui-title"></h3>
+				<ul data-role="listview" data-inset="true">
+			<li data-role="fieldcontain">
+	        	<label for="search">Job Id:</label>
+	         	<input type="text" name="password" id="txtJobId" value=""   disabled/>
+			</li>
+            <li data-role="fieldcontain">
+	        	<label for="search">Phone Number:</label>
+	         	<input type="text" name="password" id="txtPhone" value=""   disabled/>
+			</li>            
+            <li data-role="fieldcontain">
+	        	<label for="name">Brand:</label>
+	        	<input type="text" name="name" id="txtBrand" value=""   disabled/>
+			</li>
+			<li data-role="fieldcontain">
+	        	<label for="name">Model</label>
+	        	<input type="text" name="name" id="txtModel" value=""   disabled/>
+			</li>
+            <li data-role="fieldcontain">
+	        	<label for="name">Warranty:</label>
+	        	<input type="text" name="name" id="txtWarranty" value=""   disabled/>
+			</li>
+            <li data-role="fieldcontain">
+	        	<label for="textarea">Problems:</label>
+			<textarea cols="40" rows="8" name="textarea" id="txtProblem"  disabled></textarea>
+			</li>									
+            <li data-role="fieldcontain">
+	        	<label for="textarea">SE Identify:</label>
+			<textarea cols="40" rows="8" name="textarea" id="txtIdeProblem"  disabled></textarea>
+			</li>								
+            <li data-role="fieldcontain">
+    <fieldset data-role="controlgroup">
+    	<legend>Call Confirm:</legend>
+         	<input type="radio" name="radio-choice-2" id="radio-choice-21" value="Yes"/>
+         	<label for="radio-choice-21">Yes</label>
+
+         	<input type="radio" name="radio-choice-2" id="radio-choice-22" value="No"/>
+         	<label for="radio-choice-22">No</label>         	
+    </fieldset>
+</li>	
+            <li data-role="fieldcontain">
+	        	<label for="name">Estimated Cost:</label>
+	        	<input type="text" name="name" id="txtCost" disabled/>
+			</li>            
+			<li class="ui-body ui-body-b">
+				<fieldset class="ui-grid-a">
+					<div class="ui-block-a"><input aria-required="true" class="required" data-theme=a type="submit" data-icon="check" name="cancel" id="cancel" value="Cancel Order"></div>
+                     <div class="ui-block-b"><input aria-required="true" class="required" data-theme=a type="submit" data-icon="check" name="submit" id="submit" value="Update"></div>
+			    </fieldset>
+			</li>			
+		</ul>		
+				
+			</div>
+		</div>   
+            </li>
+            </ul>
+
+       	<ul data-role="listview" data-inset="true">
+			<li data-role="fieldcontain">      
+              <h4>Due By Today</h4>	        
+	    <table data-role="table" id="table-column-toggle1"  class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-btn-theme="b" 
+                    data-column-btn-text="Columns">
+   
+   </table>          
+                </li>
+            </ul>
+                  </form>
+             </div>        
+        <div data-role="footer" data-position="fixed">
+			<h4><a href="http://www.createalytics.com" data-rel="external">www.createalytics.com</a></h4>
+		</div>
+		</div>
+</body>
+</html>

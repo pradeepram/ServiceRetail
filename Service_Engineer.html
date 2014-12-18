@@ -1,0 +1,269 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Service Engineer</title>   
+	<link rel="stylesheet" href="themes/JobSheet1.min.css" />
+	<link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile.structure-1.4.5.min.css" />
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js" type="text/javascript"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js" type="text/javascript"></script>  
+    <script src="http://code.jquery.com/jquery-latest.js" type="text/javascript"></script>
+   <!-- <script type="text/javascript"   src="/Script/jquery-1.3.2.min.js"></script>-->
+    <script type="text/javascript"   src="/Script/jquery-2.1.1.js"></script>
+    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>  		
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //alert(localStorage.getItem('jobid'));
+            $('#txtSearch').val(localStorage.getItem('jobid'));            
+                debugger;
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: localStorage.getItem('WcfURL') + "/GetCompletionList",
+                    data: "{'ServiceJobID': '" + localStorage.getItem('jobid') + "'}",
+
+                    dataType: "json",
+
+                    success: function (data) {
+                        debugger;
+                        $.each(data.d, function (key, value) {
+                            debugger;
+                            $("#txtBrand").val(value.brand);
+                            debugger;
+                            $("#txtModel").val(value.model);
+                            debugger;
+                            $("#txtWarranty").val(value.warranty);
+                            debugger;
+                            $("#txtProblem").val(value.problem);
+                        });
+                    },                        
+                    error: function (data) {
+                        debugger;
+                        alert(data);
+                    }
+
+                });
+                // });
+
+            $("#submit").click(function (event) {
+                $("#servicesheet").validate({
+                    errorPlacement: function (error, element) {
+                        debugger;
+                        //http://stackoverflow.com/questions/4844594/jquery-select-the-associated-label-element-of-a-input-field
+                        error.appendTo("label[for=" + $(element).attr('id') + "]");
+                    },
+                    errorElement: "em"
+                });
+
+                if ($("#servicesheet").valid()) {
+                    debugger;                    
+                    var selectedLanguage = new Array();
+                    $('input[id="tblChk"]:checked').each(function () {
+                        debugger;
+                        selectedLanguage.push(this.value);
+                        debugger;
+                    });
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        url: localStorage.getItem('WcfURL') + "/ServiceCharge",
+                            data: "{'job_id':'" + parseInt($('#txtSearch').val(), 10) + "', 'complaints':'" + $('#txtComplaints').val() + "','spare_parts':'" + JSON.stringify(selectedLanguage) + "','service_charge': '" + $('#txtSer').val() + "','duedate': '" + $('#date').val() + "','createdby': '" + localStorage.getItem('customerid') + "'}",
+                            dataType: "json",
+                        success: function(data) {
+                            $.each(data.d, function (key, value) {
+                                if (value.result == "1") {
+                                    debugger;
+                                    alert("success");
+                                } else {
+                                    alert("Invalid Data");
+                                    return false;
+                                }
+
+                            });
+                        },
+                        error: function(data) {
+                            debugger;
+                            alert(data);
+                        }
+
+                    });
+                }
+            });
+            $("#pushtocompany").click(function (event) {
+//                $("#servicesheet").validate({
+//                    errorPlacement: function (error, element) {
+//                        debugger;
+//                        //http://stackoverflow.com/questions/4844594/jquery-select-the-associated-label-element-of-a-input-field
+//                        error.appendTo("label[for=" + $(element).attr('id') + "]");
+//                    },
+//                    errorElement: "em"
+//                });
+
+//                if ($("#servicesheet").valid()) {
+                if ($('#txtComplaints').val() == "") {
+                    $('#txtComplaints').css('border-color', 'red');
+                   // $('#txtComplaints').addClass('errorClass');
+                    alert("Enter the Complaints");
+                } else {
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        url: localStorage.getItem('WcfURL') + "/PushToCompany",
+                        data: "{'job_id':'" + parseInt($('#txtSearch').val(), 10) + "', 'complaints':'" + $('#txtComplaints').val() + "','createdby': '" + localStorage.getItem('customerid') + "'}",
+                        dataType: "json",
+                        success: function(data) {
+                            debugger;
+                            alert(data);
+                        },
+                        error: function(data) {
+                            debugger;
+                            alert(data);
+                        }
+
+                    });
+                }
+                //}
+            });
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset:utf-8",
+                url: localStorage.getItem('WcfURL') + "/PartsID",
+                data: "{'job_id':'" + parseInt($('#txtSearch').val(), 10) + "'}",
+                dataType: "json",
+                async: true,
+                cache: false,
+
+                success: function (response) {
+                    debugger;
+                    var data = jQuery.parseJSON(response.d.toString());
+                    var tr;
+                    tr = $("<tr></tr>");
+
+                    tr.append("<th></th><th>PartsName</th>"); // bind table header row
+                    debugger;
+                    $("#PartsTable").append(tr);
+                    if (data.NewDataSet.Table.length == undefined) {
+                        tr = $("<tr></tr>");
+                        tr.append("<td><input type='checkbox' id='tblChk' onclick='popup(" + data.NewDataSet.Table.PartsID + ")'>" + "</td><td>" + data.NewDataSet.Table.PartsName + "</td><td>");                                
+
+                        $("#PartsTable").append(tr);
+                    }
+                    else {
+                        for (var i = 0; i < data.NewDataSet.Table.length; i++) {
+                            debugger;
+                            tr = $("<tr></tr>");
+
+                            tr.append("<td><input type='checkbox' id='tblChk' value=" + data.NewDataSet.Table[i].PartsID + ">" + "</td><td>" + data.NewDataSet.Table[i].PartsName + "</td><td>");
+                                
+                            $("#PartsTable").append(tr);
+                            debugger;
+                        }
+                    }
+                },
+                error: function (response) {
+                    debugger;
+                    alert(response.d.toString());
+                }
+            });
+        });        
+    </script>    
+    <style>
+ .errorClass {
+     border: 1px solid red;
+ }
+        #popupPanel-popup {
+            right: 0 !important;
+            left: auto !important;
+}
+#popupPanel {
+    width: 200px;
+    border: 1px solid #000;
+    border-right:none;
+    background: rgba(0,0,0,.5);
+    margin: -1px 0;
+}
+#popupPanel .ui-btn {
+    margin: 2em 15px;
+}
+    </style>
+</head>
+<body>
+	<div data-role="page" data-theme="a">
+		<div data-role="header" data-position="fixed" >
+			<h1>Service Dept</h1>
+            <a href="#popupPanel" data-rel="popup" data-transition="slide" data-position-to="window" data-theme="b" data-inline="true" data-icon="home" data-iconpos="notext" data-direction="reverse">Home</a>
+            <div data-role="popup" id="popupPanel" data-corners="false" data-theme="none" data-shadow="false" data-tolerance="0,0">
+				<button data-theme="a" data-icon="back" data-mini="true">Back</button>
+				<button data-theme="a" data-icon="grid" data-mini="true">Menu</button>
+				<button data-theme="a" data-icon="search" data-mini="true">Search</button>
+			</div>
+            <div data-role="navbar" data-grid="d">
+			<ul>
+				<li><a href="jobsheet.html" rel="external">Job Sheet</a></li>
+		            <li><a href="Order_Details.html" rel="external" >Order Details</a></li>
+		            <li><a href="Service.htm" class="ui-btn-active">Service</a></li>								
+		            <li><a href="Company.html" rel="external">Company</a></li>
+		            <li><a href="Invoice.html" rel="external">Invoice</a></li>
+			</ul>
+		</div>
+		</div>
+		<div data-role="content" data-theme="a">		
+	<form id="servicesheet" method="POST" action="">
+		<ul data-role="listview" data-inset="true">
+			<li data-role="fieldcontain">
+	        	<label for="search">Job Id</label>
+	         	<input type="text" id="txtSearch"  name="txtJobId" disabled/>
+			</li>
+            <li data-role="fieldcontain">
+	        	<label for="name">Brand</label>
+	        	<input type="text" id="txtBrand"  disabled/>
+			</li>
+			<li data-role="fieldcontain">
+	        	<label for="name">Model</label>
+	        	<input type="text" id="txtModel" disabled/>
+			</li>
+		    <li data-role="fieldcontain">
+		        <label for="name">Warranty</label>
+		        <input type="text" id="txtWarranty" disabled/>
+		    </li>
+            <li data-role="fieldcontain">
+	        	<label for="textarea">Problems</label>
+			<textarea cols="40" rows="8" name="txtProblem" id="txtProblem" disabled></textarea>
+			</li>
+            <li data-role="fieldcontain">
+	        	<label for="textarea">Complaints:</label>
+			<textarea cols="40" rows="8" name="textarea" id="txtComplaints" required></textarea>
+			</li>									
+            <li data-role="fieldcontain">                        
+        <label for="day">Spare Parts</label>
+                <!--<select id="ddpParts" name="ddpParts">         
+                    </select>                       -->
+                <table data-role="table" id="PartsTable" class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-btn-theme="b" 
+                       data-column-btn-text="Columns">
+                       </table>           
+            </li>									
+            <li data-role="fieldcontain">
+	        	<label for="name">Service Charge</label>
+	        	<input type="number" id="txtSer" name="txtSer" required/>
+			</li>
+            <li data-role="fieldcontain">
+	         <label for="date">Date:</label>
+	         <input type="date" name="date" id="date" required/>			
+            </li>
+			<li class="ui-body ui-body-b">
+				<fieldset class="ui-grid-b">
+					 <div class="ui-block-a"><input aria-required="true" data-theme=a type="reset" name="Clear" id="clear" value="Clear" data-icon="alert" /></div>                  
+				    <div class="ui-block-b"><input aria-required="true" class="required" data-theme=a type="submit" data-icon="check" name="submit" id="submit" value="Submit"></div>
+                     <div class="ui-block-c"><input aria-required="true" class="required" data-theme=a type="button" name="Push To Company" data-icon="navigation" id="pushtocompany" value="PushToCompany"></div>
+			    </fieldset>
+			</li>			
+		</ul>		
+		</form>				
+            </div>
+        <div data-role="footer" data-position="fixed">
+        <h4>Powered By CAS</h4>
+    </div> 	
+        </div>
+</body>
+</html>

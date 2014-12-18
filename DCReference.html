@@ -1,0 +1,259 @@
+﻿<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Company Details</title>
+	<link rel="stylesheet" href="themes/JobSheet1.min.css" />
+	<link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile.structure-1.4.5.min.css" />
+	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            jobid = new Array();
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: localStorage.getItem('WcfURL') + "/BindDc",
+                data: "{}",
+                dataType: "json",
+                success: function (data) {
+                    debugger;
+                    $("#ddpDC").append($("<option value=''>Select</option>"));
+                    $.each(data.d, function (key, value) {
+                        // $("#ddpState").prepend("");
+                        $("#ddpDC option:first").attr('selected', 'selected');
+                        $("#ddpDC").append($("<option></option>").val(value.DC_Id).html(value.DC_Id));
+                    });
+                },
+                error: function (Result) {
+                    debugger;
+                    alert("Error");
+                }
+            });
+
+            
+            $("#ddpDC").change(function () {
+                $("#jobid tr").remove();
+                debugger;
+//                var jobid = new Array();
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset:utf-8",
+                    url: localStorage.getItem('WcfURL') + "/DcJobDetails",
+                    data: "{'DcNumber':'" + $('#ddpDC :selected').val() + "'}",
+                    dataType: "json",
+                    async: true,
+                    cache: false,
+
+                    success: function (response) {
+                        debugger;
+                        var data = jQuery.parseJSON(response.d.toString());
+                        var tr;
+                        tr = $("<tr></tr>");
+
+                        tr.append("<th>CompanyReferenceNo</th><th>Job_ID</th>"); // bind table header row
+                        debugger;
+                        $("#jobid").append(tr);
+                        if (data.NewDataSet.Table.length == undefined) {
+                            jobid.push(data.NewDataSet.Table.Job_Id);
+                            tr = $("<tr></tr>");
+                            tr.append("<td><input type='text' id='tblRef' >" + "</td><td>" + data.NewDataSet.Table.Job_Id + "</td><td>");                                                                
+
+                            $("#jobid").append(tr);
+                        }
+                        else {
+                            for (var i = 0; i < data.NewDataSet.Table.length; i++) {
+                                debugger;
+                                
+                                jobid.push(data.NewDataSet.Table[i].Job_Id);
+                                tr = $("<tr></tr>");
+                                tr.append("<td><input type='text' id='tblRef' >" + "</td><td>" + data.NewDataSet.Table[i].Job_Id + "</td><td>");                                                                
+                                $("#jobid").append(tr);
+                                debugger;
+
+                            }
+                            alert(jobid);
+                        }
+                    },
+                    error: function (response) {
+                        debugger;
+                        alert(response.d.toString());
+                    }
+                });        
+            });
+            $("#submit").click(function () {
+                debugger;
+                var selectedLanguage = new Array();
+                $('input[id="tblRef"]').each(function () {
+                    debugger;
+                    selectedLanguage.push(this.value);
+                    debugger;
+                });
+                //alert(selectedLanguage);               
+                debugger;
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: localStorage.getItem('WcfURL') + "/DcRefernceNo",
+                    data: "{'JobID':'" + JSON.stringify(jobid) + "','ReferenceNo':'" + JSON.stringify(selectedLanguage) + "'}",
+                    dataType: "json",
+
+                    success: function(data) {
+                        debugger;
+                        $.each(data.d, function(key, value) {
+                            if (value.result == "1") {
+                                debugger;
+                                alert("success");
+                            } else {
+                                alert("Invalid Data");
+                                return false;
+                            }
+                        });
+                    },
+                    error: function (data) {
+                        debugger;
+                        alert(data);
+                    }
+
+                });
+            });
+            $("#Cancel").click(function () {
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: localStorage.getItem('WcfURL') + "/DcCancel",
+                    data: "{'DcNumber':'" + $('#ddpDC :selected').val() + "'}",
+                    dataType: "json",
+
+                    success: function (data) {
+                        debugger;
+                        $.each(data.d, function (key, value) {
+                            if (value.result == "1") {
+                                debugger;
+                                alert("success");
+                            } else {
+                                alert("Invalid Data");
+                                return false;
+                            }
+                        });
+                    },
+                    error: function (data) {
+                        debugger;
+                        alert(data);
+                    }
+
+                });
+            });
+        });
+        function popup(e) {
+            debugger;
+            $('#tblChk').val(e);
+            $.ajax({
+                type: "POST",
+                url: localStorage.getItem('WcfURL') + "/ToBePushed",
+                data: "JobID=" + e + "&StoreId=" + $('#ddpStore :selected').val(),
+
+                dataType: "text",
+
+                success: function (data) {
+                    debugger;
+                    $.each(data.d, function (key, value) {
+                        debugger;
+                        alert(d);
+                    });
+                },
+                error: function (data) {
+                    debugger;
+                    alert(data);
+                }
+
+            });
+        }
+    </script>
+    <script type="text/javascript">
+        $("#popupPanel").on({
+            popupbeforeposition: function () {
+                var h = $(window).height();
+
+                $("#popupPanel").css("height", h);
+            }
+        });
+    </script>
+    <style>
+ 
+        #popupPanel-popup {
+            right: 0 !important;
+            left: auto !important;
+}
+#popupPanel {
+    width: 200px;
+    border: 1px solid #000;
+    border-right:none;
+    background: rgba(0,0,0,.5);
+    margin: -1px 0;
+}
+#popupPanel .ui-btn {
+    margin: 2em 15px;
+}
+    </style>
+</head>
+<body>
+	<div data-role="page" data-theme="a">
+		<div data-role="header" data-position="fixed" >
+			<h1>Service Management</h1>
+            <a href="jobsheet.html" data-transition="slide" data-position-to="window" data-theme="b" data-inline="true" data-icon="home" data-iconpos="notext" data-direction="reverse" rel="external">Home</a>
+            <a href="index.html" data-transition="slide" data-theme="b" data-inline="true" data-icon="power" data-iconpos="notext" data-direction="reverse" rel="external">Logout</a>
+            <div data-role="popup" id="popupPanel" data-corners="false" data-theme="none" data-shadow="false" data-tolerance="0,0">
+				<button data-theme="a" data-icon="back" data-mini="true">Back</button>
+				<button type="submit" data-theme="a" data-icon="grid" data-mini="true" onclick="'location.href = 'Service_Engineer.html''" >Service</button>
+				<button  data-theme="a" data-icon="search" data-mini="true">Search</button>
+			</div>
+            <div data-role="navbar" data-grid="d">
+			<ul>
+				<li><a href="jobsheet.html" rel="external">Job Sheet</a></li>
+                <li><a href="Order_Details.html" rel="external">Order details</a></li>
+				<li><a href="Service_Engineer.html" rel="external">Service</a></li>								
+				<li><a href="Company.html" class="ui-btn-active">Manufacturer</a></li>
+                <li><a href="Invoice.html" rel="external">Invoice</a></li>
+			</ul>
+		</div>
+            <div data-role="navbar" data-grid="b">
+			<ul>
+				<li><a href="Company.html" rel="external">To Be Pushed</a></li>
+			    <li><a href="Company_Inward.html" rel="external">To Be Received</a></li>
+                <li><a href="DCReference.html" class="ui-btn-active">DC</a></li>								
+			</ul>
+		</div>
+
+		</div>
+		<div data-role="content"  data-theme="a">
+		<form>
+		    <ul data-role="listview" data-inset="true">
+		        <li data-role="fieldcontain">
+		            <label for="lblDC">DC</label>
+		            <select id="ddpDC"   required>		                                
+		            </select>        
+		        </li>		        
+		        <li data-role="fieldcontain">
+		            <table data-role="table" id="jobid" class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-btn-theme="b" 
+		                   data-column-btn-text="Columns">
+   
+		            </table>           
+		        </li>
+                <li class="ui-body ui-body-b">
+				<fieldset class="ui-grid-a">
+					 <div class="ui-block-a"><input type="submit" name="Clear" id="Cancel" value="Cancel" data-icon="alert" /></div>                  
+                     <div class="ui-block-b"><input aria-required="true" class="required" data-theme=a type="submit" data-icon="check" name="submit" id="submit" value="Submit"></div>
+			    </fieldset>
+			</li>
+		    </ul>
+        </form>
+		</div>
+        <div data-role="footer" data-position="fixed">
+        <h4><a href="http://www.createalytics.com" data-rel="external">www.createalytics.com</a></h4>
+    </div> 
+	</div>
+</body>
+</html>
