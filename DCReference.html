@@ -5,10 +5,9 @@
 	<title>Company Details</title>
 	<link rel="stylesheet" href="themes/JobSheet1.min.css" />
 	<link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
-	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile.structure-1.4.5.min.css" />
-	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+	<link rel="stylesheet" href="Script/jquery.mobile.structure-1.4.5.min.css" />
+        <script src="Script/jquery-1.11.2.js" type="text/javascript"></script>
+        <script src="Script/jquery.mobile-1.4.5.min.js" type="text/javascript"></script>  
     <script type="text/javascript">
         $(document).ready(function () {
             jobid = new Array();
@@ -27,9 +26,7 @@
                         $("#ddpDC").append($("<option></option>").val(value.DC_Id).html(value.DC_Id));
                     });
                 },
-                error: function (Result) {
-                    
-                    alert("Error");
+                error: function (Result) {                                        
                 }
             });
 
@@ -64,58 +61,40 @@
                             $("#jobid").append(tr);
                         }
                         else {
-                            for (var i = 0; i < data.NewDataSet.Table.length; i++) {
-                                
-                                
+                            for (var i = 0; i < data.NewDataSet.Table.length; i++) {                                                                
                                 jobid.push(data.NewDataSet.Table[i].Job_Id);
                                 tr = $("<tr></tr>");
                                 tr.append("<td><input type='text' id='tblRef' >" + "</td><td>" + data.NewDataSet.Table[i].Job_Id + "</td><td>");                                                                
-                                $("#jobid").append(tr);
-                                
-
+                                $("#jobid").append(tr);                                
                             }                            
                         }
                     },
-                    error: function (response) {
-                        
-                        alert(response.d.toString());
+                    error: function (response) {                                                
                     }
                 });        
             });
-            $("#submit").click(function () {
-                
+            $("#submit").click(function () {                
                 var selectedLanguage = new Array();
-                $('input[id="tblRef"]').each(function () {
-                    
-                    selectedLanguage.push(this.value);
-                    
-                });
-                //alert(selectedLanguage);               
-                
+                $('input[id="tblRef"]').each(function () {                    
+                    selectedLanguage.push(this.value);                    
+                });                                              
                 $.ajax({
                     type: "POST",
                     contentType: "application/json; charset=utf-8",
                     url: localStorage.getItem('WcfURL') + "/DcRefernceNo",
                     data: "{'JobID':'" + JSON.stringify(jobid) + "','ReferenceNo':'" + JSON.stringify(selectedLanguage) + "'}",
                     dataType: "json",
-
-                    success: function(data) {
-                        
+                    success: function(data) {                        
                         $.each(data.d, function(key, value) {
-                            if (value.result == "1") {
-                                
+                            if (value.result == "1") {                                
                                 alert("success");
                             } else {
-                                alert("Invalid Data");
-                                return false;
+                                alert("Invalid Data");                                
                             }
                         });
                     },
-                    error: function (data) {
-                        
-                        alert(data);
+                    error: function (data) {                                                
                     }
-
                 });
             });
             $("#Cancel").click(function () {
@@ -125,49 +104,34 @@
                     url: localStorage.getItem('WcfURL') + "/DcCancel",
                     data: "{'DcNumber':'" + $('#ddpDC :selected').val() + "'}",
                     dataType: "json",
-
-                    success: function (data) {
-                        
+                    success: function (data) {                        
                         $.each(data.d, function (key, value) {
-                            if (value.result == "1") {
-                                ;
+                            if (value.result == "1") {                                
                                 alert("success");
                             } else {
-                                alert("Invalid Data");
-                                return false;
+                                alert("Invalid Data");                                
                             }
                         });
                     },
-                    error: function (data) {
-                        
-                        alert(data);
+                    error: function (data) {                                             
                     }
-
                 });
             });
         });
-        function popup(e) {
-            
+        function popup(e) {            
             $('#tblChk').val(e);
             $.ajax({
                 type: "POST",
                 url: localStorage.getItem('WcfURL') + "/ToBePushed",
                 data: "JobID=" + e + "&StoreId=" + $('#ddpStore :selected').val(),
-
                 dataType: "text",
-
-                success: function (data) {
-                    
-                    $.each(data.d, function (key, value) {
-                        
+                success: function (data) {                    
+                    $.each(data.d, function (key, value) {                        
                         alert(d);
                     });
                 },
-                error: function (data) {
-                    
-                    alert(data);
+                error: function (data) {                                        
                 }
-
             });
         }
     </script>

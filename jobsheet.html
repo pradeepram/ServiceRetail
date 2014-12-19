@@ -5,9 +5,9 @@
 	<title>jobsheet</title>
 	<link rel="stylesheet" href="themes/JobSheet1.min.css" />
 	<link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
-	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile.structure-1.4.5.min.css" />
-	<script src="http://code.jquery.com/jquery-1.11.1.min.js" type="text/javascript"></script>
-	<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js" type="text/javascript"></script>        
+	<link rel="stylesheet" href="Script/jquery.mobile.structure-1.4.5.min.css" />
+        <script src="Script/jquery-1.11.2.js" type="text/javascript"></script>
+        <script src="Script/jquery.mobile-1.4.5.min.js" type="text/javascript"></script>      
      <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
   <script type="text/javascript">
       $(document).ready(function() {
@@ -20,20 +20,14 @@
               url: localStorage.getItem('WcfURL') + "/BindState",
               data: "{}",
               dataType: "json",
-              success: function(data) {
-                  //$("#ddpState").append($("<option value='' selected>Select</option>"));
+              success: function(data) {                  
                   $.each(data.d, function(key, value) {
-                      // $("#ddpState").prepend("");
-                    //  $("#ddpState option:first").attr('selected',true);
-                      //                      $("#ddpState")[0].selectedIndex = -1;
                       $("#ddpState option[value='']").remove();
                       $("#ddpState").append($("<option></option>").val(value.State_Id).html(value.State_Name));
                       $("#ddpState")[0].selectedIndex = -1;
                   });
               },
-              error: function(Result) {
-                  debugger;
-                  alert("Error");
+              error: function(Result) {                  
               }
           });
 
@@ -44,16 +38,13 @@
               data: "{}",
               dataType: "json",
               success: function(data) {
-
                   $.each(data.d, function(key, value) {
                       $("#ddpBrand").append($("<option></option>").val(value.BrandID).html(value.BrandName));
                       $("#ddpBrand option[value='']").remove();
                       $("#ddpBrand")[0].selectedIndex = -1;
                   });
               },
-              error: function(Result) {
-                  debugger;
-                  alert("Error");
+              error: function(Result) {                  
               }
           });
 
@@ -70,9 +61,7 @@
                       $("#ddpWarranty")[0].selectedIndex = -1;
                   });
               },
-              error: function(Result) {
-                  debugger;
-                  alert("Error");
+              error: function(Result) {                  
               }
           });
           $.ajax({
@@ -81,15 +70,12 @@
               url: localStorage.getItem('WcfURL') + "/BindJob",
               data: "{}",
               dataType: "json",
-              success: function(data) {
-                  debugger;
+              success: function(data) {                  
                   $.each(data.d, function(key, value) {
                       $("#txtJobId").val(value.Job_ID);
                   });
               },
-              error: function(Result) {
-                  debugger;
-                  alert("Error");
+              error: function(Result) {                  
               }
           });
           $.ajax({
@@ -98,35 +84,26 @@
               url: localStorage.getItem('WcfURL') + "/BindServiceEngg",
               data: "{}",
               dataType: "json",
-              success: function(data) {
-                  debugger;
+              success: function(data) {                  
                   $.each(data.d, function(key, value) {
                       $("#ddpServiceEngg").append($("<option></option>").val(value.custrole).html(value.firstname));
                       $("#ddpServiceEngg option[value='']").remove();
                       $("#ddpServiceEngg")[0].selectedIndex = -1;
                   });
               },
-              error: function(Result) {
-                  debugger;
-                  alert("Error");
+              error: function(Result) {                  
               }
           });
           $("#submit").click(function(event) {
               $("#jobsheet").validate({
-                  errorPlacement: function(error, element) {
-
-                      //http://stackoverflow.com/questions/4844594/jquery-select-the-associated-label-element-of-a-input-field
+                  errorPlacement: function(error, element) {                      
                       error.appendTo("label[for=" + $(element).attr('id') + "]");
                   },
                   errorElement: "em"
-              });
-              // re-enable HTML5 native validation and stop jquery from handeling it! they changed this to be novalidate by default and I DO want to use HTML5 validation first then try jquery          
-              if ($("#jobsheet").valid()) {
-                  debugger;
-                  var state = $('#ddpState option:selected').val();
-                  debugger;
+              });              
+              if ($("#jobsheet").valid()) {                 
+                  var state = $('#ddpState option:selected').val();                 
                   var brand = $('#ddpBrand option:selected').val();
-
                   var model = $('#ddpModel option:selected').val();
                   var Warranty = $('#ddpWarranty option:selected').val();
                   var serviceengg = $('#ddpServiceEngg option:selected').val();
@@ -137,8 +114,7 @@
                       debugger;
                       $('#txtBrand').css('border-color', 'red');
                       $('#txtModel').css('border-color', 'red');                      
-                      alert("Enter Brand and Model Name");
-                      
+                      alert("Enter Brand and Model Name");                      
                   } 
                   else {
                       debugger;
@@ -150,22 +126,16 @@
                           dataType: "json",
                           success: function(data) {
                               $.each(data.d, function(key, value) {
-                                  if (value.result == "1") {
-                                      debugger;
-                                      alert("success");
-                                      //                                      Location.reload(true);
+                                  if (value.result == "1") {                                      
+                                      alert("success");                                      
                                       $(location).attr('href', url);
                                   } else {
-                                      alert("Invalid Data");
-                                      return false;
+                                      alert("Invalid Data");                                      
                                   }
                               });
                           },
-                          error: function(data) {
-                              debugger;
-                              alert(data);
+                          error: function(data) {                              
                           }
-
                       });
                   }
               }
@@ -177,24 +147,13 @@
       }); 
   </script>
     <script type="text/javascript">
-//        $("#popupPanel").on({
-//            popupbeforeposition: function () {
-//                var h = $(window).height();
-
-//                $("#popupPanel").css("height", h);
-//            }
-//        });
-        function checkbrand(val) {
-            
-            debugger;
+        function checkbrand(val) {                        
             if (val === "0") {
                 document.getElementById('txtBrand').style.display = 'block';                
-                document.getElementById('txtModel').style.display = 'block';
-                debugger;
+                document.getElementById('txtModel').style.display = 'block';                
             } else {
                 document.getElementById('txtBrand').style.display = 'none';
-                document.getElementById('txtModel').style.display = 'none';
-                debugger;
+                document.getElementById('txtModel').style.display = 'none';                
             }
             $('#ddpModel').empty();
             $('#ddpModel option:selected').removeAttr('selected');                        
@@ -204,17 +163,14 @@
                 url: localStorage.getItem('WcfURL') + "/BindModel",
                 data: "{'BrandID': '" + $('#ddpBrand option:selected').val() + "'}",
                 dataType: "json",
-                success: function (data) {
-                    debugger;
+                success: function (data) {                    
                     $.each(data.d, function (key, value) {                        
                         $("#ddpModel").append($("<option value=''>select</option>").val(value.ModelID).html(value.ModelName));
                         $("#ddpModel option[value='']").remove();
                         $("#ddpModel")[0].selectedIndex = -1;
                     });
                 },
-                error: function (Result) {
-                    debugger;
-                    alert("Error");
+                error: function (Result) {                    
                 }
             });
         }

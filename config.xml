@@ -4,11 +4,11 @@
         id        = "com.cas.Retail"
         version   = "2.1.0">
 
-  <name>Retail</name>
+  <name>Service Management</name>
   <description>
     Retail service for WatchSquare
   </description>
-  <author href="" email="pradeep.pilot@gmail.com">
+  <author href="" email="selvaram@createalytics.com">
     SelvaRam
   </author>
 

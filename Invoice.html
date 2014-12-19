@@ -5,9 +5,9 @@
 	<title>Invoice</title>
 	<link rel="stylesheet" href="themes/JobSheet1.min.css" />
 	<link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
-	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile.structure-1.4.5.min.css" />
-	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+	<link rel="stylesheet" href="Script/jquery.mobile.structure-1.4.5.min.css" />
+        <script src="Script/jquery-1.11.2.js" type="text/javascript"></script>
+        <script src="Script/jquery.mobile-1.4.5.min.js" type="text/javascript"></script>  
     <script type="text/javascript">
         $(document).ready(function () {
 
@@ -17,48 +17,33 @@
                 url: localStorage.getItem('WcfURL') +"/BindInvoice",
                 data: "{}",
                 dataType: "json",
-                success: function (data) {
-                    debugger;
+                success: function (data) {                    
                     $.each(data.d, function (key, value) {
                         $("#txtInvNo").val(value.invno);
                     });
                 },
-                error: function (Result) {
-                    debugger;
-                    alert("Error");
+                error: function (Result) {                                        
                 }
             });
-
-            $('#txtJobId').change(function () {
-                debugger;
+            $('#txtJobId').change(function () {                
                 $.ajax({
                     type: "POST",
                     contentType: "application/json; charset=utf-8",
                     url: "MyWebService.asmx/GetInvDetails",
                     data: "{'JobID': '" + $('input[id=txtJobId]').val() + "'}",
-
                     dataType: "json",
-
-                    success: function (data) {
-                        debugger;
-                        $.each(data.d, function (key, value) {
-                            debugger;
-                            $("#txtCustName").val(value.custname);
-                            debugger;
-                            $("#txtPhone").val(value.phoneno);
-                            debugger;
+                    success: function (data) {                        
+                        $.each(data.d, function (key, value) {                            
+                            $("#txtCustName").val(value.custname);                            
+                            $("#txtPhone").val(value.phoneno);                            
                             $("#txtEmail").val(value.email);
                             $("#txtAddress1").val(value.address);
                             $("#txtParts").val(value.partsname);
-                            $("#txtTotal").val(value.amount);
-                            debugger;
+                            $("#txtTotal").val(value.amount);                            
                         });
                     },
-                    error: function (data) {
-                        debugger;
-                        alert(data);
+                    error: function (data) {                                                
                     }
-
                 });
             });
 

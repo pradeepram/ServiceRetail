@@ -5,33 +5,29 @@
 	<title>Service Engineer</title>   
 	<link rel="stylesheet" href="themes/JobSheet1.min.css" />
 	<link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
-    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile.structure-1.4.5.min.css" />
-    <script src="http://code.jquery.com/jquery-1.11.1.min.js" type="text/javascript"></script>
-    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js" type="text/javascript"></script>            
+    <link rel="stylesheet" href="Script/jquery.mobile.structure-1.4.5.min.css" />
+        <script src="Script/jquery-1.11.2.js" type="text/javascript"></script>
+        <script src="Script/jquery.mobile-1.4.5.min.js" type="text/javascript"></script>       
     <script type="text/javascript">
-        $(document).ready(function () {
-            debugger;
+        $(document).ready(function () {            
             $.ajax({
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
                 url: localStorage.getItem('WcfURL') + "/BindServiceEngg",
                 data: "{}",
                 dataType: "json",
-                success: function (data) {
-                    debugger;
+                success: function (data) {                    
                     $.each(data.d, function (key, value) {
                         $("#ddpServiceEngg").append($("<option></option>").val(value.custrole).html(value.firstname));
                         $("#ddpServiceEngg option[value='']").remove();
                         $("#ddpServiceEngg")[0].selectedIndex = -1;
                     });
                 },
-                error: function (Result) {
-                    debugger;
-                    alert("Error");
+                error: function (Result) {                                        
                 }
             });
             $("#ddpServiceEngg").change(function () {
-                debugger;
+                
                 $.ajax({
                     type: "POST",
                     contentType: "application/json; charset:utf-8",
@@ -42,16 +38,16 @@
                     cache: false,
 
                     success: function(response) {
-                        debugger;
+                        
                         var data = jQuery.parseJSON(response.d.toString());
                         var tr;
                         tr = $("<tr></tr>");
                         tr.append("<th>Job_ID</th><th>BrandName</th><th>ModelName</th><th>Warranty</th><th>Call Confirm</th>"); // bind table header row
-                        debugger;
+                        
                         $("#OrderTable").append(tr);
                         if (data.NewDataSet.Table.length == undefined) {
                             tr = $("<tr></tr>");
-                            debugger;
+                            
                             tr.append("<td><a href='Service_Engineer.html' data-rel='popup' onclick='popup(" + data.NewDataSet.Table.Job_ID + ")'>" + data.NewDataSet.Table.Job_ID + "</a></td><td>" +
                                     data.NewDataSet.Table.BrandName + "</td><td>" +
                                     data.NewDataSet.Table.ModelName + "</td><td>" +
@@ -59,12 +55,12 @@
                                     data.NewDataSet.Table.CallConfirm + "</td><td>");
 
                             $("#OrderTable").append(tr);
-                            debugger;
+                            
                         } 
                        else {
 
                             for (var i = 0; i < data.NewDataSet.Table.length; i++) {
-                                debugger;
+                                
                                 tr = $("<tr></tr>");
 
                                 tr.append("<td><a href='Service_Engineer.html' data-rel='popup' onclick='popup(" + data.NewDataSet.Table[i].Job_ID + ")'>" + data.NewDataSet.Table[i].Job_ID + "</a></td><td>" +
@@ -72,21 +68,16 @@
                                     data.NewDataSet.Table[i].ModelName + "</td><td>" +
                                     data.NewDataSet.Table[i].Warranty + "</td><td>"+
                                      data.NewDataSet.Table[i].CallConfirm + "</td><td>");
-
-                                $("#OrderTable").append(tr);
-                                debugger;
+                                $("#OrderTable").append(tr);                                
                             }
                         }
                     },
-                    error: function(response) {
-                        debugger;
-                        alert(response.d.toString());
+                    error: function(response) {                                                
                     }
                 });
             });
         });
-        function popup(e) {
-            debugger;
+        function popup(e) {            
             var url = "Service_Engineer.html";
             $('#txtJobId').val(e);
             localStorage.setItem('jobid', e);

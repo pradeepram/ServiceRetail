@@ -5,12 +5,11 @@
 	<title>jQuery Mobile: Theme Download</title>
 	<link rel="stylesheet" href="themes/JobSheet1.min.css" />
 	<link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
-	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile.structure-1.4.5.min.css" />
-	<script src="http://code.jquery.com/jquery-1.11.1.min.js" type="text/javascript"></script>
-    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js" type="text/javascript"></script>
+	<link rel="stylesheet" href="Script/jquery.mobile.structure-1.4.5.min.css" />
+        <script src="Script/jquery-1.11.2.js" type="text/javascript"></script>
+        <script src="Script/jquery.mobile-1.4.5.min.js" type="text/javascript"></script>  
     <script type="text/javascript">
-        $(document).ready(function () {
-            debugger;
+        $(document).ready(function () {            
             $.ajax({
                 type: "POST",
                 contentType: "application/json; charset:utf-8",
@@ -19,30 +18,24 @@
                 dataType: "json",
                 async: true,
                 cache: false,
-
-                success: function (response) {
-                    debugger;
+                success: function (response) {                    
                     var data = jQuery.parseJSON(response.d.toString());
                     var tr;
-
                     tr = $("<tr></tr>");
-
-                    tr.append("<th>Job_ID</th><th>Cust_Name</th><th>DueDate</th><th>Status</th>"); // bind table header row
-                    debugger;
+                    tr.append("<th>Job_ID</th><th>Cust_Name</th><th>DueDate</th><th>Status</th>"); // bind table header row                    
                     $("#OrderTable").append(tr);
                     if (data.NewDataSet.Table.length == undefined) {
                         tr = $("<tr></tr>");
-
                         tr.append("<td><a href='#popupDialog1' data-rel='popup' onclick='popup(" + data.NewDataSet.Table.Job_ID + ")'>" + data.NewDataSet.Table.Job_ID + "</a></td><td>" +
                                            data.NewDataSet.Table.FirstName + "</td><td>" +
                                            data.NewDataSet.Table.DueDate + "</td><td>" +
                                            data.NewDataSet.Table.Status + "</td><td>");
 
                         $("#OrderTable").append(tr);
-                        debugger;
+                        
                     } else {
                         for (var i = 0; i < data.NewDataSet.Table.length; i++) {
-                            debugger;
+                            
                             tr = $("<tr></tr>");
 
                             tr.append("<td><a href='#popupDialog1' data-rel='popup' onclick='popup(" + data.NewDataSet.Table[i].Job_ID + ")'>" + data.NewDataSet.Table[i].Job_ID + "</a></td><td>" +
@@ -51,54 +44,14 @@
                                            data.NewDataSet.Table[i].Status + "</td><td>");
 
                             $("#OrderTable").append(tr);
-                            debugger;
+                            
                         }
                     }
                 },
-                error: function (response) {
-                    debugger;
-                    alert(response.d.toString());
+                error: function (response) {                                        
                 }
-            });
-            $("#submit").click(function (event) {
-                debugger;
-                $.ajax({
-                    type: "POST",
-                    url: localStorage.getItem('WcfURL') + "/UpdateStatus",
-                    data: "callconfirm=" + $('input[name=radio-choice-2]:checked').val() + "&job_id=" + parseInt($('#txtJobId').val(), 10),
-                    dataType: "text",
-                    success: function (data) {
-                        debugger;
-                        alert(data);
-                    },
-                    error: function (data) {
-                        debugger;
-                        alert(data);
-                    }
-                });
-            });
-            $("#cancel").click(function (event) {
-                debugger;
-                $.ajax({
-                    type: "POST",
-                    contentType: "application/json; charset=utf-8",
-                    url: localStorage.getItem('WcfURL') + "/CancelOrder",
-                    data: "{'job_id': '" + $('input[id=txtJobId]').val() + "'}",
-                    dataType: "json",
-                    success: function (data) {
-                        debugger;
-                        $.each(data.d, function (key, value) {
-                            alert(d);
-                        });
-                    },
-                    error: function (data) {
-                        debugger;
-                        alert(data);
-                    }
-                });
-            });
-            $("#txtJobId").change(function () {
-                debugger;
+            });            
+            $("#txtJobId").change(function () {                
                 $("#OrderTable tr").remove();
                 $.ajax({
                     type: "POST",
@@ -110,12 +63,12 @@
                     cache: false,
 
                     success: function (response) {
-                        debugger;
+                        
                         var data = jQuery.parseJSON(response.d.toString());
                         var tr;
                         tr = $("<tr></tr>");
                         tr.append("<th>Job_ID</th><th>BrandName</th><th>ModelName</th><th>Warranty</th>"); // bind table header row
-                        debugger;
+                        
                         $("#OrderTable").append(tr);
                         if (data.NewDataSet.Table.length == undefined) {
                             tr = $("<tr></tr>");
@@ -126,10 +79,10 @@
                                     data.NewDataSet.Table.Status + "</td><td>");
 
                             $("#OrderTable").append(tr);
-                            debugger;
+                            
                         } else {
                             for (var i = 0; i < data.NewDataSet.Table.length; i++) {
-                                debugger;
+                                
                                 tr = $("<tr></tr>");
 
                                 tr.append("<td><a href='#' data-rel='popup' onclick='popup(" + data.NewDataSet.Table[i].Job_ID + ")'>" + data.NewDataSet.Table[i].Job_ID + "</a></td><td>" +
@@ -138,20 +91,17 @@
                                         data.NewDataSet.Table[i].Status + "</td><td>");
 
                                 $("#OrderTable").append(tr);
-                                debugger;
+                                
                             }
                         }
                     },
-                    error: function (response) {
-                        debugger;
-                        alert(response.d.toString());
+                    error: function (response) {                                             
                     }
                 });
             });
         });
-
         function popup(e) {
-            debugger;
+            
             var url = "JobDetails.htm";
             localStorage.setItem('jobid', e);
             $(location).attr('href', url);            

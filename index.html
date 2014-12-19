@@ -5,10 +5,9 @@
         <title>Retail</title>
         <link rel="stylesheet" href="themes/JobSheet1.min.css" />
         <link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" /> 
-        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile.structure-1.4.5.min.css" />
-        <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-        <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-        <script src="http://code.jquery.com/jquery-latest.js" type="text/javascript"></script>
+        <link rel="stylesheet" href="Script/jquery.mobile.structure-1.4.5.min.css" />
+        <script src="Script/jquery-1.11.2.js" type="text/javascript"></script>
+        <script src="Script/jquery.mobile-1.4.5.min.js" type="text/javascript"></script>        
         <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
         
         <script type = "text/javascript">
@@ -16,41 +15,29 @@
                 wcf = "http://serviceretail.createalytics.com/MyWebService.asmx";
                 localStorage.setItem('WcfURL', wcf);
                 $('#submit').click(function () {
-                    debugger;
-//                    var contentType = "application/json; charset=utf-8";
-//                    if (window.XDomainRequest)
-//                        contentType = "text/plain";
+                    
+
                     var url = "jobsheet.html";
                     $.ajax({
                         type: "POST",
                         contentType: "application/json; charset=utf-8",
-//                        contentType: contentType,
                       crossDomain:true,
                         url: wcf+"/UserLogin",
-//                data: "username=" + $('#txtusername').val() + "&pwd=" + $('#txtPwd').val(),
-                        data: "{'username': '" + $('#txtusername').val() + "','pwd':'" + $('#txtPwd').val() + "'}",
-                        //                dataType: "text",                        
-                        dataType: "json",
-                       
+                        data: "{'username': '" + $('#txtusername').val() + "','pwd':'" + $('#txtPwd').val() + "'}",                                    
+                        dataType: "json",                       
                         success: function (data) {
-                            debugger;
+                            
                             $.each(data.d, function (key, value) {
                                 $("#sample").val(value.customerid);
-                                if (value.customerid == "8") {
-                                    debugger;
-                                    //$.sessionStorage.setItem("userid", "Jog");
-                                    localStorage.setItem('customerid', value.customerid);
-                                    // alert(localStorage.getItem('customerid'));
+                                if (value.customerid == "8") {                                                                        
+                                    localStorage.setItem('customerid', value.customerid);                                    
                                     $(location).attr('href', url);                            
                                 } else {
-                                    alert("Invalid UserName and password");
-                                    return false;
+                                    alert("Invalid UserName and password");                                    
                                 }                        
                             });
                         },
-                        error: function(data) {
-                            debugger;
-                            alert(data);
+                        error: function(data) {                            
                         }
 
                     });
@@ -62,8 +49,7 @@
             });
         </script>
         <script type="text/javascript">
-            var attempt = 3; // Variable to count number of attempts.
-            // Below function Executes on click of login button.
+            var attempt = 3; // Variable to count number of attempts.            
             function validate() {
                 var username = document.getElementById("username").value;
                 var password = document.getElementById("password").value;

@@ -5,10 +5,9 @@
 	<title>Company Details</title>
 	<link rel="stylesheet" href="themes/JobSheet1.min.css" />
 	<link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
-	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile.structure-1.4.5.min.css" />
-	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+	<link rel="stylesheet" href="Script/jquery.mobile.structure-1.4.5.min.css" />
+        <script src="Script/jquery-1.11.2.js" type="text/javascript"></script>
+        <script src="Script/jquery.mobile-1.4.5.min.js" type="text/javascript"></script>  
     <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
 
     <script type="text/javascript">
@@ -19,22 +18,16 @@
                 url: localStorage.getItem('WcfURL') + "/BindStore",
                 data: "{}",
                 dataType: "json",
-                success: function (data) {
-                    debugger;
+                success: function (data) {                    
                     $("#ddpStore").append($("<option value=''>Select</option>"));
-                    $.each(data.d, function (key, value) {
-                        // $("#ddpState").prepend("");
+                    $.each(data.d, function (key, value) {                        
                         $("#ddpStore option:first").attr('selected', 'selected');
                         $("#ddpStore").append($("<option></option>").val(value.Store_Id).html(value.Store_Name));
                     });
                 },
-                error: function (Result) {
-                    debugger;
-                    alert("Error");
+                error: function (Result) {                                        
                 }
-            });                        
-            
-            debugger;
+            });                                                
             $.ajax({
                 type: "POST",
                 contentType: "application/json; charset:utf-8",
@@ -43,15 +36,11 @@
                 dataType: "json",
                 async: true,
                 cache: false,
-
-                success: function (response) {
-                    debugger;
+                success: function (response) {                    
                     var data = jQuery.parseJSON(response.d.toString());
                     var tr;
                     tr = $("<tr></tr>");
-
-                    tr.append("<th></th><th>Job_ID</th><th>Brand</th><th>Model</th><th>warranty</th><th>problems</th>"); // bind table header row
-                    debugger;
+                    tr.append("<th></th><th>Job_ID</th><th>Brand</th><th>Model</th><th>warranty</th><th>problems</th>"); // bind table header row                    
                     $("#ManufacturerTable").append(tr);
                     if (data.NewDataSet.Table.length == undefined) {
                         tr = $("<tr></tr>");
@@ -65,30 +54,23 @@
                     }
                     else
                     {
-                        for (var i = 0; i < data.NewDataSet.Table.length; i++) {
-                            debugger;
+                        for (var i = 0; i < data.NewDataSet.Table.length; i++) {                            
                             tr = $("<tr></tr>");
-
                             tr.append("<td><input type='checkbox' id='tblChk' value="+ data.NewDataSet.Table[i].Job_ID +">" + "</td><td>" + data.NewDataSet.Table[i].Job_ID + "</td><td>" +
                                 data.NewDataSet.Table[i].BrandName + "</td><td>" +
                                 data.NewDataSet.Table[i].ModelName + "</td><td>" +
                                 data.NewDataSet.Table[i].Warranty + "</td><td>" +
                                 data.NewDataSet.Table[i].Problem + "</td><td>");
-
-                            $("#ManufacturerTable").append(tr);
-                            debugger;
+                            $("#ManufacturerTable").append(tr);                            
                         }
                     }
                 },
-                error: function (response) {
-                    debugger;
-                    alert(response.d.toString());
+                error: function (response) {                                        
                 }
             });
             $("#submit").click(function () {
                 $("#ToBePush").validate({
                     errorPlacement: function (error, element) {
-
                         //http://stackoverflow.com/questions/4844594/jquery-select-the-associated-label-element-of-a-input-field
                         error.appendTo("label[for=" + $(element).attr('id') + "]");
                     },
@@ -98,13 +80,10 @@
                     var store = $('#ddpStore option:selected').val();
                     if (store == "") {
                         $('#ddpStore').css('border-color', 'red');
-                    } else {
-                        debugger;
+                    } else {                        
                         var selectedLanguage = new Array();
-                        $('input[id="tblChk"]:checked').each(function() {
-                            debugger;
-                            selectedLanguage.push(this.value);
-                            debugger;
+                        $('input[id="tblChk"]:checked').each(function() {                            
+                            selectedLanguage.push(this.value);                            
                         });
                         //alert("Number of selected Languages: " + selectedLanguage.length + "\n" + "And, they are: " + selectedLanguage);
                         alert(selectedLanguage);
@@ -114,45 +93,32 @@
                             url: localStorage.getItem('WcfURL') + "/ToBePushed1",
                             data: "{'JobID':'" + JSON.stringify(selectedLanguage) + "','StoreId':'" + $('#ddpStore :selected').val() + "','Mode':'" + $('#txtMode').val() + "','createdby': '" + localStorage.getItem('customerid') + "'}",
                             dataType: "json",
-
-                            success: function(data) {
-                                debugger;
-                                $.each(data.d, function(key, value) {
-                                    debugger;
+                            success: function(data) {                                
+                                $.each(data.d, function(key, value) {                                    
                                     alert(d);
                                 });
                             },
-                            error: function(data) {
-                                debugger;
-                                alert(data);
+                            error: function(data) {                                                                
                             }
                         });
                     }
                 }
             });
         });
-        function popup(e) {
-            debugger;
+        function popup(e) {            
             $('#tblChk').val(e);
             $.ajax({               
                 type: "POST",
                 url: localStorage.getItem('WcfURL') + "/ToBePushed",
                 data: "JobID=" + e + "&StoreId=" + $('#ddpStore :selected').val(),
-
                 dataType: "text",
-
-                success: function (data) {
-                    debugger;
-                    $.each(data.d, function (key, value) {
-                        debugger;
+                success: function (data) {                    
+                    $.each(data.d, function (key, value) {                        
                         alert(d);
                     });
                 },
-                error: function (data) {
-                    debugger;
-                    alert(data);
+                error: function (data) {                                     
                 }
-
             });
         }
     </script>
@@ -160,7 +126,6 @@
         $("#popupPanel").on({
             popupbeforeposition: function () {
                 var h = $(window).height();
-
                 $("#popupPanel").css("height", h);
             }
         });
