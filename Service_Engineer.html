@@ -26,8 +26,12 @@
                         $.each(data.d, function (key, value) {                            
                             $("#txtBrand").val(value.brand);                            
                             $("#txtModel").val(value.model);                            
-                            $("#txtWarranty").val(value.warranty);                            
+                            $("#txtWarranty").val(value.warranty);
                             $("#txtProblem").val(value.problem);
+                            $("#txtComplaints").val(value.complaint);
+                            $("#txtSer").val(value.servicecharge);
+                            $("#date").val(value.duedate);
+                            debugger;
                         });
                     },                        
                     error: function (data) {                                                
@@ -208,10 +212,10 @@
 	         <input type="date" name="date" id="date" required/>			
             </li>
 			<li class="ui-body ui-body-b">
-				<fieldset class="ui-grid-b">
-					 <div class="ui-block-a"><input aria-required="true" data-theme=a type="reset" name="Clear" id="clear" value="Clear" data-icon="alert" /></div>                  
-				    <div class="ui-block-b"><input aria-required="true" class="required" data-theme=a type="submit" data-icon="check" name="submit" id="submit" value="Submit"></div>
-                     <div class="ui-block-c"><input aria-required="true" class="required" data-theme=a type="button" name="Push To Company" data-icon="navigation" id="pushtocompany" value="PushToCompany"></div>
+				<fieldset class="ui-grid-a">
+					<!-- <div class="ui-block-a"><input aria-required="true" data-theme=a type="reset" name="Clear" id="clear" value="Clear" data-icon="alert" /></div>                  -->
+				    <div class="ui-block-a"><input aria-required="true" class="required" data-theme=a type="submit" data-icon="check" name="submit" id="submit" value="Submit"></div>
+                     <div class="ui-block-b"><input aria-required="true" class="required" data-theme=a type="button" name="Push To Company" data-icon="navigation" id="pushtocompany" value="PushToCompany"></div>
 			    </fieldset>
 			</li>			
 		</ul>		

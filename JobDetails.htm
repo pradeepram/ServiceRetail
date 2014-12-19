@@ -12,7 +12,8 @@
     <script type="text/javascript">
         $(document).ready(function () {
             //alert(localStorage.getItem('jobid'));
-            $('#txtJobId').val(localStorage.getItem('jobid'));                        
+            $('#txtJobId').val(localStorage.getItem('jobid'));
+            urlpage = "Order_Details.html";                    
             //$('#txtSearch').change(function () {            
             $.ajax({
                 type: "POST",
@@ -42,10 +43,11 @@
                         //$("input[type=radio]").attr('disabled', true);
                         $("#input[name=radio-choice-2]:checked").val(value.callconfirm);
                         if (value.callconfirm == "True") {
-                            
-                            $("input[type=radio]").attr('disabled', true);
-                            $('input:radio[name=radio-choice-2]')[0].checked = true;
-                            $('input:radio[name=radio-choice-2]').val('0');
+                            $("input[type=radio][value=0]").attr("checked", true);
+                            //                            $("input[type=radio]").prop('checked', true);
+                            //                            $('input:radio[name=radio-choice-2]')[0].checked = true;
+                            //                            $('input:radio[name=radio-choice-2]').val("0");
+                                                     $("input[type=radio]").prop('disabled', true);
                         } else {
                             
                             $("input[type=radio]").attr('disabled', false);
@@ -68,11 +70,16 @@
                     errorElement: "em"
                 });
                 if ($("#jobDetails").valid()) {
-                    var callconfirm = $('input[name=radio-choice-2]:checked').val();
                     var servicecharge = $('#txtServiceCharge').val();
-                    if (callconfirm == "" || servicecharge == "") {
+                    var callconfirm = $('input[name=radio-choice-2]:checked').val();
+                    if (callconfirm == undefined) {
+                        callconfirm = 0;
+                        alert("check callconfirm");
+                    }                   
+                    else if (callconfirm == "" || servicecharge == "") {
                         $('input[name=radio-choice-2]:checked').css('border-color', 'red');
                         $('#txtServiceCharge').css('border-color', 'red');
+                        alert("check callconfirm");
                     } else {
                         
                         $.ajax({
@@ -81,8 +88,15 @@
                             url: localStorage.getItem('WcfURL') + "/UpdateStatus",
                             data: "{'callconfirm':'" + $('input[name=radio-choice-2]:checked').val() + "', 'job_id':'" + parseInt($('#txtJobId').val(), 10) + "','servicecharge':'" + $('#txtServiceCharge').val() + "','createdby': '" + localStorage.getItem('customerid') + "'}",
                             dataType: "json",
-                            success: function(data) {                                
-                                alert(data);
+                            success: function(data) {
+                                $.each(data.d, function (key, value) {
+                                    if (value.result == "1") {                                        
+                                        alert("success");
+                                        $(location).attr('href', urlpage);
+                                    } else {
+                                        alert("Invalid Data");
+                                    }
+                                });
                             },
                             error: function(data) {                                                                
                             }
@@ -97,8 +111,15 @@
                     url: localStorage.getItem('WcfURL') + "/CancelOrder",
                     data: "{'job_id':'" + parseInt($('#txtJobId').val(), 10) + "','createdby': '" + localStorage.getItem('customerid') + "'}",
                     dataType: "json",
-                    success: function (data) {                        
-                        alert(data);
+                    success: function (data) {
+                        $.each(data.d, function (key, value) {
+                            if (value.result == "1") {                                
+                                alert("success");
+                                $(location).attr('href', urlpage);
+                            } else {
+                                alert("Invalid Data");
+                            }
+                        });
                     },
                     error: function (data) {                                                
                     }

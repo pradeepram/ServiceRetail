@@ -8,43 +8,49 @@
         <link rel="stylesheet" href="Script/jquery.mobile.structure-1.4.5.min.css" />
         <script src="Script/jquery-1.11.2.js" type="text/javascript"></script>
         <script src="Script/jquery.mobile-1.4.5.min.js" type="text/javascript"></script>        
-        <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
+        <!--<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>-->
         
         <script type = "text/javascript">
-            $(document).ready(function () {
+            $(document).ready(function() {
                 wcf = "http://serviceretail.createalytics.com/MyWebService.asmx";
                 localStorage.setItem('WcfURL', wcf);
-                $('#submit').click(function () {
-                    
-
-                    var url = "jobsheet.html";
-                    $.ajax({
-                        type: "POST",
-                        contentType: "application/json; charset=utf-8",
-                      crossDomain:true,
-                        url: wcf+"/UserLogin",
-                        data: "{'username': '" + $('#txtusername').val() + "','pwd':'" + $('#txtPwd').val() + "'}",                                    
-                        dataType: "json",                       
-                        success: function (data) {
-                            
-                            $.each(data.d, function (key, value) {
-                                if (value.result == "1") {                                                                       
-                                    localStorage.setItem('customerid', value.customerid);                                    
-                                    $(location).attr('href', url);                            
-                                } else {
-                                    alert("Invalid UserName and password");                                    
-                                }                        
-                            });
+                $('#submit').click(function() {
+                    $("#jobsheet").validate({
+                        errorPlacement: function(error, element) {
+                            error.appendTo("label[for=" + $(element).attr('id') + "]");
                         },
-                        error: function(data) {                            
-                        }
-
+                        errorElement: "em"
                     });
+                    if ($("#jobsheet").valid()) {
+                        var url = "jobsheet.html";
+                        $.ajax({
+                            type: "POST",
+                            contentType: "application/json; charset=utf-8",
+                            crossDomain: true,
+                            url: wcf + "/UserLogin",
+                            data: "{'username': '" + $('#txtusername').val() + "','pwd':'" + $('#txtPwd').val() + "'}",
+                            dataType: "json",
+                            success: function(data) {
+
+                                $.each(data.d, function(key, value) {
+                                    if (value.result == "1") {
+                                        localStorage.setItem('customerid', value.customerid);
+                                        $(location).attr('href', url);
+                                    } else {
+                                        alert("Invalid UserName and password");
+                                    }
+                                });
+                            },
+                            error: function(data) {
+                            }
+
+                        });
+                    }
                 });
-                $('#btnClear').click(function () {
-                    var url = "index.html";
-                    $(location).attr('href', url);
-                });
+//                $('#btnClear').click(function () {
+//                    var url = "index.html";
+//                    $(location).attr('href', url);
+//                });            
             });
         </script>
         <script type="text/javascript">
