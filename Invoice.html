@@ -14,7 +14,7 @@
             $.ajax({
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
-                url: "MyWebService.asmx/BindInvoice",
+                url: localStorage.getItem('WcfURL') +"/BindInvoice",
                 data: "{}",
                 dataType: "json",
                 success: function (data) {
