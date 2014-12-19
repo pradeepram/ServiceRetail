@@ -12,7 +12,8 @@
     <script type="text/javascript" src="Script/jquery.dataTables.min.js"></script>
 
     <script type="text/javascript">
-        $(document).ready(function () {                      
+        $(document).ready(function () {      
+                        
             $.ajax({
                 type: "POST",
                 contentType: "application/json; charset:utf-8",
@@ -50,6 +51,7 @@
                 }
             });                        
                 $("#txtJobId").change(function () {
+                    $("#OrderTable td").remove();
                     $("#OrderTable tr").remove();
                     $.ajax({
                         type: "POST",

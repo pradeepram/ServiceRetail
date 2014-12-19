@@ -44,7 +44,8 @@
                     },
                     errorElement: "em"
                 });
-                if ($("#servicesheet").valid()) {                                        
+                if ($("#servicesheet").valid()) {
+                    var url = "Service.htm";                                     
                     var selectedLanguage = new Array();
                     $('input[id="tblChk"]:checked').each(function () {                        
                         selectedLanguage.push(this.value);                        
@@ -71,6 +72,7 @@
                 }
             });
             $("#pushtocompany").click(function (event) {
+                var url = "Service.htm";
                 if ($('#txtComplaints').val() == "") {
                     $('#txtComplaints').css('border-color', 'red');
                     alert("Enter the Complaints");

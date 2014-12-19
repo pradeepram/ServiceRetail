@@ -29,7 +29,8 @@
                 }
             });
             $("#ddpServiceEngg").change(function () {
-                
+                $("#OrderTable td").remove();
+                $("#OrderTable tr").remove();
                 $.ajax({
                     type: "POST",
                     contentType: "application/json; charset:utf-8",
