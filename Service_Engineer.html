@@ -51,11 +51,11 @@
                             dataType: "json",
                         success: function(data) {
                             $.each(data.d, function (key, value) {
-                                if (value.result == "1") {                                    
+                                if (value.result == "1") {
                                     alert("success");
+                                    $(location).attr('href', url);
                                 } else {
                                     alert("Invalid Data");
-                                    return false;
                                 }
                             });
                         },
@@ -75,8 +75,15 @@
                         url: localStorage.getItem('WcfURL') + "/PushToCompany",
                         data: "{'job_id':'" + parseInt($('#txtSearch').val(), 10) + "', 'complaints':'" + $('#txtComplaints').val() + "','createdby': '" + localStorage.getItem('customerid') + "'}",
                         dataType: "json",
-                        success: function(data) {                            
-                            alert(data);
+                        success: function(data) {
+                            $.each(data.d, function (key, value) {
+                                if (value.result == "1") {
+                                    alert("success");
+                                    $(location).attr('href', url);
+                                } else {
+                                    alert("Invalid Data");
+                                }
+                            });
                         },
                         error: function(data) {                                                        
                         }
@@ -148,8 +155,8 @@
             <div data-role="navbar" data-grid="d">
 			<ul>
 				<li><a href="jobsheet.html" rel="external">Job Sheet</a></li>
-		            <li><a href="Order_Details.html" rel="external" >Order Details</a></li>
-		            <li><a href="Service.htm" class="ui-btn-active">Service</a></li>								
+		            <li><a href="Order_Details.html"  rel="external" >Order Details</a></li>
+		            <li><a href="Service.htm" rel="external" >Service</a></li>								
 		            <li><a href="Company.html" rel="external">Company</a></li>
 		            <li><a href="Invoice.html" rel="external">Invoice</a></li>
 			</ul>

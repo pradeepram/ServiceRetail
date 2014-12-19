@@ -127,16 +127,11 @@
 	<div data-role="page" data-theme="a">
 		<div data-role="header" data-position="fixed" >
 			<h1>Service Dept</h1>
-            <a href="#popupPanel" data-rel="popup" data-transition="slide" data-position-to="window" data-theme="b" data-inline="true" data-icon="home" data-iconpos="notext" data-direction="reverse">Home</a>
-            <div data-role="popup" id="popupPanel" data-corners="false" data-theme="none" data-shadow="false" data-tolerance="0,0">
-				<button data-theme="a" data-icon="back" data-mini="true">Back</button>
-				<button data-theme="a" data-icon="grid" data-mini="true">Menu</button>
-				<button data-theme="a" data-icon="search" data-mini="true">Search</button>
-			</div>
+            <a href="#popupPanel" data-rel="popup" data-transition="slide" data-position-to="window" data-theme="b" data-inline="true" data-icon="home" data-iconpos="notext" data-direction="reverse">Home</a>            
             <div data-role="navbar" data-grid="d">
 			<ul>
 				<li><a href="jobsheet.html" rel="external">Job Sheet</a></li>
-		            <li><a href="Order_Details.html"  class="ui-btn-active">Order Details</a></li>
+		            <li><a href="Order_Details.html" rel="external"  >Order Details</a></li>
 		            <li><a href="Service.htm" rel="external">Service</a></li>								
 		            <li><a href="Company.html" rel="external">Company</a></li>
 		            <li><a href="Invoice.html" rel="external">Invoice</a></li>
@@ -185,7 +180,8 @@
                             	</li>	
                                 <li data-role="fieldcontain">
 	                            <label for="textarea">Service Charge</label>
-	                            <textarea cols="40" rows="8" name="textarea" id="txtServiceCharge"  required></textarea>
+                                    <!--<textarea cols="40" rows="8" name="textarea" id="txtServiceCharge"  required></textarea>-->
+                                  <input type="number" name="txtServiceCharge" id="txtServiceCharge"  required/>	                        
                             	</li>
 		      <li data-role="fieldcontain">
 	                            <fieldset data-role="controlgroup">

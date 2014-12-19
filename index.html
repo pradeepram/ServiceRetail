@@ -28,8 +28,7 @@
                         success: function (data) {
                             
                             $.each(data.d, function (key, value) {
-                                $("#sample").val(value.customerid);
-                                if (value.customerid == "8") {                                                                        
+                                if (value.result == "1") {                                                                       
                                     localStorage.setItem('customerid', value.customerid);                                    
                                     $(location).attr('href', url);                            
                                 } else {
