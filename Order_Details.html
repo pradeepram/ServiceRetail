@@ -13,7 +13,6 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            debugger;
             //$('#OrderTable').dataTable();            
             $.ajax({
                 type: "POST",
@@ -25,12 +24,12 @@
                 cache: false,
 
                 success: function(response) {
-                debugger;
+
                 var data = jQuery.parseJSON(response.d.toString());                
                 var tr;
                 tr = $("<thead><tr></tr></thead>");
                 tr.append("<th>Job_ID</th><th>Cust_Name</th><th>DueDate</th><th>Status</th>"); // bind table header row
-                debugger;
+
                 $("#OrderTable").append(tr);
                 if (data.NewDataSet.Table.length == undefined) {
                     tr = $("<tbody><tr></tr></tbody>");
@@ -40,10 +39,10 @@
                         data.NewDataSet.Table.Status + "</td><td>");
 
                     $("#OrderTable").append(tr);
-                    debugger;
+
                 } else {
                     for (var i = 0; i < data.NewDataSet.Table.length; i++) {
-                        debugger;
+
                         tr = $("<tbody><tr></tr></tbody>");
                         tr.append("<td><a href='#' data-rel='popup' onclick='popup(" + data.NewDataSet.Table[i].Job_ID + ")'>" + data.NewDataSet.Table[i].Job_ID + "</a></td><td>" +
                             data.NewDataSet.Table[i].FirstName + "</td><td>" +
@@ -51,19 +50,19 @@
                             data.NewDataSet.Table[i].Status + "</td><td>");
 
                         $("#OrderTable").append(tr);
-                        debugger;
+
                     }
                 }
-                    debugger;
+
                     $('#OrderTable').dataTable(); 
                 },
                 error: function (response) {
-                    debugger;
+
                     alert(response.d.toString());
                 }
             });                        
                 $("#txtJobId").change(function () {
-                    debugger;
+
                     $("#OrderTable tr").remove();
                     $.ajax({
                         type: "POST",
@@ -75,12 +74,12 @@
                         cache: false,
 
                         success: function (response) {
-                            debugger;
+
                             var data = jQuery.parseJSON(response.d.toString());
                             var tr;
                             tr = $("<tr></tr>");
                             tr.append("<th>Job_ID</th><th>BrandName</th><th>ModelName</th><th>Warranty</th>"); // bind table header row
-                            debugger;                            
+                         
                             if (data.NewDataSet.Table.length == undefined) {
                                 tr = $("<tr></tr>");
 
@@ -90,10 +89,10 @@
                                     data.NewDataSet.Table.Status + "</td><td>");
 
                                 $("#OrderTable").append(tr);
-                                debugger;
+
                             } else {
                                 for (var i = 0; i < data.NewDataSet.Table.length; i++) {
-                                    debugger;
+
                                     tr = $("<tr></tr>");
 
                                     tr.append("<td><a href='#' data-rel='popup' onclick='popup(" + data.NewDataSet.Table[i].Job_ID + ")'>" + data.NewDataSet.Table[i].Job_ID + "</a></td><td>" +
@@ -102,13 +101,13 @@
                                         data.NewDataSet.Table[i].Status + "</td><td>");
 
                                     $("#OrderTable").append(tr);
-                                    debugger;
+
                                 }
                             }
 
                         },
                         error: function (response) {
-                            debugger;
+
                             alert(response.d.toString());
                         }
                     });
@@ -116,7 +115,7 @@
         });
 
         function popup(e) {            
-            debugger;
+
             var url = "JobDetails.htm";            
             localStorage.setItem('jobid', e);
             $(location).attr('href', url);
