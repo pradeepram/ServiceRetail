@@ -13,7 +13,7 @@
       $(document).ready(function() {
           var id = localStorage.getItem('customerid');
           var url = "jobsheet.html";
-          debugger;
+          
           $.ajax({
               type: "POST",
               contentType: "application/json; charset=utf-8",
@@ -94,56 +94,82 @@
               error: function(Result) {                  
               }
           });
-          $("#submit").click(function(event) {
+          $("#submit").click(function (event) {
+
               $("#jobsheet").validate({
-                  errorPlacement: function(error, element) {                      
+                  errorPlacement: function (error, element) {
                       error.appendTo("label[for=" + $(element).attr('id') + "]");
                   },
                   errorElement: "em"
-              });              
-              if ($("#jobsheet").valid()) {                 
-                  var state = $('#ddpState option:selected').val();                 
+              });
+              if ($("#jobsheet").valid()) {
+                  ;
+                  var state = $('#ddpState option:selected').val();
+                  
                   var brand = $('#ddpBrand option:selected').val();
+
                   var model = $('#ddpModel option:selected').val();
                   var Warranty = $('#ddpWarranty option:selected').val();
                   var serviceengg = $('#ddpServiceEngg option:selected').val();
-                  if (state == "" || brand == "" || model == "" || serviceengg == "" || Warranty=="") {
-                      debugger;
+                  if (state == "" || brand == "" || model == "" || serviceengg == "" || Warranty == "") {
+                      
                       alert("select the dropdown");
                   } else if (brand == "0" || model == "0") {
-                      debugger;
+                      
                       $('#txtBrand').css('border-color', 'red');
-                      $('#txtModel').css('border-color', 'red');                      
-                      alert("Enter Brand and Model Name");                      
-                  } 
+                      $('#txtModel').css('border-color', 'red');
+                      alert("Enter Brand and Model Name");
+
+                  }
                   else {
-                      debugger;
+                      
                       $.ajax({
                           type: "POST",
                           contentType: "application/json; charset=utf-8",
-                          url: localStorage.getItem('WcfURL') + "/JobSheet",                          
+                          url: localStorage.getItem('WcfURL') + "/JobSheet",
                           data: "{'phoneno':'" + parseInt($('#txtPhone').val(), 10) + "', 'job_id':'" + parseInt($('#txtJobId').val(), 10) + "', 'cust_name':'" + $('#txtCustName').val() + "', 'email':'" + $('#txtEmail').val() + "','address1':'" + $('#txtAddress1').val() + "', 'address2':'" + $('#txtAddress2').val() + "', 'city':'" + $('#txtCity').val() + "','state':'" + $('#ddpState option:selected').val() + "', 'pincode': '" + parseInt($('#txtPincode').val(), 10) + "','purchasedate':'" + $('#txtPurDate').val() + "', 'brand': '" + $('#ddpBrand  :selected').val() + "','brandddpname':'" + $('#ddpBrand option:selected').text() + "', 'brandname':'" + $('#txtBrand').val() + "','model':'" + $('#ddpModel  :selected').val() + "', 'modelddpname':'" + $('#ddpModel option:selected').text() + "', 'modelname':'" + $('#txtModel').val() + "', 'warranty':'" + $('#ddpWarranty option:selected').val() + "', 'problems':'" + $('#txtProblem').val() + "', 'remarks':'" + $('#txtRemarks').val() + "','serviveengg':'" + $('#ddpServiceEngg  :selected').val() + "', 'createdby':'" + localStorage.getItem('customerid') + "'}",
                           dataType: "json",
-                          success: function(data) {
-                              $.each(data.d, function(key, value) {
-                                  if (value.result == "1") {                                      
-                                      alert("success");                                      
+                          success: function (data) {
+                              $.each(data.d, function (key, value) {
+                                  if (value.result == "1") {
+                                      
+                                      alert("success");
+                                      //                                      Location.reload(true);
                                       $(location).attr('href', url);
                                   } else {
-                                      alert("Invalid Data");                                      
+                                      alert("Invalid Data");
+                                      return false;
                                   }
                               });
                           },
-                          error: function(data) {                              
+                          error: function (data) {
+                              
+                              alert(data);
                           }
+
                       });
                   }
               }
           });
+         
           $("#clear").click(function(event) {
-              debugger;
+              
               location.reload(true);
           });
+      });
+      $(function () {
+          var dtToday = new Date();
+
+          var month = dtToday.getMonth() + 1;
+          var day = dtToday.getDate();
+          var year = dtToday.getFullYear();
+          if (month < 10)
+              month = '0' + month.toString();
+          if (day < 10)
+              day = '0' + day.toString();
+          
+          var maxDate = year + '-' + month + '-' + day;
+          $('#txtPurDate').attr('max', maxDate);
       }); 
   </script>
     <script type="text/javascript">
@@ -175,7 +201,7 @@
             });
         }
         function checkmodel(val) {
-            debugger;
+            
             var model;
             if (val === "0") {
                 document.getElementById("txtModel").style.display = 'block';                
@@ -202,7 +228,7 @@
     </style>
 </head>
 <body>
-	<div data-role="page" data-theme="a">
+<div data-role="page" data-theme="a">
 		<div data-role="header" data-position="fixed" >
 			<h1>Service Management</h1>
             <a href="jobsheet.html" data-transition="slide" data-theme="b" data-inline="true" data-icon="home" data-iconpos="notext" data-direction="reverse" rel="external">Home</a>
@@ -218,12 +244,12 @@
 			    <li><a href="Order_Details.html" rel="external">Order details</a></li>
                 <li><a href="Service.htm" rel="external">Service</a></li>								
 				<li><a href="Company.html" rel="external">Manufacturer</a></li>
-<li><a href="Invoice.html" rel="external">Invoice</a></li>
+                <li><a href="Invoice.html" rel="external">Invoice</a></li>
 			</ul>
 		</div>
 		</div>
 		<div data-role="content"  data-theme="a">
-			<form id="jobsheet" method="POST" action="">
+			<form id="jobsheet" method="POST" action="jobsheet.html">
   <ul data-role="listview" data-inset="true">
       <li data-role="fieldcontain">
     <label for="lblJobID">Job Id</label>
@@ -262,7 +288,7 @@
       </li>
       <li data-role="fieldcontain">
 	         <label for="date">Purchase Date</label>
-	         <input type="date" name="date" id="txtPurDate"  required/>			
+	         <input type="date" name="date" id="txtPurDate" class="required"/>			
             </li>
       <li data-role="fieldcontain">
     <label for="lblBrand">Brand</label>
@@ -283,7 +309,8 @@
                 <li data-role="fieldcontain">
     <label for="lblwarranty">Warranty</label>
                     <select id="ddpWarranty"  required>
-                        <option value="" selected>select</option>                                   
+                        <option value="" selected>select</option>                           
+        
                     </select>
 </li>
       <li data-role="fieldcontain">
@@ -295,14 +322,14 @@
           <textarea rows="5" style="resize:none" id="txtRemarks" name="txtRemarks" required></textarea>
       </li>
              <li data-role="fieldcontain">
-    <label for="lblSE">Service Engineer</label>
+    <label for="lblSE">Service Engg</label>
                  <select id="ddpServiceEngg"  required>
                      <option value="" selected>select</option>                                   
                  </select>                               
-  </li>  
+    </li>
       <li class="ui-body ui-body-b">
 				<fieldset class="ui-grid-a">
-					 <div class="ui-block-a"><input type="submit" name="Clear" id="clear" value="Clear" data-icon="alert" /></div>                  
+					 <div class="ui-block-a"><input type="button" name="Clear" id="clear" value="Clear" data-icon="alert" /></div>                  
                      <div class="ui-block-b"><input aria-required="true" class="required" data-theme=a type="submit" data-icon="check" name="submit" id="submit" value="Submit"></div>
 			    </fieldset>
 			</li>                

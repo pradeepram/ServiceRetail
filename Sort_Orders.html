@@ -12,9 +12,8 @@
     <script type="text/javascript" src="Script/jquery.dataTables.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            $("#DueByWeek td").remove();
-            $("#DueByWeek tr").remove();
-            $.ajax({            
+
+            $.ajax({
                 type: "POST",
                 contentType: "application/json; charset:utf-8",
                 url: localStorage.getItem('WcfURL') + "/GetOrderDetailsByWeek",
@@ -22,33 +21,46 @@
                 dataType: "json",
                 async: true,
                 cache: false,
-                success: function (response) {                    
+                success: function (response) {
+
                     var data = jQuery.parseJSON(response.d.toString());
                     var tr;
-                    tr = $("<tr></tr>");
-                    tr.append("<th>Job_ID</th><th>Cust_Name</th><th>DueDate</th><th>Status</th>"); // bind table header row                   
+                    tr = $("<thead><tr></tr></thead>");
+                    tr.append("<th>Job_ID</th><th>Cust_Name</th><th>DueDate</th><th>Status</th>"); // bind table header row
+
                     $("#DueByWeek").append(tr);
                     if (data.NewDataSet.Table.length == undefined) {
-                        tr = $("<tr></tr>");
+                        tr = $("<tbody><tr></tr></body>");
+
                         tr.append("<td><a href='#popupDialog1' data-rel='popup' onclick='popup(" + data.NewDataSet.Table.Job_ID + ")'>" + data.NewDataSet.Table.Job_ID + "</a></td><td>" +
-                                    data.NewDataSet.Table.FirstName + "</td><td>" +
-                                    data.NewDataSet.Table.DueDate + "</td><td>" +
-                                    data.NewDataSet.Table.Status + "</td><td>");
-                        $("#DueByWeek").append(tr);                        
+                            data.NewDataSet.Table.FirstName + "</td><td>" +
+                            data.NewDataSet.Table.DueDate + "</td><td>" +
+                            data.NewDataSet.Table.Status + "</td><td>");
+
+                        $("#DueByWeek").append(tr);
+
                     } else {
-                        for (var i = 0; i < data.NewDataSet.Table.length; i++) {                            
-                            tr = $("<tr></tr>");
+                        for (var i = 0; i < data.NewDataSet.Table.length; i++) {
+
+                            tr = $("<tbody><tr></tr></body>");
+
                             tr.append("<td><a href='#popupDialog1' data-rel='popup' onclick='popup(" + data.NewDataSet.Table[i].Job_ID + ")'>" + data.NewDataSet.Table[i].Job_ID + "</a></td><td>" +
-                                        data.NewDataSet.Table[i].FirstName + "</td><td>" +
-                                        data.NewDataSet.Table[i].DueDate + "</td><td>" +
-                                        data.NewDataSet.Table[i].Status + "</td><td>");
-                            $("#DueByWeek").append(tr);                            
+                                data.NewDataSet.Table[i].FirstName + "</td><td>" +
+                                data.NewDataSet.Table[i].DueDate + "</td><td>" +
+                                data.NewDataSet.Table[i].Status + "</td><td>");
+
+                            $("#DueByWeek").append(tr);
+
                         }
                     }
+                    $('#DueByWeek').dataTable();
                 },
-                error: function (response) {                    
+                error: function (response) {
+
+                    alert(response.d.toString());
                 }
             });
+
             $.ajax({
                 type: "POST",
                 contentType: "application/json; charset:utf-8",
@@ -57,34 +69,48 @@
                 dataType: "json",
                 async: true,
                 cache: false,
-                success: function (response) {                    
+                success: function (response) {
+
                     var data = jQuery.parseJSON(response.d.toString());
                     var tr;
-                    tr = $("<tr></tr>");
-                    tr.append("<th>Job_ID</th><th>Cust_Name</th><th>DueDate</th><th>Status</th>"); // bind table header row                    
-                    $("#DueByToday").append(tr);
+
                     if (data.NewDataSet.Table.length == undefined) {
-                        tr = $("<tr></tr>");
+                        tr = $("<thead><tr></tr></thead>");
+                        tr.append("<th>Job_ID</th><th>Cust_Name</th><th>DueDate</th><th>Status</th>"); // bind table header row                    
+                        $("#DueByToday").append(tr);
+                        tr = $("<tbody><tr></tr></body>");
+
                         tr.append("<td><a href='#' data-rel='popup' onclick='popup(" + data.NewDataSet.Table.Job_ID + ")'>" + data.NewDataSet.Table.Job_ID + "</a></td><td>" +
-                                    data.NewDataSet.Table.FirstName + "</td><td>" +
-                                    data.NewDataSet.Table.DueDate + "</td><td>" +
-                                    data.NewDataSet.Table.Status + "</td><td>");
-                        $("#DueByToday").append(tr);                        
+                            data.NewDataSet.Table.FirstName + "</td><td>" +
+                            data.NewDataSet.Table.DueDate + "</td><td>" +
+                            data.NewDataSet.Table.Status + "</td><td>");
+
+                        $("#DueByToday").append(tr);
+
                     } else {
-                        for (var i = 0; i < data.NewDataSet.Table.length; i++) {                            
-                            tr = $("<tr></tr>");
+                        for (var i = 0; i < data.NewDataSet.Table.length; i++) {
+                            tr = $("<thead><tr></tr></thead>");
+                            tr.append("<th>Job_ID</th><th>Cust_Name</th><th>DueDate</th><th>Status</th>"); // bind table header row                    
+                            $("#DueByToday").append(tr);
+                            tr = $("<tbody><tr></tr></body>");
+
                             tr.append("<td><a href='#' data-rel='popup' onclick='popup(" + data.NewDataSet.Table[i].Job_ID + ")'>" + data.NewDataSet.Table[i].Job_ID + "</a></td><td>" +
-                                        data.NewDataSet.Table[i].FirstName + "</td><td>" +
-                                        data.NewDataSet.Table[i].DueDate + "</td><td>" +
-                                        data.NewDataSet.Table[i].Status + "</td><td>");
-                            $("#DueByToday").append(tr);                            
+                                data.NewDataSet.Table[i].FirstName + "</td><td>" +
+                                data.NewDataSet.Table[i].DueDate + "</td><td>" +
+                                data.NewDataSet.Table[i].Status + "</td><td>");
+
+                            $("#DueByToday").append(tr);
+
                         }
                     }
+                    $('#DueByToday').dataTable();
                 },
-                error: function (response) {                    
+                error: function (response) {
+
+                    alert(response.d.toString());
                 }
-            });                        
-        });
+            });
+        }); 
         function popup(e) {
             debugger;
             var url = "JobDetails.htm";
@@ -94,7 +120,7 @@
     </script>
 </head>
 <body >
-	<div data-role="page" data-theme="a">
+<div data-role="page" data-theme="a">
 		<div data-role="header" data-position="fixed">
 			<h1>Service Management</h1>                  
            <a href="jobsheet.html" data-rel="popup" data-transition="slide" data-position-to="window" data-theme="b" data-inline="true" data-icon="home" data-iconpos="notext" data-direction="reverse" rel="external">Home</a>
@@ -110,7 +136,7 @@
 				<li><a href="Order_Details.html"  class="ui-btn-active">Order Details</a></li>
                 <li><a href="Service.htm" rel="external">Service</a></li>								
 				<li><a href="Company.html" rel="external">Company</a></li>
-<li><a href="Invoice.html" rel="external">Invoice</a></li>
+                <li><a href="Invoice.html" rel="external">Invoice</a></li>
 			</ul>
 		</div>      
             <div data-role="navbar" data-grid="b">
