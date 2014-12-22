@@ -6,9 +6,8 @@
 	<link rel="stylesheet" href="themes/JobSheet1.min.css" />
 	<link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
     <link rel="stylesheet" href="Script/jquery.mobile.structure-1.4.5.min.css" />
-        <script src="Script/jquery-1.11.2.js" type="text/javascript"></script>
-        <script src="Script/jquery.mobile-1.4.5.min.js" type="text/javascript"></script>  
-    <script type="text/javascript"   src="Script/jquery-2.1.1.js"></script>
+	<script src="Script/jquery-1.11.2.js" type="text/javascript"></script>
+    <script src="Script/jquery.mobile-1.4.5.min.js" type="text/javascript"></script>      
     <link rel="stylesheet" href="Script/jquery.dataTables.min.css"/>
     <script type="text/javascript" src="Script/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>  		
@@ -25,65 +24,75 @@
 
                 dataType: "json",
 
-                success: function (data) {
-                    $.each(data.d, function (key, value) {
-                        $("#txtBrand").val(value.brand);
-                        $("#txtModel").val(value.model);
-                        $("#txtWarranty").val(value.warranty);
+                success: function (data) {                        
+                    $.each(data.d, function (key, value) {                            
+                        $("#txtBrand").val(value.brand);                            
+                        $("#txtModel").val(value.model);                            
+                        $("#txtWarranty").val(value.warranty);                            
                         $("#txtProblem").val(value.problem);
                         $("#txtComplaints").val(value.complaint);
                         $("#txtSer").val(value.servicecharge);
-                        var dtToday1 = value.duedate;
-                        
-                        var aDate = new Date(Date.parse(value.duedate));
-                        alert(aDate);
-                        var cdDt = new Date(Date.parse(dtToday1, "dd-mm-yyyy"));
-                        alert(cdDt);
-                        var dtToday = new dateTime.getDate(dtToday1);
-                        var month = dtToday.getMonth() + 1;
-                        var day = dtToday.getDate();
-                        var year = dtToday.getFullYear();
-                        var maxDate = year + '-' + month + '-' + day;
-                        alert(maxDate);
-                        
-                        $("#date").val(maxDate);
+//                        var dtToday = value.duedate;
+//                        
+////                        var aDate = new Date(Date.parse(value.duedate));                        
+////                        var cdDt = new Date(Date.parse(dtToday1,"dd-mm-yyyy"));                        
+////                        var dtToday = new dateTime.getDate(dtToday1);
+//                        var month = dtToday.getMonth() + 1;
+//                        var day = dtToday.getDate();
+//                        var year = dtToday.getFullYear();
+//                        var maxDate = year + '-' + month + '-' + day;                                                
+//                        $("#date").val(maxDate);
                         
                     });
-                },
-                error: function (data) {                                        
+                },                        
+                error: function (data) {
+                    
+                    
                 }
-            });
-
-            $("#submit").click(function (event) {
+            });            
+            $("#submit").click(function() {
+            $.validator.addMethod("maxDate", function(value, element) {
+	var curDate = new Date();
+                
+    var inputDate = new Date(value);
+    if (inputDate > curDate)
+		return true;
+	return false;
+}, "Invalid Date!");
                 $("#servicesheet").validate({
-                    errorPlacement: function (error, element) {
-                        error.appendTo("label[for=" + $(element).attr('id') + "]");
+
+                    rules: {
+                        textComplaints: {
+                            required: true
+                        },
+                        txtSer: {
+                            required: true
+                        },
+                        date: {
+                            required: true,
+                            date: true,
+                            maxDate: true
+                        },
+                        tblChk: {
+                            required: true,
+                            minlength: 1
+                        },
                     },
-                    errorElement: "em"
-
-                });
-
-                if ($("#servicesheet").valid()) {
-                    //                    alert($("input[type='checkbox']:checked").length);
-                    if (($("input[type='checkbox']:checked").length) == "0") {
-                        
-                        $('#date').min();
-                        alert("Check Parts");
-                    } else {
-                        
-                        var url = "Service.htm";
+                    submitHandler: function(form) {
+                                            var url = "Service.htm";
                         var selectedLanguage = new Array();
-                        $('input[id="tblChk"]:checked').each(function () {
+                        $('input[id="tblChk"]:checked').each(function() {
                             selectedLanguage.push(this.value);
                         });
+                        
                         $.ajax({
                             type: "POST",
                             contentType: "application/json; charset=utf-8",
                             url: localStorage.getItem('WcfURL') + "/ServiceCharge",
                             data: "{'job_id':'" + parseInt($('#txtSearch').val(), 10) + "', 'complaints':'" + $('#txtComplaints').val() + "','spare_parts':'" + JSON.stringify(selectedLanguage) + "','service_charge': '" + $('#txtSer').val() + "','duedate': '" + $('#date').val() + "','createdby': '" + localStorage.getItem('customerid') + "'}",
                             dataType: "json",
-                            success: function (data) {
-                                $.each(data.d, function (key, value) {
+                            success: function(data) {
+                                $.each(data.d, function(key, value) {
                                     if (value.result == "1") {
                                         alert("success");
                                         $(location).attr('href', url);
@@ -92,25 +101,32 @@
                                     }
                                 });
                             },
-                            error: function (data) {                                                 
+                            error: function(data) {
+                                
+                                
                             }
                         });
                     }
-                }
+                });
             });
-            $("#pushtocompany").click(function (event) {
-                var url = "Service.htm";
-                if ($('#txtComplaints').val() == "") {
-                    $('#txtComplaints').css('border-color', 'red');
-                    alert("Enter the Complaints");
-                } else {
-                    $.ajax({
+            $("#pushtocompany").click(function() {
+                
+                $("#servicesheet").validate({                    
+                    rules: {
+                        textComplaints: {
+                            required: true
+                        },                        
+                    },
+                    submitHandler: function(form) {
+                        var url = "Service.htm";
+                        
+                        $.ajax({
                         type: "POST",
                         contentType: "application/json; charset=utf-8",
                         url: localStorage.getItem('WcfURL') + "/PushToCompany",
                         data: "{'job_id':'" + parseInt($('#txtSearch').val(), 10) + "', 'complaints':'" + $('#txtComplaints').val() + "','createdby': '" + localStorage.getItem('customerid') + "'}",
                         dataType: "json",
-                        success: function (data) {
+                        success: function(data) {
                             $.each(data.d, function (key, value) {
                                 if (value.result == "1") {
                                     alert("success");
@@ -120,15 +136,47 @@
                                 }
                             });
                         },
-                        error: function (data) {                                                        
+                        error: function(data) {
+                            
+                            
                         }
                     });
-                }
+                    }
+                });
             });
+//            $("#pushtocompany").click(function (event) {
+//                var url = "Service.htm";
+//                if ($('#txtComplaints').val() == "") {
+//                    $('#txtComplaints').css('border-color', 'red');                   
+//                    alert("Enter the Complaints");
+//                } else {
+//                    $.ajax({
+//                        type: "POST",
+//                        contentType: "application/json; charset=utf-8",
+//                        url: "MyWebService.asmx/PushToCompany",
+//                        data: "{'job_id':'" + parseInt($('#txtSearch').val(), 10) + "', 'complaints':'" + $('#txtComplaints').val() + "','createdby': '" + localStorage.getItem('customerid') + "'}",
+//                        dataType: "json",
+//                        success: function(data) {
+//                            $.each(data.d, function (key, value) {
+//                                if (value.result == "1") {
+//                                    alert("success");
+//                                    $(location).attr('href', url);
+//                                } else {
+//                                    alert("Invalid Data");
+//                                }
+//                            });
+//                        },
+//                        error: function(data) {
+//                            
+//                            alert(data);
+//                        }
+//                    });
+//                }                
+//            });
             $.ajax({
                 type: "POST",
                 contentType: "application/json; charset:utf-8",
-                url: localStorage.getItem('WcfURL') + "/PartsID",
+               url: localStorage.getItem('WcfURL') + "/PartsID",
                 data: "{'job_id':'" + parseInt($('#txtSearch').val(), 10) + "'}",
                 dataType: "json",
                 async: true,
@@ -138,43 +186,45 @@
                     
                     var data = jQuery.parseJSON(response.d.toString());
                     var tr;
-                    tr = $("<thead><tr></tr></thead>");
+                    tr = $("<thead><tr></tr></thead>");                    
                     tr.append("<th></th><th>PartsName</th>"); // bind table header row
                     
                     $("#PartsTable").append(tr);
                     if (data.NewDataSet.Table.length == undefined) {
                         tr = $("<tbody><tr></tr></tbody>");
-                        tr.append("<td><input type='checkbox' id='tblChk' onclick='popup(" + data.NewDataSet.Table.PartsID + ")'>" + "</td><td>" + data.NewDataSet.Table.PartsName + "</td><td>");
+                        tr.append("<td><input type='checkbox' name='tblChk' id='tblChk' onclick='popup(" + data.NewDataSet.Table.PartsID + ")'>" + "</td><td>" + data.NewDataSet.Table.PartsName + "</td><td>");                                
                         $("#PartsTable").append(tr);
                     }
                     else {
                         for (var i = 0; i < data.NewDataSet.Table.length; i++) {
                             tr = $("<tbody><tr></tr></tbody>");
-                            tr.append("<td><input type='checkbox' id='tblChk' value=" + data.NewDataSet.Table[i].PartsID + " " + data.NewDataSet.Table[i].selected + ">" + "</td><td>" + data.NewDataSet.Table[i].PartsName + "</td><td>");
-
-                            $("#PartsTable").append(tr);
+                            tr.append("<td><input type='checkbox' name='tblChk' id='tblChk' value=" + data.NewDataSet.Table[i].PartsID +" "+   data.NewDataSet.Table[i].selected+">" + "</td><td>" + data.NewDataSet.Table[i].PartsName + "</td><td>");
+                            
+                            $("#PartsTable").append(tr);                            
                         }
                     }
                     $('#PartsTable').dataTable();
                 },
-                error: function (response) {                                        
+                error: function (response) {
+                    
+                    
                 }
             });
         });
-        $(function () {
-            var dtToday = new Date();
+//        $(function () {
+//            var dtToday = new Date();
 
-            var month = dtToday.getMonth() + 1;
-            var day = dtToday.getDate();
-            var year = dtToday.getFullYear();
-            if (month < 10)
-                month = '0' + month.toString();
-            if (day < 10)
-                day = '0' + day.toString();
-            
-            var maxDate = year + '-' + month + '-' + day;
-            $('#date').attr('min', maxDate);
-        }); 
+//            var month = dtToday.getMonth() + 1;
+//            var day = dtToday.getDate();
+//            var year = dtToday.getFullYear();
+//            if (month < 10)
+//                month = '0' + month.toString();
+//            if (day < 10)
+//                day = '0' + day.toString();
+//            
+//            var maxDate = year + '-' + month + '-' + day;            
+//            $('#date').attr('min', maxDate);
+//        });  
     </script>    
     <style>
  .errorClass {
@@ -199,13 +249,9 @@
 <body>
 	<div data-role="page" data-theme="a">
 		<div data-role="header" data-position="fixed" >
-			<h1>Service Dept</h1>
-            <a href="#popupPanel" data-rel="popup" data-transition="slide" data-position-to="window" data-theme="b" data-inline="true" data-icon="home" data-iconpos="notext" data-direction="reverse">Home</a>
-            <div data-role="popup" id="popupPanel" data-corners="false" data-theme="none" data-shadow="false" data-tolerance="0,0">
-				<button data-theme="a" data-icon="back" data-mini="true">Back</button>
-				<button data-theme="a" data-icon="grid" data-mini="true">Menu</button>
-				<button data-theme="a" data-icon="search" data-mini="true">Search</button>
-			</div>
+		    <h1>Service Dept</h1>
+            <a href="jobsheet.html" data-theme="a" data-inline="true" data-icon="home" data-iconpos="notext" data-direction="reverse" rel="external">Home</a>
+           <a href="index.html"  data-theme="a" data-inline="true" data-icon="power" data-iconpos="notext" data-direction="reverse" rel="external">Logout</a>           
             <div data-role="navbar" data-grid="d">
 			<ul>
 				<li><a href="jobsheet.html" rel="external">Job Sheet</a></li>
@@ -241,10 +287,10 @@
 			</li>
             <li data-role="fieldcontain">
 	        	<label for="textarea">Complaints:</label>
-			<textarea cols="40" rows="8" name="textarea" id="txtComplaints" required></textarea>
+			<textarea cols="40" rows="8" name="textComplaints" id="txtComplaints" required></textarea>
 			</li>									
             <li data-role="fieldcontain">                        
-        <label for="day">Spare Parts</label>
+        <!--<label for="day">Spare Parts</label>-->
                 <!--<select id="ddpParts" name="ddpParts">         
                     </select>                       -->
                 <!--<table data-role="table" id="PartsTable" class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-btn-theme="b" 
@@ -254,24 +300,24 @@
             </li>									
             <li data-role="fieldcontain">
 	        	<label for="name">Service Charge</label>
-	        	<input type="number" id="txtSer" name="txtSer" required/>
+	        	<input type="number" id="txtSer" name="txtSer" />
 			</li>
             <li data-role="fieldcontain">
 	         <label for="duedate">Date</label>
-	         <input type="date" name="date" id="date" required/>			
+	         <input type="text" name="date" id="date" />			
             </li>
 			<li class="ui-body ui-body-b">
 				<fieldset class="ui-grid-a">
 					<!-- <div class="ui-block-a"><input aria-required="true" data-theme=a type="reset" name="Clear" id="clear" value="Clear" data-icon="alert" /></div>                  -->
 				    <div class="ui-block-a"><input aria-required="true" class="required" data-theme=a type="submit" data-icon="check" name="submit" id="submit" value="Submit"></div>
-                     <div class="ui-block-b"><input aria-required="true" class="required" data-theme=a type="button" name="Push To Company" data-icon="navigation" id="pushtocompany" value="PushToCompany"></div>
+                     <div class="ui-block-b"><input aria-required="true" class="required" data-theme=a type="submit" name="Push To Company" data-icon="navigation" id="pushtocompany" value="PushToCompany"></div>
 			    </fieldset>
 			</li>			
 		</ul>		
 		</form>				
             </div>
         <div data-role="footer" data-position="fixed">
-        <h4>Powered By CAS</h4>
+        <h4>Inventrace Powered By CAS</h4>
     </div> 	
         </div>
 </body>

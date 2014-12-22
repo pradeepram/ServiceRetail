@@ -11,12 +11,12 @@
         <script type="text/javascript" src="Script/jquery.validate.min.js"></script>
         
         <script type = "text/javascript">
-            $(document).ready(function() {
+            $(document).ready(function () {
                 wcf = "http://serviceretail.createalytics.com/MyWebService.asmx";
                 localStorage.setItem('WcfURL', wcf);
-                $('#submit').click(function() {
+                $('#submit').click(function () {
                     $("#Login").validate({
-                        errorPlacement: function(error, element) {
+                        errorPlacement: function (error, element) {
                             error.appendTo("label[for=" + $(element).attr('id') + "]");
                         },
                         errorElement: "em"
@@ -30,9 +30,9 @@
                             url: wcf + "/UserLogin",
                             data: "{'username': '" + $('#txtusername').val() + "','pwd':'" + $('#txtPwd').val() + "'}",
                             dataType: "json",
-                            success: function(data) {
+                            success: function (data) {
 
-                                $.each(data.d, function(key, value) {
+                                $.each(data.d, function (key, value) {
                                     if (value.result == "1") {
                                         localStorage.setItem('customerid', value.customerid);
                                         $(location).attr('href', url);
@@ -41,16 +41,16 @@
                                     }
                                 });
                             },
-                            error: function(data) {
+                            error: function (data) {
                             }
 
                         });
                     }
                 });
-//                $('#btnClear').click(function () {
-//                    var url = "index.html";
-//                    $(location).attr('href', url);
-//                });            
+                //                $('#btnClear').click(function () {
+                //                    var url = "index.html";
+                //                    $(location).attr('href', url);
+                //                });            
             });
         </script>
         <script type="text/javascript">
@@ -58,12 +58,12 @@
             function validate() {
                 var username = document.getElementById("username").value;
                 var password = document.getElementById("password").value;
-                if (username == "admin" && password == "admin") {               
+                if (username == "admin" && password == "admin") {
                     window.location = "jobsheet.html"; // Redirecting to other page.
                     return false;
                 }
                 else {
-                    attempt--;// Decrementing by one.
+                    attempt--; // Decrementing by one.
                     alert("You have left " + attempt + " attempt to retry;");
                     // Disabling fields after 3 attempts.
                     if (attempt == 0) {

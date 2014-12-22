@@ -50,7 +50,7 @@
               },
               error: function(Result) {
                   
-                  alert("Error");
+                  
               }
           });
 
@@ -69,7 +69,7 @@
               },
               error: function(Result) {
                   
-                  alert("Error");
+                  
               }
           });
           $.ajax({
@@ -105,7 +105,7 @@
               },
               error: function(Result) {
                   
-                  alert("Error");
+                  
               }
           });          
           $.validator.addMethod("maxDate", function(value, element) {
@@ -175,7 +175,7 @@
                       },
                   },
                   submitHandler: function(form) {
-                  debugger;      
+                        
                       $.ajax({
                           type: "POST",
                           contentType: "application/json; charset=utf-8",
@@ -197,7 +197,7 @@
                           },
                           error: function(data) {
                               
-                              alert(data);
+                              
                           }
 
                       });
@@ -206,7 +206,7 @@
               });
 
 //          function ajaxSubmit() {
-//              debugger;                                                      
+//                                                                    
 //                  var state = $('#ddpState option:selected').val();                  
 //                  var brand = $('#ddpBrand option:selected').val();
 //                  var model = $('#ddpModel option:selected').val();
@@ -268,7 +268,7 @@ $("#clear").click(function(event) {
 //              month = '0' + month.toString();
 //          if (day < 10)
 //              day = '0' + day.toString();
-//          debugger;
+//          
 //          var maxDate = day+'-'+month+'-'+year;
 //          $('#txtPurDate').attr('max', maxDate);
 //      });  
@@ -276,17 +276,21 @@ $("#clear").click(function(event) {
     <script type="text/javascript">
         function checkbrand(val) {
             if (val === "0") {
-                debugger;
+                
                 document.getElementById('txtBrand').style.display = 'block';
                 document.getElementById('txtModel').style.display = 'block';
             } else {
-                debugger;
+                
                 document.getElementById('txtBrand').style.display = 'none';
                 document.getElementById('txtModel').style.display = 'none';                                                      
             }
             $('#ddpModel').empty();
-            $('#ddpModel').html("");            
-            $('#ddpModel option:selected').removeAttr('selected');            
+            $('#ddpModel').html("");
+            $('#ddpModel option:selected').removeAttr('selected');
+//            $('span').empty('');
+//            $('span').html('Select Model');
+            //           $('#ddpModel').selectmenu('refresh', true);
+
             $.ajax({
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
@@ -294,16 +298,15 @@ $("#clear").click(function(event) {
                 data: "{'BrandID': '" + $('#ddpBrand option:selected').val() + "'}",
                 dataType: "json",
                 success: function (data) {
-                    
-                    $.each(data.d, function (key, value) {                        
+
+                    $.each(data.d, function (key, value) {                                     
                         $("#ddpModel").append($("<option value=''>select</option>").val(value.ModelID).html(value.ModelName));
                         $("#ddpModel option[value='']").remove();
                         $("#ddpModel")[0].selectedIndex = -1;
+//                        $('#ddpModel').selectmenu('refresh', true);
                     });
                 },
-                error: function (Result) {
-                    
-                    alert("Error");
+                error: function (Result) {                                        
                 }
             });
         }
@@ -312,10 +315,10 @@ $("#clear").click(function(event) {
         
             var model;
             if (val === "0") {
-                debugger;
+                
                 document.getElementById('txtModel').style.display = 'block';
             } else{
-                debugger;
+                
             document.getElementById('txtModel').style.display = 'none';
         }
         }
@@ -402,7 +405,7 @@ $("#clear").click(function(event) {
 			             <td><label for="lblPincode">Pincode</label></td>
 			            <td><input style="resize:none" type="number" name="pincode" id="txtPincode" required></td>			        			        
 			            <td><label for="lblPurchaseDate">Purchase Date</label></td>
-			                <td><input style="resize:none" type="text" name="date" id="txtPurDate" required/>			</td>
+			                <td><input style="resize:none" type="text" name="date" id="txtPurDate" placeholder="MM/DD/YYYY" required/>			</td>
                             </tr>
 			            </table>
 			        </li>

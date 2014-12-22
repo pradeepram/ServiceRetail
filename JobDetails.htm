@@ -6,19 +6,21 @@
 	<link rel="stylesheet" href="themes/JobSheet1.min.css" />
 	<link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
     <link rel="stylesheet" href="Script/jquery.mobile.structure-1.4.5.min.css" />
-        <script src="Script/jquery-1.11.2.js" type="text/javascript"></script>
-        <script src="Script/jquery.mobile-1.4.5.min.js" type="text/javascript"></script>      
+	<script src="Script/jquery-1.11.2.js" type="text/javascript"></script>
+    <script src="Script/jquery.mobile-1.4.5.min.js" type="text/javascript"></script>   
     <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>  		
     <script type="text/javascript">
         $(document).ready(function () {
             //alert(localStorage.getItem('jobid'));
             $('#txtJobId').val(localStorage.getItem('jobid'));
-            urlpage = "Order_Details.html";                    
-            //$('#txtSearch').change(function () {            
+            
+            urlpage = "Order_Details.html";
+            //$('#txtSearch').change(function () {
+            
             $.ajax({
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
-                url: localStorage.getItem('WcfURL') + "/OrderDetailList",
+                url: "MyWebService.asmx/OrderDetailList",
                 data: "{'jobid': '" + localStorage.getItem('jobid') + "'}",
 
                 dataType: "json",
@@ -38,24 +40,29 @@
                         
                         $("#txtProblem").val(value.problem);
                         $("#txtComplaints").val(value.complaint);
+                             
                         $("#txtParts").val(value.parts);
                         $("#txtServiceCharge").val(value.servicecharge);
                         //$("input[type=radio]").attr('disabled', true);
                         $("#input[name=radio-choice-2]:checked").val(value.callconfirm);
-                        if (value.callconfirm == "True") {
-                            $("input[type=radio][value=1]").attr("checked", true);
-                            //                            $("input[type=radio]").prop('checked', true);
-                            //                            $('input:radio[name=radio-choice-2]')[0].checked = true;
-                            //                            $('input:radio[name=radio-choice-2]').val("0");
-                                                     $("input[type=radio]").prop('disabled', true);
+                        if (value.status == "2") {
+                            
+                            $("input[type=radio][value=0]").attr("checked", true);
+//                            $("input[type=radio]").prop('checked', true);
+//                            $('input:radio[name=radio-choice-2]')[0].checked = true;
+//                            $('input:radio[name=radio-choice-2]').val("0");
+                            $("input[type=radio]").prop('disabled', false);
                         } else {
                             
-                            $("input[type=radio]").attr('disabled', false);
+                            $("input[type=radio][value=0]").attr("checked", true);
+                            $("input[type=radio]").attr('disabled', true);
                         }
                         $("#txtCost").val(value.cost);
                     });
                 },
-                error: function (data) {                                        
+                error: function (data) {
+                    
+                    alert(data);
                 }
 
             });
@@ -73,9 +80,11 @@
                     var servicecharge = $('#txtServiceCharge').val();
                     var callconfirm = $('input[name=radio-choice-2]:checked').val();
                     if (callconfirm == undefined) {
+                        
                         callconfirm = 0;
                         alert("check callconfirm");
-                    }                   
+                    }
+                    
                     else if (callconfirm == "" || servicecharge == "") {
                         $('input[name=radio-choice-2]:checked').css('border-color', 'red');
                         $('#txtServiceCharge').css('border-color', 'red');
@@ -85,35 +94,41 @@
                         $.ajax({
                             type: "POST",
                             contentType: "application/json; charset=utf-8",
-                            url: localStorage.getItem('WcfURL') + "/UpdateStatus",
-                            data: "{'callconfirm':'" + $('input[name=radio-choice-2]:checked').val() + "', 'job_id':'" + parseInt($('#txtJobId').val(), 10) + "','servicecharge':'" + $('#txtServiceCharge').val() + "','createdby': '" + localStorage.getItem('customerid') + "'}",
+                            url: "MyWebService.asmx/UpdateStatus",
+                            data: "{'callconfirm':'" + callconfirm + "', 'job_id':'" + parseInt($('#txtJobId').val(), 10) + "','servicecharge':'" + $('#txtServiceCharge').val() + "','createdby': '" + localStorage.getItem('customerid') + "'}",
                             dataType: "json",
                             success: function(data) {
                                 $.each(data.d, function (key, value) {
-                                    if (value.result == "1") {                                        
-                                        alert("success");
+                                    if (value.result == "1") {
+                                        
+                                        alert("success");                                        
                                         $(location).attr('href', urlpage);
                                     } else {
-                                        alert("Invalid Data");
+                                        alert("Invalid Data");                                        
                                     }
                                 });
                             },
-                            error: function(data) {                                                                
+                            error: function(data) {
+                                
+                                alert(data);
                             }
                         });
                     }
                 }
             });
-            $("#cancel").click(function (event) {                
+
+            $("#cancel").click(function (event) {
+                
                 $.ajax({
                     type: "POST",
                     contentType: "application/json; charset=utf-8",
-                    url: localStorage.getItem('WcfURL') + "/CancelOrder",
+                    url: "MyWebService.asmx/CancelOrder",
                     data: "{'job_id':'" + parseInt($('#txtJobId').val(), 10) + "','createdby': '" + localStorage.getItem('customerid') + "'}",
                     dataType: "json",
                     success: function (data) {
                         $.each(data.d, function (key, value) {
-                            if (value.result == "1") {                                
+                            if (value.result == "1") {
+                                
                                 alert("success");
                                 $(location).attr('href', urlpage);
                             } else {
@@ -121,13 +136,16 @@
                             }
                         });
                     },
-                    error: function (data) {                                                
+                    error: function (data) {
+                        
+                        alert(data);
                     }
                 });
             });            
         });        
     </script>    
-    <style> 
+    <style>
+ 
         #popupPanel-popup {
             right: 0 !important;
             left: auto !important;
@@ -148,14 +166,15 @@
 	<div data-role="page" data-theme="a">
 		<div data-role="header" data-position="fixed" >
 			<h1>Service Dept</h1>
-            <a href="#popupPanel" data-rel="popup" data-transition="slide" data-position-to="window" data-theme="b" data-inline="true" data-icon="home" data-iconpos="notext" data-direction="reverse">Home</a>            
+             <a href="jobsheet.html" data-theme="a" data-inline="true" data-icon="home" data-iconpos="notext" data-direction="reverse" rel="external">Home</a>
+           <a href="index.html"  data-theme="a" data-inline="true" data-icon="power" data-iconpos="notext" data-direction="reverse" rel="external">Logout</a>
             <div data-role="navbar" data-grid="d">
 			<ul>
 				<li><a href="jobsheet.html" rel="external">Job Sheet</a></li>
-		            <li><a href="Order_Details.html" rel="external"  >Order Details</a></li>
-		            <li><a href="Service.htm" rel="external">Service</a></li>								
-		            <li><a href="Company.html" rel="external">Company</a></li>
-		            <li><a href="Invoice.html" rel="external">Invoice</a></li>
+				<li><a href="Order_Details.html" rel="external" >Order Details</a></li>
+                <li><a href="Service.htm" rel="external">Service</a></li>								
+				<li><a href="Company.html" rel="external">Company</a></li>
+                <li><a href="Invoice.html" rel="external">Invoice</a></li>
 			</ul>
 		</div>
 		</div>
@@ -201,11 +220,11 @@
                             	</li>	
                                 <li data-role="fieldcontain">
 	                            <label for="textarea">Service Charge</label>
-                                    <!--<textarea cols="40" rows="8" name="textarea" id="txtServiceCharge"  required></textarea>-->
-                                  <input type="number" name="txtServiceCharge" id="txtServiceCharge"  required/>	                        
+                                    <!--<textarea cols="40" rows="8" name="textarea" id="txtServiceCharge"  required></textarea>   -->                                 
+	                            <input type="number" name="txtServiceCharge" id="txtServiceCharge" value=""   required/>	                        
                             	</li>
 		      <li data-role="fieldcontain">
-	                            <fieldset data-role="controlgroup">
+	                            <fieldset data-role="controlgroup" data-type="horizontal">
 	                                <legend>Call Confirm:</legend>
 	                                <input type="radio" name="radio-choice-2" id="radio-choice-21" value="1" />
 	                                <label for="radio-choice-21">Yes</label>
@@ -215,16 +234,18 @@
                                     
                                     <input type="radio" name="radio-choice-2" id="radio-choice-23" value="2"/>
 	                                <label for="radio-choice-23">Didn't PickUp</label>         	
-
+                                    <!--<input type="radio" name="sex" value="0">Male<br>
+	                                <input type="radio" name="sex" value="1">Female-->                                     
 	                            </fieldset>
-	                        </li>	
-	                        <li data-role="fieldcontain">
+		      </li>	
+
+		      <li data-role="fieldcontain">
 	                            <label for="name">Estimated Cost:</label>
 	                            <input type="text" name="name" id="txtCost" disabled/>
 	                        </li>            
 	                        <li class="ui-body ui-body-b">
 	                            <fieldset class="ui-grid-a">
-	                                <div class="ui-block-a"><input aria-required="true" class="required" data-theme=a type="submit" data-icon="check" name="cancel" id="cancel" value="Cancel Order"></div>
+	                                <div class="ui-block-a"><input aria-required="true" class="required" data-theme=a type="reset" data-icon="check" name="cancel" id="cancel" value="Cancel Order"></div>
 	                                <div class="ui-block-b"><input aria-required="true" class="required" data-theme=a type="submit" data-icon="check" name="submit" id="submit" value="Update"></div>
 	                            </fieldset>
 	                        </li>			
@@ -232,7 +253,7 @@
 		</form>				
             </div>
         <div data-role="footer" data-position="fixed">
-        <h4>Powered By CAS</h4>
+        <h4>Inventrace Powered By CAS</h4>
     </div> 	
         </div>
 </body>
