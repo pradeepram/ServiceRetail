@@ -371,7 +371,7 @@ $("#clear").click(function(event) {
                      <table width="100%">
 			            <tr>
 			            <td style="width:10%"><label for="lblCustName">Name</label></td>
-			            <td><input style="resize:none" type="text" name="custname" id="txtCustName" required></td>			        			        
+			            <td style="width:30%"><input style="resize:none" type="text" name="custname" id="txtCustName" required></td>			        			        
 			           <td style="width: 13%"><label for="lblEmail">Email Id</label></td>
 			            <td><input style="resize:none" type="email" name="email" id="txtEmail"  required ></td>
 			            </tr>
@@ -388,9 +388,9 @@ $("#clear").click(function(event) {
 			        <li data-role="fieldcontain">
 			            <table width="100%">
 			                <tr>
-			                <td ><label for="lblCity" >City</label></td>
-			                <td ><input style="resize:none" type="text"  id="txtCity"  name="city" required ></td>			        			        			                
-			                <td ><select name="state" id="ddpState" >
+			                <td style="width: 10%"><label for="lblCity" >City</label></td>
+			                <td style="width: 50%" ><input style="resize:none" type="text"  id="txtCity"  name="city" required ></td>			        			        			                
+			                <td style="width: 40%"><select name="state" id="ddpState">
 			                <option value="" selected>Select State</option>                   
 			                </select></td>
                             </tr>
@@ -409,10 +409,10 @@ $("#clear").click(function(event) {
 			        <li data-role="fieldcontain">
 			            <table width="100%">
 			                <tr>
-			                    <td><select name="Brand" id="ddpBrand" onchange='checkbrand(this.value)'   required>
+			                    <td style="width: 50%"><select name="Brand" id="ddpBrand" onchange='checkbrand(this.value)'   required>
 			                            <option value="" selected>Select Brand</option>                                   
 			                        </select></td>
-			                    <td>   <select name="ddpModel" id="ddpModel" onchange='checkmodel(this.value)' required>
+			                    <td style="width: 50%"><select name="ddpModel" id="ddpModel" onchange='checkmodel(this.value)' required>
 			                               <option value="" selected>Select Model</option>                                   
 			                           </select>
 			                    </td>
@@ -434,10 +434,10 @@ $("#clear").click(function(event) {
 			        <li data-role="fieldcontain">			        
 			            <table width="100%">
 			                <tr>
-			                    <td><select name="warranty" id="ddpWarranty"  required>
+			                    <td style="width: 50%"><select name="warranty" id="ddpWarranty"  required>
 			                                <option value="" selected>Select Warranty</option>                                   
 			                            </select></td>                                        			        			            
-			                <td><select id="ddpServiceEngg"  name="serviceengg" required>
+			                <td style="width: 50%"><select id="ddpServiceEngg"  name="serviceengg" required>
 			                    <option value="" selected>Select Service</option>                                   
 			                </select>     </td>                          
                             </tr>
