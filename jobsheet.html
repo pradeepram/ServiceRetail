@@ -163,16 +163,16 @@
                       serviceengg : {
                   required:true                  
                       },
-                      txtbrand: {
+                      txtBrand: {
                           required:function(element) {
                               return $("#ddpBrand").val() == "0";
                           }
                       },
-                      txtmodel: {
+                      txtModel: {
                           required:function(element) {
                               return $("#ddpModel").val() == "0";
                           }
-                      }
+                      },
                   },
                   submitHandler: function(form) {
                   debugger;      
@@ -251,11 +251,12 @@
 //                      });
 //                  }
 //              }
-          });
-          $("#clear").click(function(event) {
+$("#clear").click(function(event) {
               
               location.reload(true);
           });
+          });
+          
 //      
 //      $(function () {
 //          var dtToday = new Date();
@@ -275,17 +276,17 @@
     <script type="text/javascript">
         function checkbrand(val) {
             if (val === "0") {
+                debugger;
                 document.getElementById('txtBrand').style.display = 'block';
                 document.getElementById('txtModel').style.display = 'block';
-
             } else {
+                debugger;
                 document.getElementById('txtBrand').style.display = 'none';
-                document.getElementById('txtModel').style.display = 'none';
-
+                document.getElementById('txtModel').style.display = 'none';                                                      
             }
             $('#ddpModel').empty();
-            $('#ddpModel').html("");
-            $('#ddpModel option:selected').removeAttr('selected');
+            $('#ddpModel').html("");            
+            $('#ddpModel option:selected').removeAttr('selected');            
             $.ajax({
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
@@ -293,27 +294,30 @@
                 data: "{'BrandID': '" + $('#ddpBrand option:selected').val() + "'}",
                 dataType: "json",
                 success: function (data) {
-
-                    $.each(data.d, function (key, value) {
+                    
+                    $.each(data.d, function (key, value) {                        
                         $("#ddpModel").append($("<option value=''>select</option>").val(value.ModelID).html(value.ModelName));
                         $("#ddpModel option[value='']").remove();
                         $("#ddpModel")[0].selectedIndex = -1;
                     });
                 },
                 error: function (Result) {
-
+                    
                     alert("Error");
                 }
             });
         }
-        function checkmodel(val) {
 
+        function checkmodel(val) {
+        
             var model;
             if (val === "0") {
-                document.getElementById("txtModel").style.display = 'block';
-            } else
-                document.getElementById('txtModel').style.display = 'none';
-
+                debugger;
+                document.getElementById('txtModel').style.display = 'block';
+            } else{
+                debugger;
+            document.getElementById('txtModel').style.display = 'none';
+        }
         }
         </script>
     <style>        
@@ -364,26 +368,29 @@
 			        </table>
                     </li>
 			        <li data-role="fieldcontain">
-                     <table>
+                     <table width="100%">
 			            <tr>
 			            <td style="width:10%"><label for="lblCustName">Name</label></td>
 			            <td><input style="resize:none" type="text" name="custname" id="txtCustName" required></td>			        			        
-			           <td style="width: 15%"><label for="lblEmail">Email Id</label></td>
+			           <td style="width: 13%"><label for="lblEmail">Email Id</label></td>
 			            <td><input style="resize:none" type="email" name="email" id="txtEmail"  required ></td>
 			            </tr>
                         </table>
 			        </li>
-			        <li data-role="fieldcontain">
-			            
-			            <label style="width: 13%" for="lblAddress1">Address</label>
-			            <input style="width: 100%;resize:none" type="text" name="txtAddress1" id="txtAddress1" value="" required >    
+			        <li data-role="fieldcontain" >
+			            <table width="100%">
+			                <tr>
+			                <td style="width: 10%"><label  for="lblAddress1">Address</label></td>
+			                <td><input style="width: 100%;resize:none" type="text" name="txtAddress1" id="txtAddress1" value="" required >    </td>
+                            </tr>
+			            </table>
 			        </li>
 			        <li data-role="fieldcontain">
 			            <table width="100%">
 			                <tr>
-			                <td><label for="lblCity" >City</label></td>
-			                <td><input style="resize:none" type="text"  id="txtCity"  name="city" required ></td>			        			        			                
-			                <td><select name="state" id="ddpState" >
+			                <td ><label for="lblCity" >City</label></td>
+			                <td ><input style="resize:none" type="text"  id="txtCity"  name="city" required ></td>			        			        			                
+			                <td ><select name="state" id="ddpState" >
 			                <option value="" selected>Select State</option>                   
 			                </select></td>
                             </tr>
@@ -411,8 +418,8 @@
 			                    </td>
 			                </tr>
                             <tr>			               
-			                <td><input type="text" id="txtBrand" name="txtbrand" style='display:none'/></td>			            			            
-			                <td><input type="text" id="txtModel" name="txtmodel" style='display:none'/></td>
+			                <td><input type="text" id="txtBrand" name="txtBrand" style='display:none'/></td>			            			            
+			                <td><input type="text" id="txtModel" name="txtModel" style='display:none'/></td>
                             </tr>
                         </table>			            
 			        </li>  			        
