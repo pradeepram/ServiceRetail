@@ -20,7 +20,7 @@
             $.ajax({
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
-                url: "MyWebService.asmx/OrderDetailList",
+                url: localStorage.getItem('WcfURL') + "/OrderDetailList",
                 data: "{'jobid': '" + localStorage.getItem('jobid') + "'}",
 
                 dataType: "json",
@@ -94,7 +94,7 @@
                         $.ajax({
                             type: "POST",
                             contentType: "application/json; charset=utf-8",
-                            url: "MyWebService.asmx/UpdateStatus",
+                            url: localStorage.getItem('WcfURL') + "/UpdateStatus",
                             data: "{'callconfirm':'" + callconfirm + "', 'job_id':'" + parseInt($('#txtJobId').val(), 10) + "','servicecharge':'" + $('#txtServiceCharge').val() + "','createdby': '" + localStorage.getItem('customerid') + "'}",
                             dataType: "json",
                             success: function(data) {
@@ -122,7 +122,7 @@
                 $.ajax({
                     type: "POST",
                     contentType: "application/json; charset=utf-8",
-                    url: "MyWebService.asmx/CancelOrder",
+                    url: localStorage.getItem('WcfURL') + "/CancelOrder",
                     data: "{'job_id':'" + parseInt($('#txtJobId').val(), 10) + "','createdby': '" + localStorage.getItem('customerid') + "'}",
                     dataType: "json",
                     success: function (data) {
