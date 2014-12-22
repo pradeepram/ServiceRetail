@@ -353,10 +353,10 @@
 			<form id="jobsheet" method="POST" action="">
 			    <ul data-role="listview" data-inset="true">
 			        <li data-role="fieldcontain">
-			        <table>
+			        <table width="100%">
 			            <tr>
-			                <td><label for="lblJobID">Job Id</label></td>
-			                <td><input id="txtJobId" type="text"   disabled> </td> 
+			                <td style="width: 10%"><label for="lblJobID">Job Id</label></td>
+			                <td style="width: 30%"><input id="txtJobId" type="text"   disabled> </td> 
       
 			                <td><label for="lblPhoneNo">Phone</label></td>
 			                <td><input required aria-required="true" type="number"  id="txtPhone" name="number">  </td>
@@ -366,33 +366,31 @@
 			        <li data-role="fieldcontain">
                      <table>
 			            <tr>
-			            <td><label for="lblCustName">Customer Name</label></td>
-			        <td><input style="resize:none" type="text" name="custname" id="txtCustName" required></td>
-			        			        
-			           <td><label for="lblEmail">Email Id</label></td>
+			            <td style="width:10%"><label for="lblCustName">Name</label></td>
+			            <td><input style="resize:none" type="text" name="custname" id="txtCustName" required></td>			        			        
+			           <td style="width: 15%"><label for="lblEmail">Email Id</label></td>
 			            <td><input style="resize:none" type="email" name="email" id="txtEmail"  required ></td>
 			            </tr>
                         </table>
 			        </li>
 			        <li data-role="fieldcontain">
-			            <label for="lblAddress1">Address</label>
-			            <input style="resize:none" type="text" name="txtAddress1" id="txtAddress1" value="" required >    
+			            
+			            <label style="width: 13%" for="lblAddress1">Address</label>
+			            <input style="width: 100%;resize:none" type="text" name="txtAddress1" id="txtAddress1" value="" required >    
 			        </li>
 			        <li data-role="fieldcontain">
-			            <table>
+			            <table width="100%">
 			                <tr>
 			                <td><label for="lblCity" >City</label></td>
-			                <td><input style="resize:none" type="text"  id="txtCity"  name="city" required ></td>
-			        			        
-			                
+			                <td><input style="resize:none" type="text"  id="txtCity"  name="city" required ></td>			        			        			                
 			                <td><select name="state" id="ddpState" >
-			                    <option value="" selected>Select State</option>                   
+			                <option value="" selected>Select State</option>                   
 			                </select></td>
                             </tr>
 			            </table>        
 			        </li>
 			        <li data-role="fieldcontain">
-			            <table>
+			            <table width="100%">
 			                <tr>			                    
 			             <td><label for="lblPincode">Pincode</label></td>
 			            <td><input style="resize:none" type="number" name="pincode" id="txtPincode" required></td>			        			        
@@ -402,7 +400,7 @@
 			            </table>
 			        </li>
 			        <li data-role="fieldcontain">
-			            <table>
+			            <table width="100%">
 			                <tr>
 			                    <td><select name="Brand" id="ddpBrand" onchange='checkbrand(this.value)'   required>
 			                            <option value="" selected>Select Brand</option>                                   
@@ -427,13 +425,11 @@
 			            <textarea rows="5" style="resize:none" id="txtRemarks" name="txtRemarks" required></textarea>
 			        </li>
 			        <li data-role="fieldcontain">			        
-			            <table>
+			            <table width="100%">
 			                <tr>
-			                <td><select name="warranty" id="ddpWarranty"  required>
-			                    <option value="" selected>Select Warranty</option>                                   
-			                </select></td>
-			        
-			            
+			                    <td><select name="warranty" id="ddpWarranty"  required>
+			                                <option value="" selected>Select Warranty</option>                                   
+			                            </select></td>                                        			        			            
 			                <td><select id="ddpServiceEngg"  name="serviceengg" required>
 			                    <option value="" selected>Select Service</option>                                   
 			                </select>     </td>                          
