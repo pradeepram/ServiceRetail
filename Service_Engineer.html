@@ -265,22 +265,27 @@
 		<div data-role="content" data-theme="a">		
 	<form id="servicesheet" method="POST" action="">
 		<ul data-role="listview" data-inset="true">
-			<li data-role="fieldcontain">
-	        	<label for="search">Job Id</label>
-	         	<input type="text" id="txtSearch"  name="txtJobId" disabled/>
-			</li>
-            <li data-role="fieldcontain">
-	        	<label for="name">Brand</label>
-	        	<input type="text" id="txtBrand"  disabled/>
-			</li>
-			<li data-role="fieldcontain">
-	        	<label for="name">Model</label>
-	        	<input type="text" id="txtModel" disabled/>
-			</li>
 		    <li data-role="fieldcontain">
-		        <label for="name">Warranty</label>
-		        <input type="text" id="txtWarranty" disabled/>
+		        <table width="100%">
+		            <tr>
+		          <td style="width: 12%"><label for="search">Job Id</label></td>
+		                <td style="width: 30%"><input type="text" id="txtSearch"  name="txtJobId" disabled/></td>
+		                <td style="width: 12%"><label for="name">Warranty</label></td>
+                        <td style="width: 30%"><input type="text" id="txtWarranty" disabled/></td>
+                    </tr>
+		        </table>
 		    </li>
+		    <li data-role="fieldcontain">
+		       <table width="100%">
+		           <tr>
+		               <td style="width: 12%"><label for="name">Brand</label></td>
+		               <td td style="width: 30%"><input type="text" id="txtBrand"  disabled/></td>
+			
+		               <td style="width: 12%"><label for="name">Model</label></td>
+		               <td td style="width: 30%"><input type="text" id="txtModel" disabled/></td>
+		           </tr>
+                </table>
+		    </li>		    
             <li data-role="fieldcontain">
 	        	<label for="textarea">Problems</label>
 			<textarea cols="40" rows="8" name="txtProblem" id="txtProblem" disabled></textarea>
@@ -289,22 +294,19 @@
 	        	<label for="textarea">Complaints:</label>
 			<textarea cols="40" rows="8" name="textComplaints" id="txtComplaints" required></textarea>
 			</li>									
-            <li data-role="fieldcontain">                        
-        <!--<label for="day">Spare Parts</label>-->
-                <!--<select id="ddpParts" name="ddpParts">         
-                    </select>                       -->
-                <!--<table data-role="table" id="PartsTable" class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-btn-theme="b" 
-                       data-column-btn-text="Columns">-->
+            <li data-role="fieldcontain">                                
                     <table  id="PartsTable"  class="table table-striped">	                        
 	                </table>                                                                                            
             </li>									
-            <li data-role="fieldcontain">
-	        	<label for="name">Service Charge</label>
-	        	<input type="number" id="txtSer" name="txtSer" />
-			</li>
-            <li data-role="fieldcontain">
-	         <label for="duedate">Date</label>
-	         <input type="text" name="date" id="date" />			
+		    <li data-role="fieldcontain">
+		        <table width="100%">
+		            <tr>
+		            <td style="width: 25%"><label for="name">Service Charge</label></td>
+		            <td style="width: 25%"><input type="number" id="txtSer" name="txtSer" /></td>		    
+		            <td style="width: 12%"><label for="duedate">Date</label></td>
+		            <td style="width: 25%"><input type="text" name="date" id="date" placeholder="MM/DD/YYYY" /></td>
+                    </tr>
+		        </table>
             </li>
 			<li class="ui-body ui-body-b">
 				<fieldset class="ui-grid-a">

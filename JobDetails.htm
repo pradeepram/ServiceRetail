@@ -182,30 +182,35 @@
 	<form id="jobDetails" method="POST" action="">
 		  <ul data-role="listview" data-inset="true">
 		      <li data-role="fieldcontain">
-		          <label for="search">Job Id</label>
-		          <input type="text" name="password" id="txtJobId" disabled/>
-		      </li>
-                                  <li data-role="fieldcontain">
-    <label for="lblCustName">Customer Name</label>
-    <input type="text"  id="txtCustName" name="txtCustname" disabled>
-  </li>
-
-	                        <li data-role="fieldcontain">
-	                            <label for="search">Phone Number</label>
-	                            <input type="text" name="password" id="txtPhone" value=""   disabled/>
-	                        </li>            
-	                        <li data-role="fieldcontain">
-	                            <label for="name">Brand</label>
-	                            <input type="text" name="name" id="txtBrand" value=""   disabled/>
-	                        </li>
-	                        <li data-role="fieldcontain">
-	                            <label for="name">Model</label>
-	                            <input type="text" name="name" id="txtModel" value=""   disabled/>
-	                        </li>
-	                        <li data-role="fieldcontain">
-	                            <label for="name">Warranty</label>
-	                            <input type="text" name="name" id="txtWarranty" value=""   disabled/>
-	                        </li>
+		      <table width="100%">
+		          <tr>
+		              <td style="width: 12%"><label for="lblJobID">Job Id</label></td>
+		              <td style="width: 40%"><input id="txtJobId" type="text"   disabled> </td> 
+      
+		              <td style="width: 12%"><label for="lblPhoneNo">Phone</label></td>
+		              <td style="width: 40%"><input type="text" name="password" id="txtPhone" value=""   disabled/></td>
+		          </tr>
+		      </table>
+		      <li data-role="fieldcontain">
+		          <table width="100%">
+		              <tr>
+		              <td style="width: 12%"><label for="lblCustName">Customer Name</label></td>
+		                  <td style="width: 40%"><input type="text"  id="txtCustName" name="txtCustname" disabled></td>
+		                  <td style="width: 12%"><label for="name">Warranty</label></td>
+	                            <td style="width: 40%"><input type="text" name="name" id="txtWarranty" value=""   disabled/></td>
+                      </tr>
+		          </table>
+		      </li>	                        
+		                 <li data-role="fieldcontain">
+		                     <table width="100%">
+		                         <tr>
+		                     <td style="width: 12%">    <label for="name">Brand</label></td>
+		                       <td style="width: 40%">  <input type="text" name="name" id="txtBrand" value=""   disabled/></td>		      	             
+		                       <td style="width: 12%">  <label for="name">Model</label></td>
+		                         <td style="width: 40%"><input type="text" name="name" id="txtModel" value=""   disabled/></td>
+                                 </tr>
+		                     </table>
+	                        </li>	                        
 	                        <li data-role="fieldcontain">
 	                            <label for="textarea">Problems</label>
 	                            <textarea cols="40" rows="8" name="textarea" id="txtProblem"  disabled></textarea>
@@ -218,11 +223,16 @@
 	                            <label for="textarea">Parts</label>
 	                            <textarea cols="40" rows="8" name="textarea" id="txtParts"  disabled></textarea>
                             	</li>	
-                                <li data-role="fieldcontain">
-	                            <label for="textarea">Service Charge</label>
-                                    <!--<textarea cols="40" rows="8" name="textarea" id="txtServiceCharge"  required></textarea>   -->                                 
-	                            <input type="number" name="txtServiceCharge" id="txtServiceCharge" value=""   required/>	                        
-                            	</li>
+		      <li data-role="fieldcontain">
+		          <table width="100%">
+		              <tr>		                  
+		                  <td style="width: 30%"><label for="textarea">Service Charge</label>                                 </td>
+		                  <td style="width: 20%"><input type="number" name="txtServiceCharge" id="txtServiceCharge" value=""   required/></td>	                        
+		                  <td style="width: 30%"><label for="name">Estimated Cost</label></td>
+		                  <td style="width: 20%"><input type="text" name="name" id="txtCost" disabled/></td>
+		              </tr>
+		          </table>
+		      </li>
 		      <li data-role="fieldcontain">
 	                            <fieldset data-role="controlgroup" data-type="horizontal">
 	                                <legend>Call Confirm:</legend>
@@ -240,8 +250,7 @@
 		      </li>	
 
 		      <li data-role="fieldcontain">
-	                            <label for="name">Estimated Cost:</label>
-	                            <input type="text" name="name" id="txtCost" disabled/>
+	                            
 	                        </li>            
 	                        <li class="ui-body ui-body-b">
 	                            <fieldset class="ui-grid-a">
