@@ -14,7 +14,7 @@
     <script type="text/javascript">
         $(document).ready(function() {
             
-            $("#table").children().prop('disabled',true);
+           
             jobid = new Array();
             Invoice = new Array();
             Parts = new Array();
@@ -32,13 +32,7 @@
                     async: true,
                     cache: false,
 
-                    success: function(response) {
-                        $("#InvoiceTable thead").remove();
-                        $("#InvoiceTable tr").remove();
-                        $("#InvoiceTable th").remove();
-                        $("#InvoiceTable tbody").remove();
-                        $("#InvoiceTable td").remove();                        
-                    
+                    success: function(response) {                    
                         var data = jQuery.parseJSON(response.d.toString());
                         var tr;
                         tr = $("<thead>");
@@ -284,10 +278,7 @@
 			    </ul>
 			    <div id="table" name="table" data-theme="a">
 			        <ul>
-			        <li data-role="fieldcontain">                        
-			            <!--<table data-role="table" id="InvoiceTable"  class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-btn-theme="b" 
-			                   data-column-btn-text="Columns">    
-			            </table> -->
+			        <li data-role="fieldcontain">                        			            
                         <table  id="InvoiceTable"  class="table table-striped">	                        
 	                    </table> 
 			        </li>
