@@ -2,7 +2,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Company Details</title>
+	<title>Manufacturer In Details</title>
 	<link rel="stylesheet" href="themes/JobSheet1.min.css" />
 	<link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
 	<link rel="stylesheet" href="Script/jquery.mobile.structure-1.4.5.min.css" />
@@ -10,159 +10,190 @@
     <script src="Script/jquery.mobile-1.4.5.min.js" type="text/javascript"></script>      
     <link rel="stylesheet" href="Script/jquery.dataTables.min.css"/>
     <script type="text/javascript" src="Script/jquery.dataTables.min.js"></script>
+     <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
     <script type="text/javascript">
-        $(document).ready(function () {
-            jobid = new Array();
-            $.ajax({
-                type: "POST",
-                contentType: "application/json; charset=utf-8",
-                url: localStorage.getItem('WcfURL') + "/BindDc",
-                data: "{}",
-                dataType: "json",
-                success: function (data) {
-                    
-                    $("#ddpDC").append($("<option value=''>Select</option>"));
-                    $.each(data.d, function (key, value) {
-                        // $("#ddpState").prepend("");
-                        $("#ddpDC option:first").attr('selected', 'selected');
-                        $("#ddpDC").append($("<option></option>").val(value.DC_Id).html(value.DC_Id));
-                    });
-                },
-                error: function (Result) {
-                    
-                    
-                }
-            });
-
+        $(document).ready(function() {
             
-            $("#ddpDC").change(function () {
-                $("#jobid tr").remove();
+            $("#table").children().prop('disabled',true);
+            jobid = new Array();
+            Invoice = new Array();
+            Parts = new Array();
+            ServiceCharge = new Array();
+            QualityCheck = new Array();
+            Remarks = new Array();
+            $("#submit").click(function(event) {
                 
-//                var jobid = new Array();
                 $.ajax({
                     type: "POST",
-                    contentType: "application/json; charset:utf-8",
-                    url: localStorage.getItem('WcfURL') + "/DcJobDetails",
-                    data: "{'DcNumber':'" + $('#ddpDC :selected').val() + "'}",
+                    contentType: "application/json; charset=utf-8",
+                    url: localStorage.getItem('WcfURL') + "/ToBereceived",
+                    data: "{'id':'" + parseInt($('#txtJobId').val(), 10) + "','category':'" + $('input[name=radio-choice-h-2]:checked').val() + "'}",
                     dataType: "json",
                     async: true,
                     cache: false,
 
-                    success: function (response) {
-                        
+                    success: function(response) {
+                        $("#InvoiceTable thead").remove();
+                        $("#InvoiceTable tr").remove();
+                        $("#InvoiceTable th").remove();
+                        $("#InvoiceTable tbody").remove();
+                        $("#InvoiceTable td").remove();                        
+                    
                         var data = jQuery.parseJSON(response.d.toString());
                         var tr;
-                        tr = $("<tr></tr>");
+                        tr = $("<thead>");
+                        tr.append("<tr><th style='text-align:left'>Job_ID</th><th style='text-align:left'>Invoice</th><th style='text-align:left'>Parts</th><th style='text-align:left'>ServiceCharge</th><th style='text-align:left'>QualityCheck</th><th style='text-align:left'>Remarks</th></tr>"); // bind table header row
+                        $("#InvoiceTable").append(tr);
+                        tr.append("</thead>");
+                        $("#InvoiceTable").append(tr);
 
-                        tr.append("<th>CompanyReferenceNo</th><th>Job_ID</th>"); // bind table header row
-                        
-                        $("#jobid").append(tr);
+                        var tbody = $("<tbody>");
+                        $("#InvoiceTable").append(tbody);
+                        $("#InvoiceTable").append(tr);
+                        tr = $("<tr></tr>");                                                                                                                       
+                                               
                         if (data.NewDataSet.Table.length == undefined) {
-                            jobid.push(data.NewDataSet.Table.Job_Id);
                             tr = $("<tr></tr>");
-                            tr.append("<td><input type='text' id='tblRef' >" + "</td><td>" + data.NewDataSet.Table.Job_Id + "</td><td>");                                                                
 
-                            $("#jobid").append(tr);
-                        }
-                        else {
+                            tr.append("<td><a href='#popupDialog1' data-rel='popup' onclick='popup(" + data.NewDataSet.Table.Id + ")'>" + "<span id='tbljobid'>" + data.NewDataSet.Table.Id + "</span>" + "</a></td>" +
+                                "<td><input type='text' id='tblInvoice' >" + "</td><td><input type='text' id='tblParts' >" + "</td><td><input type='text' id='tbtSer' >" + "</td><td><select name='QualityCheck' id='QualityCheck' data-role='slider'><option value='1'>Pass</option><option value='0'>Fail</option></select>" + "</td><td><input type='text' id='tblRemarks' >" + "</td>");
+
+                            $("#InvoiceTable").append(tr);
+                            
+                        } else {
                             for (var i = 0; i < data.NewDataSet.Table.length; i++) {
                                 
-                                
-                                jobid.push(data.NewDataSet.Table[i].Job_Id);
                                 tr = $("<tr></tr>");
-                                tr.append("<td><input type='text' id='tblRef' >" + "</td><td>" + data.NewDataSet.Table[i].Job_Id + "</td><td>");                                                                
-                                $("#jobid").append(tr);
-                                
 
+                                tr.append("<td><a href='#popupDialog1' data-rel='popup' onclick='popup(" + data.NewDataSet.Table[i].Id + ")'>" + "<span id='tbljobid'>" + data.NewDataSet.Table[i].Id + "</span>" + "</a></td>" +
+                                    "<td><input type='text' id='tblInvoice' >" + "</td><td><input type='text' id='tblParts' >" + "</td><td><input type='text' id='tbtSer' >" + "</td><td><select name='QualityCheck' id='QualityCheck' data-role='slider'><option value='1'>Pass</option><option value='0'>Fail</option></select>" + "</td><td><input type='text' id='tblRemarks' >" + "</td>");
+
+                                $("#InvoiceTable").append(tr);
+                                
                             }
-                            alert(jobid);
                         }
+//                        $("#table").children().prop("disabled", false);
+                        //                        $("#content").children().prop("disabled", true);
+                        $('#InvoiceTable').append(tbody);
+                        $('#InvoiceTable').dataTable({
+                            "bInfo": false,
+                            "bLengthChange": false,
+                            "bPaginate": false,
+                            "bFilter": false
+
+                        });
                     },
-                    error: function (response) {
+                    error: function(response) {
                         
                         
                     }
-                });        
+                });
             });
-            $("#submit").click(function () {
-                
-                var selectedLanguage = new Array();
-                $('input[id="tblRef"]').each(function () {
+            $("#btnsubmit").click(function(event) {
+                $('span[id="tbljobid"]').each(function() {
                     
-                    selectedLanguage.push(this.value);
+                    jobid.push(this.innerText);
                     
                 });
-                //alert(selectedLanguage);               
                 
+                $('input[id="tblInvoice"]').each(function() {
+                    
+                    Invoice.push(this.value);
+                    
+                });
+                
+                $('input[id="tblParts"]').each(function() {
+                    
+                    Parts.push(this.value);
+                    
+                });
+                $('input[id="tbtSer"]').each(function () {
+
+                    ServiceCharge.push(this.value);
+
+                });                
+                $('select[id="QualityCheck"]').each(function() {
+                    
+                    QualityCheck.push(this.value);
+                    
+                });
+                
+                $('input[id="tblRemarks"]').each(function() {
+                    
+                    Remarks.push(this.value);
+                    
+                });
+                var urlRef = "Company_Inward.html";
+                debugger;
                 $.ajax({
                     type: "POST",
                     contentType: "application/json; charset=utf-8",
-                    url: localStorage.getItem('WcfURL') + "/DcRefernceNo",
-                    data: "{'JobID':'" + JSON.stringify(jobid) + "','ReferenceNo':'" + JSON.stringify(selectedLanguage) + "'}",
+                    url: localStorage.getItem('WcfURL') + "/ToBeReceivedDetails",
+                    data: "{'jobid':'" + JSON.stringify(jobid) + "','Invoice':'" + JSON.stringify(Invoice) + "','Parts':'" + JSON.stringify(Parts) + "','ServiceCharge':'" + JSON.stringify(ServiceCharge) + "','QualityCheck':'" + JSON.stringify(QualityCheck) + "','Remarks':'" + JSON.stringify(Remarks) + "','createdby':'" + localStorage.getItem('customerid') + "'}",
                     dataType: "json",
+                    async: true,
+                    cache: false,
 
-                    success: function(data) {
-                        
+                    success: function(response) {
                         $.each(data.d, function(key, value) {
                             if (value.result == "1") {
-                                
                                 alert("success");
+                                $(location).attr('href', urlRef);
                             } else {
-                                alert("Invalid Data");
-                                return false;
+                                // alert("Invalid Data");
+                                alert("success");
+                                $(location).attr('href', urlRef);
                             }
                         });
                     },
-                    error: function (data) {
+                    error: function(data) {
                         
                         
                     }
-
-                });
-            });
-            $("#Cancel").click(function () {
-                $.ajax({
-                    type: "POST",
-                    contentType: "application/json; charset=utf-8",
-                    url: localStorage.getItem('WcfURL') + "/DcCancel",
-                    data: "{'DcNumber':'" + $('#ddpDC :selected').val() + "'}",
-                    dataType: "json",
-
-                    success: function (data) {
-                        
-                        $.each(data.d, function (key, value) {
-                            if (value.result == "1") {
-                                
-                                alert("success");
-                            } else {
-                                alert("Invalid Data");
-                                return false;
-                            }
-                        });
-                    },
-                    error: function (data) {
-                        
-                        
-                    }
-
                 });
             });
         });
         function popup(e) {
             
-            $('#tblChk').val(e);
+            $('#txtJobIdP').val(e);
             $.ajax({
                 type: "POST",
-                url: localStorage.getItem('WcfURL') + "/ToBePushed",
-                data: "JobID=" + e + "&StoreId=" + $('#ddpStore :selected').val(),
+                contentType: "application/json; charset=utf-8",
+                url: localStorage.getItem('WcfURL') + "/OrderDetailList",
+                data: "{'jobid': '" + e + "'}",
 
-                dataType: "text",
+                dataType: "json",
 
                 success: function (data) {
                     
                     $.each(data.d, function (key, value) {
                         
-                        alert(d);
+
+                        $("#txtPhone").val(value.phone);
+                        $("#txtCustName").val(value.firstname);
+                        $("#txtBrand").val(value.brand);
+
+                        $("#txtModel").val(value.model);
+
+                        $("#txtWarranty").val(value.warranty);
+
+                        $("#txtProblem").val(value.problem);
+                        $("#txtComplaints").val(value.complaint);
+                        $("#txtParts").val(value.parts);
+                        $("#txtServiceCharge").val(value.servicecharge);
+                        //$("input[type=radio]").attr('disabled', true);
+                        $("#input[name=radio-choice-2]:checked").val(value.callconfirm);
+                        if (value.callconfirm == "True") {
+                            
+                            $("input[type=radio]").attr('disabled', true);
+                            $('input:radio[name=radio-choice-2]')[0].checked = true;
+                            $('input:radio[name=radio-choice-2]').val('0');
+                        } else {
+                            
+                            $("input[type=radio]").attr('disabled', true);
+                            $("input[type=radio]").attr('disabled', false);
+                        }
+                        $("#txtCost").val(value.cost);
                     });
                 },
                 error: function (data) {
@@ -171,7 +202,7 @@
                 }
 
             });
-        }
+        }        
     </script>
     <script type="text/javascript">
         $("#popupPanel").on({
@@ -203,49 +234,149 @@
 <body>
 	<div data-role="page" data-theme="a">
 		<div data-role="header" data-position="fixed" >
-			<h1>Service Management</h1>
+			<h1>Parsn Retail Watch Square</h1>
             <a href="jobsheet.html" data-theme="a" data-inline="true" data-icon="home" data-iconpos="notext" data-direction="reverse" rel="external">Home</a>
-           <a href="index.html"  data-theme="a" data-inline="true" data-icon="power" data-iconpos="notext" data-direction="reverse" rel="external">Logout</a>
+           <a href="index.html"  data-theme="a" data-inline="true" data-icon="power" data-iconpos="notext" data-direction="reverse" rel="external">Logout</a>           
             <div data-role="navbar" data-grid="d">
 			<ul>
 				<li><a href="jobsheet.html" rel="external">Job Sheet</a></li>
                 <li><a href="Order_Details.html" rel="external">Order details</a></li>
-				<li><a href="Service_Engineer.html" rel="external">Service</a></li>								
+				<li><a href="Service.htm" rel="external">Service</a></li>								
 				<li><a href="Company.html" class="ui-btn-active">Manufacturer</a></li>
                 <li><a href="Invoice.html" rel="external">Invoice</a></li>
 			</ul>
 		</div>
             <div data-role="navbar" data-grid="b">
 			<ul>
-				<li><a href="Company.html" rel="external">To Be Pushed</a></li>
-			    <li><a href="Company_Inward.html" rel="external">To Be Received</a></li>
-                <li><a href="DCReference.html" class="ui-btn-active">DC</a></li>								
+			    <li><a href="Company.html" rel="external">To Be Pushed</a></li>
+                <li><a href="DCReference.html" rel="external">DC</a></li>
+			    <li><a href="Company_Inward.html" rel="external" class="ui-btn-active">To Be Received</a></li>	
+                							
 			</ul>
 		</div>
 
 		</div>
-		<div data-role="content"  data-theme="a">
-		<form>
-		    <ul data-role="listview" data-inset="true">
-		        <li data-role="fieldcontain">
-		            <label for="lblDC">DC</label>
-		            <select id="ddpDC"   required>		                                
-		            </select>        
-		        </li>		        
-		        <li data-role="fieldcontain">
-		            <table data-role="table" id="jobid" class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-btn-theme="b" 
-		                   data-column-btn-text="Columns">
-   
-		            </table>           
-		        </li>
-                <li class="ui-body ui-body-b">
-				<fieldset class="ui-grid-a">
-					 <div class="ui-block-a"><input type="submit" name="Clear" id="Cancel" value="Cancel" data-icon="alert" /></div>                  
-                     <div class="ui-block-b"><input aria-required="true" class="required" data-theme=a type="submit" data-icon="check" name="submit" id="submit" value="Submit"></div>
-			    </fieldset>
-			</li>
-		    </ul>
-        </form>
+		<div data-role="content"  data-theme="a" id="content">
+			<form id="ToBeReceived" method="POST" action="">
+			    <ul data-role="listview" data-inset="true">
+			        <li data-role="fieldcontain">
+			            <table width="100%">
+			                <tr>
+			                   <td> <fieldset data-role="controlgroup" style="width: 95%" >					
+			                        <input type="radio" name="radio-choice-h-2" id="radio-choice-h-2a" value="1">
+			                        <label for="radio-choice-h-2a" style="width: 63%">Job_Id</label>
+			                        <input type="radio" name="radio-choice-h-2" id="radio-choice-h-2b" value="2">
+			                        <label for="radio-choice-h-2b" style="width: 63%">DcNumber</label>
+			                        <input type="radio" name="radio-choice-h-2" id="radio-choice-h-2c" value="3">
+			                        <label for="radio-choice-h-2c" style="width: 63%">ReferenceNo</label>
+			                    </fieldset></td>
+			                    <td><span><input style="width:90%;display:inline-block" type="text" id="txtJobId" data-inline="true" name="clearMe22" />    
+            <a style="float:right" href="#" class="ui-input-clear" data-role="button" data-icon="delete" 
+                      data-iconpos="notext" id="clearMeClearMe">Clear</a></span>
+    </td>
+			                </tr>			                
+			            </table>
+			        </li>			        <li class="ui-body ui-body-b">
+			            <fieldset class="ui-grid-a">					 
+			                <div class="ui-block-b"><input aria-required="true" class="required" data-theme=a data-icon="check" type="submit" name="submit" id="submit" value="Submit" ></div>
+			            </fieldset>
+			        </li> 			                        
+			    </ul>
+			    <div id="table" name="table" data-theme="a">
+			        <ul>
+			        <li data-role="fieldcontain">                        
+			            <!--<table data-role="table" id="InvoiceTable"  class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-btn-theme="b" 
+			                   data-column-btn-text="Columns">    
+			            </table> -->
+                        <table  id="InvoiceTable"  class="table table-striped">	                        
+	                    </table> 
+			        </li>
+      
+			        <li class="ui-body ui-body-b">
+			            <fieldset class="ui-grid-a">
+			                <div class="ui-block-a"><input type="reset" name="Clear" id="clear" value="Clear"  data-icon="alert"/></div>                  
+			                <div class="ui-block-b"><input aria-required="true" class="required" data-theme=a data-icon="check" type="submit" name="btnsubmit" id="btnsubmit" value="Submit" ></div>
+			            </fieldset>
+			        </li>
+                    </ul>
+			    </div>
+			
+                <div data-role="popup" id="popupDialog1" data-overlay-theme="a" data-theme="c" style="max-width:400px;" class="ui-corner-all">
+			<div data-role="header" data-theme="a" class="ui-corner-top">
+				<h1>Job Details</h1>
+			</div>
+			<div data-role="content" data-theme="d" class="ui-corner-bottom ui-content">
+				<h3 class="ui-title"></h3>
+				  <ul data-role="listview" data-inset="true">
+		      <li data-role="fieldcontain">
+		          <label for="search">Job Id</label>
+		          <input type="text" name="password" id="txtJobIdP" disabled/>
+		      </li>
+                                  <li data-role="fieldcontain">
+    <label for="lblCustName">Customer Name</label>
+    <input type="text"  id="txtCustName" name="txtCustname" disabled>
+  </li>
+
+	                        <li data-role="fieldcontain">
+	                            <label for="search">Phone Number</label>
+	                            <input type="text" name="password" id="txtPhone" value=""   disabled/>
+	                        </li>            
+	                        <li data-role="fieldcontain">
+	                            <label for="name">Brand</label>
+	                            <input type="text" name="name" id="txtBrand" value=""   disabled/>
+	                        </li>
+	                        <li data-role="fieldcontain">
+	                            <label for="name">Model</label>
+	                            <input type="text" name="name" id="txtModel" value=""   disabled/>
+	                        </li>
+	                        <li data-role="fieldcontain">
+	                            <label for="name">Warranty</label>
+	                            <input type="text" name="name" id="txtWarranty" value=""   disabled/>
+	                        </li>
+	                        <li data-role="fieldcontain">
+	                            <label for="textarea">Problems</label>
+	                            <textarea cols="40" rows="8" name="textarea" id="txtProblem"  disabled></textarea>
+	                        </li>									
+	                        <li data-role="fieldcontain">
+	                            <label for="textarea">Complaints</label>
+	                            <textarea cols="40" rows="8" name="textarea" id="txtComplaints"  disabled></textarea>
+	                        </li>						
+                            	<li data-role="fieldcontain">
+	                            <label for="textarea">Parts</label>
+	                            <textarea cols="40" rows="8" name="textarea" id="txtParts"  disabled></textarea>
+                            	</li>	
+                                <li data-role="fieldcontain">
+	                            <label for="textarea">Service Charge</label>
+	                            <textarea cols="40" rows="8" name="textarea" id="txtServiceCharge"  required></textarea>
+                            	</li>
+		      <li data-role="fieldcontain">
+	                            <fieldset data-role="controlgroup">
+	                                <legend>Call Confirm:</legend>
+	                                <input type="radio" name="radio-choice-2" id="radio-choice-21" value="1" />
+	                                <label for="radio-choice-21">Yes</label>
+
+	                                <input type="radio" name="radio-choice-2" id="radio-choice-22" value="0"/>
+	                                <label for="radio-choice-22">No</label>         	
+                                    
+                                    <input type="radio" name="radio-choice-2" id="radio-choice-23" value="2"/>
+	                                <label for="radio-choice-23">Didn't PickUp</label>         	
+
+	                            </fieldset>
+	                        </li>	
+	                        <li data-role="fieldcontain">
+	                            <label for="name">Estimated Cost:</label>
+	                            <input type="text" name="name" id="txtCost" disabled/>
+	                        </li>            
+	                        <!--<li class="ui-body ui-body-b">
+	                            <fieldset class="ui-grid-a">
+	                                <div class="ui-block-a"><input aria-required="true" class="required" data-theme=a type="reset" data-icon="check" name="cancel" id="cancel" value="Cancel Order"></div>
+	                                <div class="ui-block-b"><input aria-required="true" class="required" data-theme=a type="submit" data-icon="check" name="submit" id="submit1" value="Update"></div>
+	                            </fieldset>
+	                        </li>		-->	
+	                    </ul>							
+			</div>
+		</div>   
+</form>
 		</div>
         <div data-role="footer" data-position="fixed">
          <h4>Inventrace Powered By CAS</h4>
