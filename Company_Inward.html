@@ -57,14 +57,16 @@
                                 $("#InvoiceTable th").remove();
                                 $("#InvoiceTable tbody").remove();
                                 $("#InvoiceTable td").remove();
-
+//                                var table = $('#InvoiceTable').dataTable();
+//                                        table.fnClearTable();
+                    
                                 var data = jQuery.parseJSON(response.d.toString());
 
                                 if (data.NewDataSet.Table.length == undefined) {
                                     debugger;
                                     var tr;
                                     tr = $("<thead>");
-                                    tr.append("<tr><th style='text-align:left'>Job_ID</th><th style='text-align:left'>Invoice</th><th style='text-align:left'>Parts</th><th style='text-align:left'>ServiceCharge</th><th style='text-align:left'>QualityCheck</th><th style='text-align:left'>Remarks</th></tr>"); // bind table header row
+                                    tr.append("<tr><th style='text-align:left'>Job_ID</th><th style='text-align:left'>Invoice</th><th style='text-align:left'>PartsRate</th><th style='text-align:left'>ServiceCharge</th><th style='text-align:left'>QualityCheck</th><th style='text-align:left'>Remarks</th></tr>"); // bind table header row
                                     $("#InvoiceTable").append(tr);
                                     tr.append("</thead>");
                                     $("#InvoiceTable").append(tr);
@@ -85,7 +87,7 @@
                                 } else {
                                  var tr;
                                         tr = $("<thead>");
-                                        tr.append("<tr><th style='text-align:left'>Job_ID</th><th style='text-align:left'>Invoice</th><th style='text-align:left'>Parts</th><th style='text-align:left'>ServiceCharge</th><th style='text-align:left'>QualityCheck</th><th style='text-align:left'>Remarks</th></tr>"); // bind table header row
+                                        tr.append("<tr><th style='text-align:left'>Job_ID</th><th style='text-align:left'>Invoice</th><th style='text-align:left'>PartsRate</th><th style='text-align:left'>ServiceCharge</th><th style='text-align:left'>QualityCheck</th><th style='text-align:left'>Remarks</th></tr>"); // bind table header row
                                         $("#InvoiceTable").append(tr);
                                         tr.append("</thead>");
                                         $("#InvoiceTable").append(tr);
@@ -113,8 +115,9 @@
                                     "bInfo": false,
                                     "bLengthChange": false,
                                     "bPaginate": false,
-                                    "bFilter": false
-
+                                    "bFilter": false,
+                                    "scrollX":true,
+                                    "destroy": true
                                 });
                             },
                             error: function(response) {
