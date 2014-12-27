@@ -12,85 +12,6 @@
     <script type="text/javascript" src="Script/jquery.dataTables.min.js"></script>    
     <script type="text/javascript">
         $(document).ready(function () {
-            debugger;
-//            $.ajax({
-//                type: "POST",
-//                contentType: "application/json; charset=utf-8",
-//                url: "MyWebService.asmx/BindServiceEngg",
-//                data: "{}",
-//                dataType: "json",
-//                success: function (data) {
-//                    
-//                    $.each(data.d, function (key, value) {
-//                        $("#ddpServiceEngg").append($("<option></option>").val(value.custrole).html(value.firstname));
-//                        $("#ddpServiceEngg option[value='']").remove();
-//                        $("#ddpServiceEngg")[0].selectedIndex = -1;
-//                    });
-//                },
-//                error: function (Result) {
-//                    
-//                    alert("Error");
-//                }
-//            });
-//            $("#ddpServiceEngg").change(function () {
-//                
-//                $("#OrderTable td").remove();
-//                $("#OrderTable tr").remove();
-//                $("#OrderTable th").remove();
-//                $.ajax({
-//                    type: "POST",
-//                    contentType: "application/json; charset:utf-8",
-//                    url: "MyWebService.asmx/GetServiceOrderDetails",
-//                    data: "{'ServiceEngg': '" + $('#ddpServiceEngg  :selected').val() + "'}",
-//                    dataType: "json",
-//                    async: true,
-//                    cache: false,
-
-//                    success: function(response) {
-//                        
-//                        var data = jQuery.parseJSON(response.d.toString());
-//                        var tr;
-//                        tr = $("<tr></tr>");
-//                        tr.append("<th>Job_ID</th><th>BrandName</th><th>ModelName</th><th>Warranty</th><th>Call Confirm</th>"); // bind table header row
-//                        
-//                        $("#OrderTable").append(tr);
-//                        if (data.NewDataSet.Table.length == undefined) {
-//                            tr = $("<tr></tr>");
-//                            
-//                            tr.append("<td><a href='Service_Engineer.html' data-rel='popup' onclick='popup(" + data.NewDataSet.Table.Job_ID + ")'>" + data.NewDataSet.Table.Job_ID + "</a></td><td>" +
-//                                    data.NewDataSet.Table.BrandName + "</td><td>" +
-//                                    data.NewDataSet.Table.ModelName + "</td><td>" +
-//                                    data.NewDataSet.Table.Warranty + "</td><td>"+
-//                                    data.NewDataSet.Table.CallConfirm + "</td><td>");
-
-//                            $("#OrderTable").append(tr);
-//                            
-//                        } 
-//                       else {
-
-//                            for (var i = 0; i < data.NewDataSet.Table.length; i++) {
-//                                
-//                                tr = $("<tr></tr>");
-
-//                                tr.append("<td><a href='Service_Engineer.html' data-rel='popup' onclick='popup(" + data.NewDataSet.Table[i].Job_ID + ")'>" + data.NewDataSet.Table[i].Job_ID + "</a></td><td>" +
-//                                    data.NewDataSet.Table[i].BrandName + "</td><td>" +
-//                                    data.NewDataSet.Table[i].ModelName + "</td><td>" +
-//                                    data.NewDataSet.Table[i].Warranty + "</td><td>"+
-//                                     data.NewDataSet.Table[i].CallConfirm + "</td><td>");
-
-//                                $("#OrderTable").append(tr);
-//                                
-//                            }
-//                        }
-//                        $("#OrderTable").dataTable();
-//                    },
-//                    error: function(response) {
-//                        
-//                        alert(response.d.toString());
-//                    }
-//                });
-            //            });
-
             $.ajax({
                 type: "POST",
                 contentType: "application/json; charset:utf-8",
@@ -181,7 +102,6 @@
                             tr.append("<td><a href='Service_Engineer.html' data-rel='popup' onclick='popup1(" + data.NewDataSet.Table1.Job_ID + ")'>" + data.NewDataSet.Table1.Job_ID + "</a></td><td>" +
                                 data.NewDataSet.Table1.BrandName + "</td><td>" +
                                 data.NewDataSet.Table1.ModelName + "</td><td>" +
-                                data.NewDataSet.Table1.Warranty + "</td><td>" +
                                 data.NewDataSet.Table1.CallConfirm + "</td><td>"+
                                 data.NewDataSet.Table1.ServiceEngg + "</td><td>< input type='button' id='tbljobid' name='tbljobid' onclick='button("+data.NewDataSet.Table1.Job_ID+")'></td>");
                             $('#ServiceEnggDetails').append(tr);
@@ -203,7 +123,6 @@
                                 tr.append("<td><a href='Service_Engineer.html' data-rel='popup' onclick='popup1(" + data.NewDataSet.Table1[i].Job_ID + ")'>" + data.NewDataSet.Table1[i].Job_ID + "</a></td><td>" +
                                     data.NewDataSet.Table1[i].BrandName + "</td><td>" +
                                     data.NewDataSet.Table1[i].ModelName + "</td><td>" +
-                                    data.NewDataSet.Table1[i].Warranty + "</td><td>" +
                                     data.NewDataSet.Table1[i].CallConfirm + "</td><td>" +
                                     data.NewDataSet.Table1[i].ServiceEngg + "</td><td><input type='button' id='tbljobid' name='tbljobid' value='Push' onclick='button("+data.NewDataSet.Table1[i].Job_ID+")'></td>");
                                 $('#ServiceEnggDetails').append(tr);                                    
@@ -262,7 +181,6 @@
                         tr.append("<td><a href='Service_Engineer.html' data-rel='popup' onclick='popup1(" + data.NewDataSet.Table.Job_ID + ")'>" + data.NewDataSet.Table.Job_ID + "</a></td><td>" +
                             data.NewDataSet.Table.BrandName + "</td><td>" +
                             data.NewDataSet.Table.ModelName + "</td><td>" +
-                            data.NewDataSet.Table.Warranty + "</td><td>" +
                             data.NewDataSet.Table.CallConfirm + "</td><td>" +
                             data.NewDataSet.Table.ServiceEngg + "</td><td>< input type='button' id='tbljobid' name='tbljobid' value='Push' onclick='button(" + data.NewDataSet.Table.Job_ID + ")'></td>");
                         $('#ServiceEnggDetails').append(tr);
@@ -283,7 +201,6 @@
                             tr.append("<td><a href='Service_Engineer.html' data-rel='popup' onclick='popup1(" + data.NewDataSet.Table[i].Job_ID + ")'>" + data.NewDataSet.Table[i].Job_ID + "</a></td><td>" +
                                 data.NewDataSet.Table[i].BrandName + "</td><td>" +
                                 data.NewDataSet.Table[i].ModelName + "</td><td>" +
-                                data.NewDataSet.Table[i].Warranty + "</td><td>" +
                                 data.NewDataSet.Table[i].CallConfirm + "</td><td>" +
                                 data.NewDataSet.Table[i].ServiceEngg + "</td><td><input type='button' id='tbljobid' name='tbljobid' value='Push' onclick='button(" + data.NewDataSet.Table[i].Job_ID + ")'></td>");
                             $('#ServiceEnggDetails').append(tr);
