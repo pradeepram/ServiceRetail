@@ -2,7 +2,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Service Engineer</title>   
+	<title>Order by Service Engineer</title>   
 	<link rel="stylesheet" href="themes/JobSheet1.min.css" />
 	<link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
     <link rel="stylesheet" href="Script/jquery.mobile.structure-1.4.5.min.css" />
@@ -12,7 +12,7 @@
     <script type="text/javascript" src="Script/jquery.dataTables.min.js"></script>    
     <script type="text/javascript">
         $(document).ready(function () {
-            
+            debugger;
 //            $.ajax({
 //                type: "POST",
 //                contentType: "application/json; charset=utf-8",
@@ -90,91 +90,265 @@
 //                    }
 //                });
             //            });
-                   $.ajax({
-                    type: "POST",
-                    contentType: "application/json; charset:utf-8",
-                   url: localStorage.getItem('WcfURL') + "/GetServiceOrderDetails",
-                    data: "{}",
-                    dataType: "json",
-                    async: true,
-                    cache: false,
 
-                    success: function(response) {
-                        
-                        var data = jQuery.parseJSON(response.d.toString());
-                        var table = $('<table class="table table-striped"></table>').addClass('foo');
-                        for (i = 0; i <data.NewDataSet.Table.length ; i++) {
-                            var tr;
-                            
-                            tr = $("<thead>");
-                            tr.append("<tr><th style='text-align:left'>Job_ID</th><th style='text-align:left'>BrandName</th><th style='text-align:left'>ModelName</th><th style='text-align:left'>Warranty</th><th style='text-align:left'>Call Confirm</th><th style='text-align:left'>Service Engg</th></tr>"); // bind table header row                            
-                            table.append(tr);
-                            tr.append("</thead>");
-                            table.append(tr);                            
-                            var tbody = $("<tbody>");
-                            table.append(tbody);
-                            table.append(tr);
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset:utf-8",
+                url: localStorage.getItem('WcfURL') + "/GetServiceEnggTask",
+                data:"{}",
+                dataType: "json",                
+                async: true,
+                cache: false,
+
+                success: function(response) {
+                    
+                    var data = jQuery.parseJSON(response.d.toString());                
+                    
+                    if (data.NewDataSet.Table.length == undefined) {
+                        var tr;
+                        tr = $("<thead>");
+                        tr.append("<tr><th style='text-align:center'><h3>Service Engineer<h3></th></tr>"); // bind table header row
+                        $("#ServiceEngg").append(tr);
+                        tr.append("</thead>");
+                        $("#ServiceEngg").append(tr);
+
+                        var tbody = $("<tbody>");
+                        $("#ServiceEngg").append(tbody);
+                        $("#ServiceEngg").append(tr);
+                        tr = $("<tr></tr>");
+                        tr.append("<td><a href='#' data-rel='popup' onclick='popup(" + data.NewDataSet.Table.CustomerRole + ")'>" + data.NewDataSet.Table.JobInProcess +"/"+ data.NewDataSet.Table.Total + "</a></td>");
+
+                        $("#ServiceEngg").append(tr);
+
+                    } else {
+                        var tr;
+                        tr = $("<thead>");
+                        tr.append("<tr><th style='text-align:center'><h3>Service Engineer<h3></th></tr>"); // bind table header row
+                        $("#ServiceEngg").append(tr);
+                        tr.append("</thead>");
+                        $("#ServiceEngg").append(tr);
+
+                        var tbody = $("<tbody>");
+                        $("#ServiceEngg").append(tbody);
+                        $("#ServiceEngg").append(tr);
+                        tr = $("<tr></tr>");
+                        for (var i = 0; i < data.NewDataSet.Table.length; i++) {
                             tr = $("<tr></tr>");
-                            if (data.NewDataSet.Table1.length == undefined) {
-                                tr = $("<tr></tr>");                               
-                                tr.append("<td><a href='Service_Engineer.html' data-rel='popup' onclick='popup(" + data.NewDataSet.Table.Job_ID + ")'>" + data.NewDataSet.Table.Job_ID + "</a></td><td>" +
-                                    data.NewDataSet.Table.BrandName + "</td><td>" +
-                                    data.NewDataSet.Table.ModelName + "</td><td>" +
-                                    data.NewDataSet.Table.Warranty + "</td><td>" +
-                                    data.NewDataSet.Table.CallConfirm + "</td><td>"+
-                                    data.NewDataSet.Table.ServiceEngg + "</td>");
-                                table.append(tr);                                
-                            } else {
-                                for (var i = 0; i < data.NewDataSet.Table1.length; i++) {                                   
-                                    tr = $("<tr></tr>");
-
-                                    tr.append("<td><a href='Service_Engineer.html' data-rel='popup' onclick='popup(" + data.NewDataSet.Table1[i].Job_ID + ")'>" + data.NewDataSet.Table1[i].Job_ID + "</a></td><td>" +
-                                        data.NewDataSet.Table1[i].BrandName + "</td><td>" +
-                                        data.NewDataSet.Table1[i].ModelName + "</td><td>" +
-                                        data.NewDataSet.Table1[i].Warranty + "</td><td>" +
-                                        data.NewDataSet.Table1[i].CallConfirm + "</td><td>" +
-                                    data.NewDataSet.Table1[i].ServiceEngg + "</td>");
-                                    table.append(tr);                                    
-                                }
-                            }
-                            
-                            table.append(tbody);
-                            $('#here_table').append(table);
-                            table.dataTable({
-                        "bInfo":false,
-                    });
-                            
+                            tr.append("<td><a href='#' data-rel='popup' onclick='popup(" + data.NewDataSet.Table[i].CustomerRole + ")'>" + data.NewDataSet.Table[i].FirstName +"-"+ data.NewDataSet.Table[i].JobInProcess +"/"+ data.NewDataSet.Table[i].Total + "</a></td>");
+                            $("#ServiceEngg").append(tr);                        
                         }
-                        
-                        
-                    },
-                    error: function(response) {
-                        
-                        
                     }
-                });
+                    
+                    $('#ServiceEngg').append(tbody); 
+                    $('#ServiceEngg').dataTable({
+                        "bInfo":false,
+                        "bLengthChange":false,
+                        "bPaginate": false,
+                        "bFilter": false,
+                        "destroy":true
+                    }); 
+                },
+                error: function (response) {
+                    
+                   
+                }
+            });
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset:utf-8",
+                url: localStorage.getItem('WcfURL') + "/GetServiceOrderDetails",
+                data: "{}",
+                dataType: "json",
+                async: true,
+                cache: false,
+
+                success: function(response) {
+                        
+                    var data = jQuery.parseJSON(response.d.toString());
+
+                    if (data.NewDataSet.Table1.length == undefined) {
+                        var tr;
+                        tr = $("<thead>");
+                        tr.append("<tr><th style='text-align:left'>Job_ID</th><th style='text-align:left'>BrandName</th><th style='text-align:left'>ModelName</th><th style='text-align:left'>Warranty</th><th style='text-align:left'>Call Confirm</th><th style='text-align:left'>Service Engg</th><th style='text-align:left'>Ready</th></tr>"); // bind table header row                            
+                        $('#ServiceEnggDetails').append(tr);
+                        tr.append("</thead>");
+                        $('#ServiceEnggDetails').append(tr);
+
+                        var tbody = $("<tbody>");
+                        $('#ServiceEnggDetails').append(tbody);
+                        $('#ServiceEnggDetails').append(tr);                        
+                            tr = $("<tr></tr>");                               
+                            tr.append("<td><a href='Service_Engineer.html' data-rel='popup' onclick='popup1(" + data.NewDataSet.Table1.Job_ID + ")'>" + data.NewDataSet.Table1.Job_ID + "</a></td><td>" +
+                                data.NewDataSet.Table1.BrandName + "</td><td>" +
+                                data.NewDataSet.Table1.ModelName + "</td><td>" +
+                                data.NewDataSet.Table1.Warranty + "</td><td>" +
+                                data.NewDataSet.Table1.CallConfirm + "</td><td>"+
+                                data.NewDataSet.Table1.ServiceEngg + "</td><td>< input type='button' id='tbljobid' name='tbljobid' onclick='button("+data.NewDataSet.Table1.Job_ID+")'></td>");
+                            $('#ServiceEnggDetails').append(tr);
+                        } else {
+                            var tr;
+                            tr = $("<thead>");
+                            tr.append("<tr><th style='text-align:left'>Job_ID</th><th style='text-align:left'>BrandName</th><th style='text-align:left'>ModelName</th><th style='text-align:left'>Warranty</th><th style='text-align:left'>Call Confirm</th><th style='text-align:left'>Service Engg</th><th style='text-align:left'>Ready</th></tr>"); // bind table header row                            
+                            $('#ServiceEnggDetails').append(tr);
+                            tr.append("</thead>");
+                            $('#ServiceEnggDetails').append(tr);
+
+                            var tbody = $("<tbody>");
+                            $('#ServiceEnggDetails').append(tbody);
+                            $('#ServiceEnggDetails').append(tr);
+                            tr = $("<tr></tr>");
+                            for (var i = 0; i < data.NewDataSet.Table1.length; i++) {                                   
+                                tr = $("<tr></tr>");
+
+                                tr.append("<td><a href='Service_Engineer.html' data-rel='popup' onclick='popup1(" + data.NewDataSet.Table1[i].Job_ID + ")'>" + data.NewDataSet.Table1[i].Job_ID + "</a></td><td>" +
+                                    data.NewDataSet.Table1[i].BrandName + "</td><td>" +
+                                    data.NewDataSet.Table1[i].ModelName + "</td><td>" +
+                                    data.NewDataSet.Table1[i].Warranty + "</td><td>" +
+                                    data.NewDataSet.Table1[i].CallConfirm + "</td><td>" +
+                                    data.NewDataSet.Table1[i].ServiceEngg + "</td><td><input type='button' id='tbljobid' name='tbljobid' value='Push' onclick='button("+data.NewDataSet.Table1[i].Job_ID+")'></td>");
+                                $('#ServiceEnggDetails').append(tr);                                    
+                            }
+                        }
+                            
+                        $('#ServiceEnggDetails').append(tbody);
+                        $('#ServiceEnggDetails').dataTable({                        
+                            "bInfo":false,
+                            "bLengthChange":false,    
+                            "destroy":true                        
+                        });                                                                                                
+                },
+                error: function(response) {                        
+                        
+                }
+            });
         });
-        function popup(e) {
-            
+        function popup(e) {            
+//            var url = "Service.htm";            
+//            localStorage.setItem('jobid', e);
+//            $(location).attr('href', url);
+            debugger;
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset:utf-8",
+                url: localStorage.getItem('WcfURL') + "/GetServiceOrderDetailsByEngg",
+                data: "{'CustomerRole':'" + e + "'}",
+                dataType: "json",
+                async: false,
+                cache: false,
+                success: function(response) {
+                    $("#ServiceEnggDetails thead").remove();
+                    $("#ServiceEnggDetails tr").remove();
+                    $("#ServiceEnggDetails th").remove();
+                    $("#ServiceEnggDetails tbody").remove();
+                    $("#ServiceEnggDetails td").remove();
+                    var table = $('#ServiceEnggDetails').dataTable();
+                    table.fnClearTable();
+
+                    debugger;
+                    var data = jQuery.parseJSON(response.d.toString());
+
+                    if (data.NewDataSet.Table.length == undefined) {
+                        var tr;
+                        tr = $("<thead>");
+                        tr.append("<tr><th style='text-align:left'>Job_ID</th><th style='text-align:left'>BrandName</th><th style='text-align:left'>ModelName</th><th style='text-align:left'>Warranty</th><th style='text-align:left'>Call Confirm</th><th style='text-align:left'>Service Engg</th><th style='text-align:left'>Ready</th></tr>"); // bind table header row                            
+                        $('#ServiceEnggDetails').append(tr);
+                        tr.append("</thead>");
+                        $('#ServiceEnggDetails').append(tr);
+                        var tbody = $("<tbody>");
+
+                        $('#ServiceEnggDetails').append(tbody);
+                        $('#ServiceEnggDetails').append(tr);                        
+                        tr = $("<tr></tr>");
+                        tr.append("<td><a href='Service_Engineer.html' data-rel='popup' onclick='popup1(" + data.NewDataSet.Table.Job_ID + ")'>" + data.NewDataSet.Table.Job_ID + "</a></td><td>" +
+                            data.NewDataSet.Table.BrandName + "</td><td>" +
+                            data.NewDataSet.Table.ModelName + "</td><td>" +
+                            data.NewDataSet.Table.Warranty + "</td><td>" +
+                            data.NewDataSet.Table.CallConfirm + "</td><td>" +
+                            data.NewDataSet.Table.ServiceEngg + "</td><td>< input type='button' id='tbljobid' name='tbljobid' value='Push' onclick='button(" + data.NewDataSet.Table.Job_ID + ")'></td>");
+                        $('#ServiceEnggDetails').append(tr);
+                    } else {
+                        var tr;
+                        tr = $("<thead>");
+                        tr.append("<tr><th style='text-align:left'>Job_ID</th><th style='text-align:left'>BrandName</th><th style='text-align:left'>ModelName</th><th style='text-align:left'>Warranty</th><th style='text-align:left'>Call Confirm</th><th style='text-align:left'>Service Engg</th><th style='text-align:left'>Ready</th></tr>"); // bind table header row                            
+                        $('#ServiceEnggDetails').append(tr);
+                        tr.append("</thead>");
+                        $('#ServiceEnggDetails').append(tr);
+                        var tbody = $("<tbody>");
+
+                        $('#ServiceEnggDetails').append(tbody);
+                        $('#ServiceEnggDetails').append(tr);
+                        tr = $("<tr></tr>");
+                        for (var i = 0; i < data.NewDataSet.Table.length; i++) {
+                            tr = $("<tr></tr>");
+                            tr.append("<td><a href='Service_Engineer.html' data-rel='popup' onclick='popup1(" + data.NewDataSet.Table[i].Job_ID + ")'>" + data.NewDataSet.Table[i].Job_ID + "</a></td><td>" +
+                                data.NewDataSet.Table[i].BrandName + "</td><td>" +
+                                data.NewDataSet.Table[i].ModelName + "</td><td>" +
+                                data.NewDataSet.Table[i].Warranty + "</td><td>" +
+                                data.NewDataSet.Table[i].CallConfirm + "</td><td>" +
+                                data.NewDataSet.Table[i].ServiceEngg + "</td><td><input type='button' id='tbljobid' name='tbljobid' value='Push' onclick='button(" + data.NewDataSet.Table[i].Job_ID + ")'></td>");
+                            $('#ServiceEnggDetails').append(tr);
+                        }
+                    }
+
+                    $('#ServiceEnggDetails').append(tbody);
+                    $('#ServiceEnggDetails').dataTable();
+                    return false;
+                },
+                error: function(response) {
+                }
+            });
+            return false;
+        }
+        function popup1(e) {
+            debugger;
             var url = "Service_Engineer.html";
+
             $('#txtJobId').val(e);
             localStorage.setItem('jobid', e);
             $(location).attr('href', url);
         }
     </script>    
-    
+    <script type="text/javascript">
+        function button(e) {
+            var urlref = "Service.htm";
+            localStorage.setItem('jobidready', e);
+            $(location).attr('href', urlref);
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: localStorage.getItem('WcfURL') + "/ServiceReady",
+                data: "{'job_id':'" + e + "','createdby':'" + localStorage.getItem('customerid') + "'}",
+                dataType: "json",
+                async: false,
+
+                success: function (data) {
+                    debugger;
+                    $.each(data.d, function (key, value) {
+                        if (value.result == "1") {
+                            alert("success");
+                            $(location).attr('href', urlref);
+                        } else {
+                            alert("Invalid Data");
+                        }
+                    });
+                },
+                error: function (data) {
+                }
+            });
+        }
+    </script>
 </head>
 <body>
 	<div data-role="page" data-theme="a">
 		<div data-role="header" data-position="fixed" >
-		    <h1>Service Dept</h1>
+		    <h1>Parsn Retail Watch Square</h1>
             <a href="jobsheet.html" data-theme="a" data-inline="true" data-icon="home" data-iconpos="notext" data-direction="reverse" rel="external">Home</a>
            <a href="index.html"  data-theme="a" data-inline="true" data-icon="power" data-iconpos="notext" data-direction="reverse" rel="external">Logout</a>
            		    <div data-role="navbar" data-grid="d">
 		        <ul>
 		            <li><a href="jobsheet.html" rel="external">Job Sheet</a></li>
 		            <li><a href="Order_Details.html" rel="external">Order details</a></li>
-		            <li><a href="Service.htm" class="ui-btn-active">Service</a></li>								
+		            <li><a href="Service.htm" rel="external" class="ui-btn-active">Service</a></li>								
 		            <li><a href="Company.html" rel="external">Manufacturer</a></li>
 		            <li><a href="Invoice.html" rel="external">Invoice</a></li>
 		        </ul>
@@ -183,20 +357,26 @@
 		</div>
 		<div data-role="content" data-theme="a">		
 		    <form id="servicesheet" method="POST" action="">
+		        <table  id="ServiceEngg"  class="table table-striped">	                        
+		        </table>                                                                 	          
+		        <h3 align="center">Job Details</h3>
+		        <table  id="ServiceEnggDetails"  class="table table-striped">	                        
+		        </table>                                                                 	          
+
 		        <div id="here_table"></div>
 		        <!--<ul data-role="listview" data-inset="true">
-		            <li data-role="fieldcontain">                        
-		                <label for="day">Service Engineer</label>
-		                <select id="ddpServiceEngg" >
-		                    <option value="" selected>select</option>             
-		                </select>                       
-		            </li>
-		            <li data-role="fieldcontain">                        
-		                <table data-role="table" id="OrderTable"  class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-btn-theme="b" 
-		                       data-column-btn-text="Columns">    
-		                </table>   
-		            </li>
-		        </ul>		-->
+		                <li data-role="fieldcontain">                        
+		                    <label for="day">Service Engineer</label>
+		                    <select id="ddpServiceEngg" >
+		                        <option value="" selected>select</option>             
+		                    </select>                       
+		                </li>
+		                <li data-role="fieldcontain">                        
+		                    <table data-role="table" id="OrderTable"  class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-btn-theme="b" 
+		                           data-column-btn-text="Columns">    
+		                    </table>   
+		                </li>
+		            </ul>		-->
 		    </form>				
             </div>
         <div data-role="footer" data-position="fixed">

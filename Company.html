@@ -20,9 +20,7 @@
                 url: localStorage.getItem('WcfURL') + "/BindStore",
                 data: "{}",
                 dataType: "json",
-                success: function (data) {
-                    
-                    
+                success: function (data) {                                        
                     $.each(data.d, function (key, value) {      
                      $("#ddpStore option[value='']").remove();                  
                         $("#ddpStore").append($("<option></option>").val(value.Store_Id).html(value.Store_Name));
@@ -48,6 +46,8 @@
                 success: function (response) {
                     
                     var data = jQuery.parseJSON(response.d.toString());
+                                                            
+                    if (data.NewDataSet.Table.length == undefined) {
                     var tr;                    
                     tr = $("<thead>");
                     tr.append("<tr><th></th><th style='text-align:left'>Job_ID</th><th style='text-align:left'>Brand</th><th style='text-align:left'>Model</th><th style='text-align:left'>warranty</th><th style='text-align:left'>problems</th></tr>"); // bind table header row
@@ -57,8 +57,7 @@
                     var tbody = $("<tbody>");
                     $("#ManufacturerTable").append(tbody);
                     $("#ManufacturerTable").append(tr);
-                    tr = $("<tr></tr>");                                        
-                    if (data.NewDataSet.Table.length == undefined) {
+                    tr = $("<tr></tr>");
                         tr = $("<tr></tr>");
                         tr.append("<td><input type='checkbox' name='tblChk' id='tblChk' value=" + data.NewDataSet.Table.Job_ID + ">" + "</td><td style='text-align:left'>" + data.NewDataSet.Table.Job_ID + "</td><td>" +
                                 data.NewDataSet.Table.BrandName + "</td><td>" +
@@ -69,10 +68,17 @@
                     }
                     else
                     {
-                        for (var i = 0; i < data.NewDataSet.Table.length; i++) {
-                            
-                            tr = $("<tr></tr>");
-
+                    var tr;                    
+                    tr = $("<thead>");
+                    tr.append("<tr><th></th><th style='text-align:left'>Job_ID</th><th style='text-align:left'>Brand</th><th style='text-align:left'>Model</th><th style='text-align:left'>warranty</th><th style='text-align:left'>problems</th></tr>"); // bind table header row
+                    $("#ManufacturerTable").append(tr);
+                    tr.append("</thead>");
+                    $("#ManufacturerTable").append(tr);
+                    var tbody = $("<tbody>");
+                    $("#ManufacturerTable").append(tbody);
+                    $("#ManufacturerTable").append(tr);
+                    tr = $("<tr></tr>");                            
+                        for (var i = 0; i < data.NewDataSet.Table.length; i++) {                            
                             tr.append("<td><input type='checkbox' name='tblChk' id='tblChk' value="+ data.NewDataSet.Table[i].Job_ID +">" + "</td><td>" + data.NewDataSet.Table[i].Job_ID + "</td><td>" +
                                 data.NewDataSet.Table[i].BrandName + "</td><td>" +
                                 data.NewDataSet.Table[i].ModelName + "</td><td>" +
@@ -92,51 +98,6 @@
                 error: function (response) {                                        
                 }
             });
-//            $("#submit").click(function () {
-//                $("#ToBePush").validate({
-//                    errorPlacement: function (error, element) {
-
-//                        //http://stackoverflow.com/questions/4844594/jquery-select-the-associated-label-element-of-a-input-field
-//                        error.appendTo("label[for=" + $(element).attr('id') + "]");
-//                    },
-//                    errorElement: "em"
-//                });
-//                if ($("#ToBePush").valid()) {
-//                    var store = $('#ddpStore option:selected').val();
-//                    if (store == "") {
-//                        $('#ddpStore').css('border-color', 'red');
-//                    } else {
-//                        
-//                        var selectedLanguage = new Array();
-//                        $('input[id="tblChk"]:checked').each(function() {
-//                            
-//                            selectedLanguage.push(this.value);
-//                            
-//                        });
-//                        //alert("Number of selected Languages: " + selectedLanguage.length + "\n" + "And, they are: " + selectedLanguage);
-//                        alert(selectedLanguage);
-//                        $.ajax({
-//                            type: "POST",
-//                            contentType: "application/json; charset=utf-8",
-//                            url: localStorage.getItem('WcfURL') + "/ToBePushed1",
-//                            data: "{'JobID':'" + JSON.stringify(selectedLanguage) + "','StoreId':'" + $('#ddpStore :selected').val() + "','Mode':'" + $('#txtMode').val() + "','createdby': '" + localStorage.getItem('customerid') + "'}",
-//                            dataType: "json",
-
-//                            success: function(data) {
-//                                
-//                                $.each(data.d, function(key, value) {
-//                                    
-//                                    alert(d);
-//                                });
-//                            },
-//                            error: function(data) {
-//                                
-//                                
-//                            }
-//                        });
-//                    }
-//                }
-//            });
             $("#submit").click(function() {            
                 $("#ToBePush").validate({
 
@@ -148,13 +109,21 @@
                         store : {
                   required:true                  
                       },
-                      txtMode: {
+                      Mode: {
                   required:true                  
                       },
-
                     },
+                    errorPlacement: function(error, element) {
+                      error.appendTo(element.parent().parent().after());
+                  },
+                  messages: {
+                      tblChk:"Check the JobId ",
+                      store:"Select Store",
+                      Mode:"Enter Mode Of Transport",                                           
+                  },
                     submitHandler: function(form) {
                            var selectedLanguage = new Array();
+                        var urlref = "Company.html";
                         $('input[id="tblChk"]:checked').each(function() {                            
                             selectedLanguage.push(this.value);                            
                         });                        
@@ -166,25 +135,23 @@
                             dataType: "json",
 
                             success: function(data) {
-                                
+                                debugger;
                                 $.each(data.d, function(key, value) {                                    
                                      if (value.result == "1") {
-                                      
+                                         debugger;
                                       alert("success");
                                       //                                      Location.reload(true);
-                                      $(location).attr('href', url);
+                                      $(location).attr('href', urlref);
                                   } else {
                                       alert("Success");
-                                        $(location).attr('href', url);
+                                        $(location).attr('href', urlref);
                                   }
                                 });
                             },
-                            error: function(data) {
-                                
-                                
+                            error: function(data) {                                                                
                             }
                         });
-                                            }
+                     }
                 });
             });
         });
@@ -215,8 +182,7 @@
             }
         });
     </script>
-    <style>
- 
+    <style>        
         #popupPanel-popup {
             right: 0 !important;
             left: auto !important;
@@ -230,6 +196,10 @@
 }
 #popupPanel .ui-btn {
     margin: 2em 15px;
+}
+.error {
+    color: #f33;
+    display: block;
 }
     </style>
 </head>
@@ -268,8 +238,8 @@
 		            </select>        
 		        </li>
 		        <li data-role="fieldcontain">
-		            <label for="lblMode">Mode</label>
-		            <input type="text"  id="txtMode" name="txtMode" required>
+		            <label for="Mode">Mode</label>
+		            <input type="text"  id="txtMode" name="Mode" required>
 		        </li>
                 <li class="ui-body ui-body-b">
 				<fieldset class="ui-grid-a">

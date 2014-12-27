@@ -2,7 +2,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>jQuery Mobile: Theme Download</title>
+	<title>All Orders</title>
 	<link rel="stylesheet" href="themes/JobSheet1.min.css" />
 	<link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
 	<link rel="stylesheet" href="Script/jquery.mobile.structure-1.4.5.min.css" />
@@ -51,6 +51,28 @@
                 success: function(response) {
                     
                     var data = jQuery.parseJSON(response.d.toString());                
+                    
+                    if (data.NewDataSet.Table.length == undefined) {
+                    var tr;
+                    tr = $("<thead>");
+                    tr.append("<tr><th style='text-align:left'>Job_ID</th><th style='text-align:left'>OrderDate</th><th style='text-align:left'>DueDate</th><th style='text-align:left'>Status</th></tr>"); // bind table header row
+                    $("#OrderTable").append(tr);
+                    tr.append("</thead>");
+                    $("#OrderTable").append(tr);
+                    
+                    var tbody = $("<tbody>");
+                    $("#OrderTable").append(tbody);
+                    $("#OrderTable").append(tr);                    
+                    
+                        tr = $("<tr></tr>");
+                        tr.append("<td><a href='#' data-rel='popup' onclick='popup(" + data.NewDataSet.Table.Job_ID + ")'>" + data.NewDataSet.Table.Job_ID + "</a></td><td>" +
+                            data.NewDataSet.Table.OrderDate + "</td><td>" +
+                            data.NewDataSet.Table.DueDate + "</td><td>" +
+                            data.NewDataSet.Table.Status + "</td>");
+
+                        $("#OrderTable").append(tr);
+                        
+                    } else {
                     var tr;
                     tr = $("<thead>");
                     tr.append("<tr><th style='text-align:left'>Job_ID</th><th style='text-align:left'>OrderDate</th><th style='text-align:left'>DueDate</th><th style='text-align:left'>Status</th></tr>"); // bind table header row
@@ -62,16 +84,6 @@
                     $("#OrderTable").append(tbody);
                     $("#OrderTable").append(tr);                    
                     tr = $("<tr></tr>");
-                    if (data.NewDataSet.Table.length == undefined) {
-                        tr = $("<tr></tr>");
-                        tr.append("<td><a href='#' data-rel='popup' onclick='popup(" + data.NewDataSet.Table.Job_ID + ")'>" + data.NewDataSet.Table.Job_ID + "</a></td><td>" +
-                            data.NewDataSet.Table.OrderDate + "</td><td>" +
-                            data.NewDataSet.Table.DueDate + "</td><td>" +
-                            data.NewDataSet.Table.Status + "</td>");
-
-                        $("#OrderTable").append(tr);
-                        
-                    } else {
                         for (var i = 0; i < data.NewDataSet.Table.length; i++) {                        
                             tr = $("<tr></tr>");
                             tr.append("<td><a href='#' data-rel='popup' onclick='popup(" + data.NewDataSet.Table[i].Job_ID + ")'>" + data.NewDataSet.Table[i].Job_ID + "</a></td><td>" +
@@ -85,6 +97,7 @@
                     $('#OrderTable').append(tbody); 
                     $('#OrderTable').dataTable({
                         "bInfo":false,
+                        "bLengthChange":false,
                     }); 
                 },
                 error: function (response) {
@@ -213,7 +226,7 @@
 	            <ul data-role="listview" data-inset="true">
 	                <div class="ui-grid-c">	                    
 	                    <div class="ui-block-a"><a href=""  onclick=status(1)>New<label id="lblNew"></label></a></div>                        
-	                    <div class="ui-block-b"><a href="" onclick=status(2)>CallConfirm
+	                    <div class="ui-block-b"><a href="" onclick=status(2)>AwaitingConfirmation
 	                                                <label id="lblCallConfirm"></label>
 	                                            </a>
 	                    </div>
