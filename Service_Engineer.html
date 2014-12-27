@@ -241,10 +241,8 @@
 		                <td style="width: 12%"><label for="name">Warranty</label></td>
                         <td style="width: 30%"><input type="text" id="txtWarranty" disabled/></td>
                     </tr>
-		        </table>
-		    </li>
-		    <li data-role="fieldcontain">
-		       <table width="100%">
+		    
+		    
 		           <tr>
 		               <td style="width: 12%"><label for="name">Brand</label></td>
 		               <td td style="width: 30%"><input type="text" id="txtBrand"  disabled/></td>
@@ -252,30 +250,29 @@
 		               <td style="width: 12%"><label for="name">Model</label></td>
 		               <td td style="width: 30%"><input type="text" id="txtModel" disabled/></td>
 		           </tr>
-                </table>
-		    </li>		    
-            <li data-role="fieldcontain">
-	        	<label for="textarea">Problems</label>
-			<textarea cols="40" rows="8" name="txtProblem" id="txtProblem" disabled></textarea>
-			</li>
-            <li data-role="fieldcontain">
-	        	<label for="textarea">Complaints:</label>
-			<textarea cols="40" rows="8" name="textComplaints" id="txtComplaints" required></textarea>
-			</li>									
-            <li data-role="fieldcontain">                                
+                
+		    </table>
+			            <table>
+			                <tr>			            			                        
+	        	<td><label for="textarea">Problems</label></td>
+			<td style="width: 100%"><textarea style="resize:none" cols="40" rows="8" name="txtProblem" id="txtProblem" disabled></textarea></td>
+			</tr>
+            <tr>
+	        	<td><label for="textarea">Complaints:</label></td>
+			<td style="width: 100%"><textarea style="resize:none" cols="40" rows="8" name="textComplaints" id="txtComplaints" required></textarea></td>
+            </tr>
+		        </table>						
+                
                     <table  id="PartsTable"  class="table table-striped">	                        
-	                </table>                                                                                            
-            </li>									
-		    <li data-role="fieldcontain">
+	                </table>                                                                                                        											    
 		        <table width="100%">
 		            <tr>
 		            <td style="width: 25%"><label for="name">Service Charge</label></td>
 		            <td style="width: 25%"><input type="number" id="txtSer" name="txtSer" /></td>		    
 		            <td style="width: 12%"><label for="duedate">Date</label></td>
-		            <td style="width: 25%"><input type="text" name="date" id="date" placeholder="MM/DD/YYYY" /></td>
+		            <td style="width: 25%"><input type="number" name="date" id="date" placeholder="MM/DD/YYYY" /></td>
                     </tr>
-		        </table>
-            </li>
+		        </table>            
 			<li class="ui-body ui-body-b">
 				<fieldset class="ui-grid-a">
 					<!-- <div class="ui-block-a"><input aria-required="true" data-theme=a type="reset" name="Clear" id="clear" value="Clear" data-icon="alert" /></div>                  -->

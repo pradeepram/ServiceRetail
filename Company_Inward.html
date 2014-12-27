@@ -14,6 +14,8 @@
     <script type="text/javascript">
         $(document).ready(function() {
 //            $("#submit").hide();
+$("#btnsubmit").button('disable');
+            $("#clear").button('disable');	
             $("#table").children().prop('disabled',true);
             jobid = new Array();
             Invoice = new Array();
@@ -51,7 +53,8 @@
                             cache: false,
 
                             success: function(response) {
-                                debugger;
+                                $("#btnsubmit").button('enable');
+            $("#clear").button('enable');	
                                 $("#InvoiceTable thead").remove();
                                 $("#InvoiceTable tr").remove();
                                 $("#InvoiceTable th").remove();
@@ -63,7 +66,7 @@
                                 var data = jQuery.parseJSON(response.d.toString());
 
                                 if (data.NewDataSet.Table.length == undefined) {
-                                    debugger;
+                                    
                                     var tr;
                                     tr = $("<thead>");
                                     tr.append("<tr><th style='text-align:left'>Job_ID</th><th style='text-align:left'>Invoice</th><th style='text-align:left'>PartsRate</th><th style='text-align:left'>ServiceCharge</th><th style='text-align:left'>QualityCheck</th><th style='text-align:left'>Remarks</th></tr>"); // bind table header row
@@ -127,51 +130,37 @@
                 });
             });
             $("#btnsubmit").click(function(event) {
-                $('span[id="tbljobid"]').each(function() {
-                    
-                    jobid.push(this.innerText);
-                    
-                });
-                
-                $('input[id="tblInvoice"]').each(function() {
-                    
-                    Invoice.push(this.value);
-                    
-                });
-                
-                $('input[id="tblParts"]').each(function() {
-                    
-                    Parts.push(this.value);
-                    
+                $('span[id="tbljobid"]').each(function() {                    
+                    jobid.push(this.innerText);                    
+                });                
+                $('input[id="tblInvoice"]').each(function() {                    
+                    Invoice.push(this.value);                    
+                });                
+                $('input[id="tblParts"]').each(function() {                    
+                    Parts.push(this.value);                    
                 });
                 $('input[id="tbtSer"]').each(function () {
-
                     ServiceCharge.push(this.value);
-
                 });                
-                $('select[id="QualityCheck"]').each(function() {
-                    
-                    QualityCheck.push(this.value);
-                    
+                $('select[id="QualityCheck"]').each(function() {                    
+                    QualityCheck.push(this.value);                    
+                });                
+                $('input[id="tblRemarks"]').each(function() {                    
+                    Remarks.push(this.value);                    
                 });
-                
-                $('input[id="tblRemarks"]').each(function() {
-                    
-                    Remarks.push(this.value);
-                    
-                });
-                var urlRef = "Company_Inward.html";
-                debugger;
+                var urlRef = "Company_Inward.html";                
                 $.ajax({
                     type: "POST",
                     contentType: "application/json; charset=utf-8",
                     url: localStorage.getItem('WcfURL') + "/ToBeReceivedDetails",
                     data: "{'jobid':'" + JSON.stringify(jobid) + "','Invoice':'" + JSON.stringify(Invoice) + "','Parts':'" + JSON.stringify(Parts) + "','ServiceCharge':'" + JSON.stringify(ServiceCharge) + "','QualityCheck':'" + JSON.stringify(QualityCheck) + "','Remarks':'" + JSON.stringify(Remarks) + "','createdby':'" + localStorage.getItem('customerid') + "'}",
                     dataType: "json",
-                    async: true,
+                    async: false,
                     cache: false,
 
                     success: function(response) {
+                        alert("success");
+                                $(location).attr('href', urlRef);
                         $.each(data.d, function(key, value) {
                             if (value.result == "1") {
                                 alert("success");
@@ -183,9 +172,7 @@
                             }
                         });
                     },
-                    error: function(data) {
-                        
-                        
+                    error: function(data) {                                                
                     }
                 });
             });
