@@ -79,10 +79,10 @@ $("#btnsubmit").button('disable');
                                     $("#InvoiceTable").append(tr);
                                     tr = $("<tr></tr>");
                                     if (data.NewDataSet.Table.M_Invoice == "0" || data.NewDataSet.Table.M_QC == "" || data.NewDataSet.Table.M_PartsRate == "0" || data.NewDataSet.Table.M_ServiceCharge == "0" || data.NewDataSet.Table.M_Remarks == "0") {
-                                        tr.append("<td><a href='#popupDialog1' data-rel='popup' onclick='popup(" + data.NewDataSet.Table.Id + ")'>" + "<span id='tbljobid'>" + data.NewDataSet.Table.Id + "</span>" + "</a></td>" +
+                                        tr.append("<td><a href='#popupDialog1' data-rel='dialog' onclick='popup(" + data.NewDataSet.Table.Id + ")'>" + "<span id='tbljobid'>" + data.NewDataSet.Table.Id + "</span>" + "</a></td>" +
                                             "<td><input type='text' id='tblInvoice' >" + "</td><td><input type='number' id='tblParts' >" + "</td><td><input type='number' id='tbtSer' >" + "</td><td><select name='QualityCheck' id='QualityCheck' data-role='slider'><option value='1'>Pass</option><option value='0'>Fail</option></select>" + "</td><td><input type='text' id='tblRemarks' >" + "</td>");
                                     } else {
-                                        tr.append("<td><a href='#popupDialog1' data-rel='popup' onclick='popup(" + data.NewDataSet.Table.Id + ")'>" + "<span id='tbljobid'>" + data.NewDataSet.Table.Id + "</span>" + "</a></td>" +
+                                        tr.append("<td><a href='#popupDialog1' data-rel='dialog' onclick='popup(" + data.NewDataSet.Table.Id + ")'>" + "<span id='tbljobid'>" + data.NewDataSet.Table.Id + "</span>" + "</a></td>" +
                                             "<td><input type='text' id='tblInvoice' value=" + data.NewDataSet.Table.M_Invoice + " disabled>" + "</td><td><input type='number' id='tblParts' value=" + data.NewDataSet.Table.M_PartsRate + " disabled>" + "</td><td><input type='number' id='tbtSer' value=" + data.NewDataSet.Table.M_ServiceCharge + " disabled>" + "</td><td><select name='QualityCheck' id='QualityCheck' data-role='slider' disabled><option value='1'>Pass</option><option value='0'>Fail</option></select>" + "</td><td><input type='text' id='tblRemarks' value=" + data.NewDataSet.Table.M_Remarks + " disabled>" + "</td>");
                                     }
                                     $("#InvoiceTable").append(tr);
@@ -102,10 +102,10 @@ $("#btnsubmit").button('disable');
                                     for (var i = 0; i < data.NewDataSet.Table.length; i++) {
                                     tr = $("<tr></tr>");
                                         if (data.NewDataSet.Table[i].M_Invoice == "0" || data.NewDataSet.Table[i].M_QC == "" || data.NewDataSet.Table[i].M_PartsRate == "0" || data.NewDataSet.Table[i].M_ServiceCharge == "0" || data.NewDataSet.Table[i].M_Remarks == "0") {
-                                          tr.append("<td><a href='#popupDialog1' data-rel='popup' onclick='popup(" + data.NewDataSet.Table[i].Id + ")'>" + "<span id='tbljobid'>" + data.NewDataSet.Table[i].Id + "</span>" + "</a></td>" +
+                                          tr.append("<td><a href='#popupDialog1' data-rel='dialog' onclick='popup(" + data.NewDataSet.Table[i].Id + ")'>" + "<span id='tbljobid'>" + data.NewDataSet.Table[i].Id + "</span>" + "</a></td>" +
                                             "<td><input type='text' id='tblInvoice' >" + "</td><td><input type='number' id='tblParts' >" + "</td><td><input type='number' id='tbtSer' >" + "</td><td><select name='QualityCheck' id='QualityCheck' data-role='slider'><option value='1'>Pass</option><option value='0'>Fail</option></select>" + "</td><td><input type='text' id='tblRemarks' >" + "</td>");
                                     } else {
-                                        tr.append("<td><a href='#popupDialog1' data-rel='popup' onclick='popup(" + data.NewDataSet.Table[i].Id + ")'>" + "<span id='tbljobid'>" + data.NewDataSet.Table[i].Id + "</span>" + "</a></td>" +
+                                        tr.append("<td><a href='#popupDialog1' data-rel='dialog' onclick='popup(" + data.NewDataSet.Table[i].Id + ")'>" + "<span id='tbljobid'>" + data.NewDataSet.Table[i].Id + "</span>" + "</a></td>" +
                                             "<td><input type='text' id='tblInvoice' value=" + data.NewDataSet.Table[i].M_Invoice + " disabled>" + "</td><td><input type='number' id='tblParts' value=" + data.NewDataSet.Table[i].M_PartsRate + " disabled>" + "</td><td><input type='number' id='tbtSer' value=" + data.NewDataSet.Table[i].M_ServiceCharge + " disabled>" + "</td><td><select name='QualityCheck' id='QualityCheck' data-role='slider' disabled><option value='1'>Pass</option><option value='0'>Fail</option></select>" + "</td><td><input type='text' id='tblRemarks' value=" + data.NewDataSet.Table[i].M_Remarks + " disabled>" + "</td>");
                                     } $("#InvoiceTable").append(tr);
 
@@ -237,21 +237,7 @@ $("#btnsubmit").button('disable');
             }
         });
     </script>
-    <style>        
-        #popupPanel-popup {
-            right: 0 !important;
-            left: auto !important;
-}
-#popupPanel {
-    width: 200px;
-    border: 1px solid #000;
-    border-right:none;
-    background: rgba(0,0,0,.5);
-    margin: -1px 0;
-}
-#popupPanel .ui-btn {
-    margin: 2em 15px;
-}
+    <style>         
 .error {
     color: #f33;
     display: block;
@@ -327,68 +313,57 @@ $("#btnsubmit").button('disable');
 			            </fieldset>
 			        </li>
                     </ul>
-			    </div>
-			
-                <div data-role="popup" id="popupDialog1" data-overlay-theme="a" data-theme="c" style="max-width:400px;" class="ui-corner-all">
-			<div data-role="header" data-theme="a" class="ui-corner-top">
-				<h1>Job Details</h1>
-			</div>
-			<div data-role="content" data-theme="d" class="ui-corner-bottom ui-content">
-				<h3 class="ui-title"></h3>
-				  <ul data-role="listview" data-inset="true">
-		      <li data-role="fieldcontain">
-		          <label for="search">Job Id</label>
-		          <input type="text" name="password" id="txtJobIdP" disabled/>
-		      </li>
-                                  <li data-role="fieldcontain">
-    <label for="lblCustName">Customer Name</label>
-    <input type="text"  id="txtCustName" name="txtCustname" disabled>
-  </li>
-
-	                        <li data-role="fieldcontain">
-	                            <label for="search">Phone Number</label>
-	                            <input type="text" name="password" id="txtPhone" value=""   disabled/>
-	                        </li>            
-	                        <li data-role="fieldcontain">
-	                            <label for="name">Brand</label>
-	                            <input type="text" name="name" id="txtBrand" value=""   disabled/>
-	                        </li>
-	                        <li data-role="fieldcontain">
-	                            <label for="name">Model</label>
-	                            <input type="text" name="name" id="txtModel" value=""   disabled/>
-	                        </li>
-	                        <li data-role="fieldcontain">
-	                            <label for="name">Warranty</label>
-	                            <input type="text" name="name" id="txtWarranty" value=""   disabled/>
-	                        </li>
-	                        <li data-role="fieldcontain">
-	                            <label for="textarea">Problems</label>
-	                            <textarea cols="40" rows="8" name="textarea" id="txtProblem"  disabled></textarea>
-	                        </li>									
-	                        <li data-role="fieldcontain">
-	                            <label for="textarea">Complaints</label>
-	                            <textarea cols="40" rows="8" name="textarea" id="txtComplaints"  disabled></textarea>
-	                        </li>						
-                            	<li data-role="fieldcontain">
-	                            <label for="textarea">Parts</label>
-	                            <textarea cols="40" rows="8" name="textarea" id="txtParts"  disabled></textarea>
-                            	</li>	
-                                <li data-role="fieldcontain">
-	                            <label for="textarea">Service Charge</label>
-	                            <textarea cols="40" rows="8" name="textarea" id="txtServiceCharge"  required></textarea>
-                            	</li>		      
-	                        <li data-role="fieldcontain">
-	                            <label for="name">Estimated Cost:</label>
-	                            <input type="text" name="name" id="txtCost" disabled/>
-	                        </li>            	                        
-	                    </ul>							
-			</div>
-		</div>   
+			    </div>			             
 </form>
 		</div>
         <div data-role="footer" data-position="fixed">
          <h4>Inventrace Powered By CAS</h4>
     </div> 
 	</div>
+       <div data-role="page" id="popupDialog1">
+			<div data-role="header" data-theme="e">
+		<h1>Job Details</h1>
+	</div><!-- /header -->
+			<div data-role="content" data-theme="d" >				
+				  <ul data-role="listview" data-inset="true">
+				      <li data-role="fieldcontain">
+				          <table width="100%">
+				              <tr>
+				              <td><label for="search">Job Id</label></td>
+				              <td><input type="text" name="password" id="txtJobIdP" disabled/></td>
+		      
+				              <td><label for="lblCustName">Customer Name</label></td>
+				              <td><input type="text"  id="txtCustName" name="txtCustname" disabled></td>
+                              </tr>
+				          
+				      <tr>
+	                            <td><label for="search">Phone</label></td>
+				              <td><input type="text" name="password" id="txtPhone" value=""   disabled/></td>
+                              <td><label for="name">Warranty</label></td>
+				              <td><input type="text" name="name" id="txtWarranty" value=""   disabled/></td>
+                              </tr>
+	                     <tr>   
+	                            <td><label for="name">Brand</label></td>
+	                            <td><input type="text" name="name" id="txtBrand" value=""   disabled/></td>
+	                        
+	                            <td><label for="name">Model</label></td>
+	                            <td><input type="text" name="name" id="txtModel" value=""   disabled/></td>
+	                        </tr>
+	                            </table>
+                          <table>
+				              <tr>
+				                  <td><label for="textarea">Problems</label></td>
+				                  <td style="width: 100%"><textarea cols="40" rows="8" name="textarea" id="txtProblem"  disabled></textarea></td>
+				              </tr>
+                              <tr>
+	                            <td><label for="textarea">Complaints</label></td>
+				              <td style="width: 100%"><textarea cols="40" rows="8" name="textarea" id="txtComplaints"  disabled></textarea></td>
+                              </tr>
+                          </table>
+	                        </li>						
+                            	   	                        
+	                    </ul>							
+			</div>
+		</div>   
 </body>
 </html>
