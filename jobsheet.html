@@ -11,202 +11,211 @@
      <script type="text/javascript" src="Script/jquery.validate.min.js"></script>
   <script type="text/javascript">
       $(document).ready(function() {
-          var id = localStorage.getItem('customerid');
-          var url = "jobsheet.html";          
-          $.ajax({
-              type: "POST",
-              contentType: "application/json; charset=utf-8",
-              url: localStorage.getItem('WcfURL') + "/BindState",
-              data: "{}",
-              dataType: "json",
-              success: function(data) {                  
-                  $.each(data.d, function(key, value) {                      
-                      $("#ddpState option[value='']").remove();
-                      $("#ddpState").append($("<option></option>").val(value.State_Id).html(value.State_Name));
-                      $("#ddpState")[0].selectedIndex = -1;
-                  });
-              },
-              error: function(Result) {                  
-              }
-          });
+      var id = localStorage.getItem('customerid');
+            var ur = "index.html";
+          if (id == "0") {
+              
+              $(location).attr('href', ur);
+          } else {
+              
 
-          $.ajax({
-              type: "POST",
-              contentType: "application/json; charset=utf-8",
-              url: localStorage.getItem('WcfURL') + "/BindBrand",
-              data: "{}",
-              dataType: "json",
-              success: function(data) {
+              var id = localStorage.getItem('customerid');
+              var url = "jobsheet.html";
+              $.ajax({
+                  type: "POST",
+                  contentType: "application/json; charset=utf-8",
+                  url: localStorage.getItem('WcfURL') + "/BindState",
+                  data: "{}",
+                  dataType: "json",
+                  success: function(data) {
+                      $.each(data.d, function(key, value) {
+                          $("#ddpState option[value='']").remove();
+                          $("#ddpState").append($("<option></option>").val(value.State_Id).html(value.State_Name));
+                          $("#ddpState")[0].selectedIndex = -1;
+                      });
+                  },
+                  error: function(Result) {
+                  }
+              });
 
-                  $.each(data.d, function(key, value) {
-                      $("#ddpBrand").append($("<option></option>").val(value.BrandID).html(value.BrandName));
-                      $("#ddpBrand option[value='']").remove();
-                      $("#ddpBrand")[0].selectedIndex = -1;
-                  });
-              },
-              error: function(Result) {
-                  
-                  
-              }
-          });
+              $.ajax({
+                  type: "POST",
+                  contentType: "application/json; charset=utf-8",
+                  url: localStorage.getItem('WcfURL') + "/BindBrand",
+                  data: "{}",
+                  dataType: "json",
+                  success: function(data) {
 
-          $.ajax({
-              type: "POST",
-              contentType: "application/json; charset=utf-8",
-              url: localStorage.getItem('WcfURL') + "/BindWarranty",
-              data: "{}",
-              dataType: "json",
-              success: function(data) {
-                  $.each(data.d, function(key, value) {
-                      $("#ddpWarranty").append($("<option></option>").val(value.WarrantyID).html(value.WarrantyName));
-                      $("#ddpWarranty option[value='']").remove();
-                      $("#ddpWarranty")[0].selectedIndex = -1;
-                  });
-              },
-              error: function(Result) {
-                  
-                  
-              }
-          });
-          $.ajax({
-              type: "POST",
-              contentType: "application/json; charset=utf-8",
-              url: localStorage.getItem('WcfURL') + "/BindJob",
-              data: "{}",
-              dataType: "json",
-              success: function(data) {
-                  
-                  $.each(data.d, function(key, value) {
-                      $("#txtJobId").val(value.Job_ID);
-                  });
-              },
-              error: function(Result) {
-                  
-                  
-              }
-          });
-          $.ajax({
-              type: "POST",
-              contentType: "application/json; charset=utf-8",
-              url: localStorage.getItem('WcfURL') + "/BindServiceEngg",
-              data: "{}",
-              dataType: "json",
-              success: function(data) {
-                  
-                  $.each(data.d, function(key, value) {
-                      $("#ddpServiceEngg").append($("<option></option>").val(value.custrole).html(value.firstname));
-                      $("#ddpServiceEngg option[value='']").remove();
-                      $("#ddpServiceEngg")[0].selectedIndex = -1;
-                  });
-              },
-              error: function(Result) {
-                  
-                  
-              }
-          });          
-          $.validator.addMethod("maxDate", function(value, element) {
-	var curDate = new Date();
-    
-    var inputDate = new Date(value);
-    if (inputDate < curDate)
-		return true;
-	return false;
-}, "Invalid Date!");
+                      $.each(data.d, function(key, value) {
+                          $("#ddpBrand").append($("<option></option>").val(value.BrandID).html(value.BrandName));
+                          $("#ddpBrand option[value='']").remove();
+                          $("#ddpBrand")[0].selectedIndex = -1;
+                      });
+                  },
+                  error: function(Result) {
+
+
+                  }
+              });
+
+              $.ajax({
+                  type: "POST",
+                  contentType: "application/json; charset=utf-8",
+                  url: localStorage.getItem('WcfURL') + "/BindWarranty",
+                  data: "{}",
+                  dataType: "json",
+                  success: function(data) {
+                      $.each(data.d, function(key, value) {
+                          $("#ddpWarranty").append($("<option></option>").val(value.WarrantyID).html(value.WarrantyName));
+                          $("#ddpWarranty option[value='']").remove();
+                          $("#ddpWarranty")[0].selectedIndex = -1;
+                      });
+                  },
+                  error: function(Result) {
+
+
+                  }
+              });
+              $.ajax({
+                  type: "POST",
+                  contentType: "application/json; charset=utf-8",
+                  url: localStorage.getItem('WcfURL') + "/BindJob",
+                  data: "{}",
+                  dataType: "json",
+                  success: function(data) {
+
+                      $.each(data.d, function(key, value) {
+                          $("#txtJobId").val(value.Job_ID);
+                      });
+                  },
+                  error: function(Result) {
+
+
+                  }
+              });
+              $.ajax({
+                  type: "POST",
+                  contentType: "application/json; charset=utf-8",
+                  url: localStorage.getItem('WcfURL') + "/BindServiceEngg",
+                  data: "{}",
+                  dataType: "json",
+                  success: function(data) {
+
+                      $.each(data.d, function(key, value) {
+                          $("#ddpServiceEngg").append($("<option></option>").val(value.custrole).html(value.firstname));
+                          $("#ddpServiceEngg option[value='']").remove();
+                          $("#ddpServiceEngg")[0].selectedIndex = -1;
+                      });
+                  },
+                  error: function(Result) {
+
+
+                  }
+              });
+              $.validator.addMethod("maxDate", function(value, element) {
+                  var curDate = new Date();
+
+                  var inputDate = new Date(value);
+                  if (inputDate < curDate)
+                      return true;
+                  return false;
+              }, "Invalid Date!");
               $("#jobsheet").validate({
                   rules: {
                       number: {
                           required: true,
                           minlength: 10,
                           maxlength: 12,
-                          
-                      },                  
-                  custname : {
-                  required:true
+
                       },
-                      email : {
-                  required:true,
-                  email:true
+                      custname: {
+                          required: true
                       },
-                      txtAddress1 : {
-                  required:true                  
+                      email: {
+                          required: true,
+                          email: true
                       },
-                      city : {
-                  required:true                  
+                      txtAddress1: {
+                          required: true
                       },
-                      state : {
-                  required:true                  
+                      city: {
+                          required: true
                       },
-                      pincode : {
-                  required:true  ,
-                  maxlength: 6,
+                      state: {
+                          required: true
+                      },
+                      pincode: {
+                          required: true,
+                          maxlength: 6,
                           minlength: 6,
                       },
-                      date : {
-                  required:true  ,
-                  date: true,
-            maxDate: true                
+                      date: {
+                          required: true,
+                          date: true,
+                          maxDate: true
                       },
-                      Brand : {
-                      required: true,
-                  },
-                  ddpModel : {
-                  required:true                  
+                      Brand: {
+                          required: true,
                       },
-                      warranty : {
-                  required:true                  
+                      ddpModel: {
+                          required: true
                       },
-                  txtProblems : {
-                  required:true                  
+                      warranty: {
+                          required: true
                       },
-                      txtRemarks : {
-                  required:true                  
+                      txtProblems: {
+                          required: true
                       },
-                      serviceengg : {
-                  required:true                  
+                      txtRemarks: {
+                          required: true
+                      },
+                      serviceengg: {
+                          required: true
                       },
                       txtBrand: {
-                          required:function(element) {
+                          required: function(element) {
                               return $("#ddpBrand").val() == "0";
                           }
                       },
                       txtModel: {
-                          required:function(element) {
+                          required: function(element) {
                               return $("#ddpModel").val() == "0";
                           }
                       },
                   },
-                        errorPlacement: function(error, element) {
+                  errorPlacement: function(error, element) {
                       error.appendTo(element.parent().parent().after());
                   },
                   messages: {
-                      number:"Enter Phone No",
-                      custname:"Enter Customer Name",
-                      email:"Enter E-mail Id",
-                      txtAddress1:"Enter Address",
-                      city:"Enter City",
-                      state:"Select state",
-                      pincode:"Enter pincode",
-                      date:"Enter Valid date",
-                      Brand:"Select Brand",
-                      ddpModel:"Select Model",
-                      warranty:"Select Warranty",
-                      txtProblems:"Enter the Problems",
-                      txtRemarks:"Enter the Remarks",
-                      serviceengg:"Select Service Engineer",
-                      txtBrand:"Enter the Brand Name",
-                      txtModel:"Enter the Model Name"
+                      number: "Enter Phone No",
+                      custname: "Enter Customer Name",
+                      email: "Enter E-mail Id",
+                      txtAddress1: "Enter Address",
+                      city: "Enter City",
+                      state: "Select state",
+                      pincode: "Enter pincode",
+                      date: "Enter Valid date",
+                      Brand: "Select Brand",
+                      ddpModel: "Select Model",
+                      warranty: "Select Warranty",
+                      txtProblems: "Enter the Problems",
+                      txtRemarks: "Enter the Remarks",
+                      serviceengg: "Select Service Engineer",
+                      txtBrand: "Enter the Brand Name",
+                      txtModel: "Enter the Model Name"
                   },
                   submitHandler: function(form) {
-                        
+
                       $.ajax({
                           type: "POST",
                           contentType: "application/json; charset=utf-8",
-                          url: localStorage.getItem('WcfURL') + "/JobSheet",                          
+                          url: localStorage.getItem('WcfURL') + "/JobSheet",
                           data: "{'phoneno':'" + parseInt($('#txtPhone').val(), 10) + "', 'job_id':'" + parseInt($('#txtJobId').val(), 10) + "', 'cust_name':'" + $('#txtCustName').val() + "', 'email':'" + $('#txtEmail').val() + "','address1':'" + $('#txtAddress1').val() + "', 'address2':'" + $('#txtAddress2').val() + "', 'city':'" + $('#txtCity').val() + "','state':'" + $('#ddpState option:selected').val() + "', 'pincode': '" + parseInt($('#txtPincode').val(), 10) + "','purchasedate':'" + $('#txtPurDate').val() + "', 'brand': '" + $('#ddpBrand  :selected').val() + "','brandddpname':'" + $('#ddpBrand option:selected').text() + "', 'brandname':'" + $('#txtBrand').val() + "','model':'" + $('#ddpModel  :selected').val() + "', 'modelddpname':'" + $('#ddpModel option:selected').text() + "', 'modelname':'" + $('#txtModel').val() + "', 'warranty':'" + $('#ddpWarranty option:selected').val() + "', 'problems':'" + $('#txtProblem').val() + "', 'remarks':'" + $('#txtRemarks').val() + "','serviveengg':'" + $('#ddpServiceEngg  :selected').val() + "', 'createdby':'" + localStorage.getItem('customerid') + "'}",
                           dataType: "json",
                           success: function(data) {
                               $.each(data.d, function(key, value) {
-                                  if (value.result == "1") {                                      
+                                  
+                                  if (value.result == "1") {
                                       alert("success");
                                       //                                      Location.reload(true);
                                       $(location).attr('href', url);
@@ -217,8 +226,8 @@
                               });
                           },
                           error: function(data) {
-                              
-                              
+
+
                           }
 
                       });
@@ -226,11 +235,12 @@
 
               });
 
-$("#clear").click(function(event) {
-              
-              location.reload(true);
-          });
-          });
+              $("#clear").click(function(event) {
+
+                  location.reload(true);
+              });
+          }
+      });
           
 //      
 //      $(function () {

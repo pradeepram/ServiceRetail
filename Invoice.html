@@ -11,59 +11,67 @@
      <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            var id = localStorage.getItem('customerid');
-            var url = "jobsheet.html";
-            $.ajax({
-                type: "POST",
-                contentType: "application/json; charset=utf-8",
-                url: "MyWebService.asmx/BindInvoice",
-                data: "{}",
-                dataType: "json",
-                success: function (data) {
-                    
-                    $.each(data.d, function (key, value) {
-                        $("#txtInvNo").val(value.invno);
-                    });
-                },
-                error: function (Result) {
-                    
-                    
-                }
-            });
-
-            $('#txtJobId').change(function () {
+         var id = localStorage.getItem('customerid');
+            var ur = "index.html";
+            if (id == "0") {
                 
+                $(location).attr('href', ur);
+            } else {
+                
+
+                var id = localStorage.getItem('customerid');
+                var url = "jobsheet.html";
                 $.ajax({
                     type: "POST",
                     contentType: "application/json; charset=utf-8",
-                    url: "MyWebService.asmx/GetInvDetails",
-                    data: "{'JobID': '" + $('input[id=txtJobId]').val() + "'}",
-
+                    url: "MyWebService.asmx/BindInvoice",
+                    data: "{}",
                     dataType: "json",
+                    success: function(data) {
 
-                    success: function (data) {
-                        
-                        $.each(data.d, function (key, value) {
-                            
-                            $("#txtCustName").val(value.custname);
-                            
-                            $("#txtPhone").val(value.phoneno);
-                            
-                            $("#txtEmail").val(value.email);
-                            $("#txtAddress1").val(value.address);
-                            $("#txtParts").val(value.partsname);
-                            $("#txtTotal").val(value.amount);
-                            
+                        $.each(data.d, function(key, value) {
+                            $("#txtInvNo").val(value.invno);
                         });
                     },
-                    error: function (data) {
-                        
-                        
+                    error: function(Result) {
+
+
                     }
-
                 });
-            });
 
+                $('#txtJobId').change(function() {
+
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        url: "MyWebService.asmx/GetInvDetails",
+                        data: "{'JobID': '" + $('input[id=txtJobId]').val() + "'}",
+
+                        dataType: "json",
+
+                        success: function(data) {
+
+                            $.each(data.d, function(key, value) {
+
+                                $("#txtCustName").val(value.custname);
+
+                                $("#txtPhone").val(value.phoneno);
+
+                                $("#txtEmail").val(value.email);
+                                $("#txtAddress1").val(value.address);
+                                $("#txtParts").val(value.partsname);
+                                $("#txtTotal").val(value.amount);
+
+                            });
+                        },
+                        error: function(data) {
+
+
+                        }
+
+                    });
+                });
+            }
         });
         </script>
           <script type="text/javascript">

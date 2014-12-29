@@ -11,74 +11,83 @@
     <link rel="stylesheet" href="Script/jquery.dataTables.min.css"/>
     <script type="text/javascript" src="Script/jquery.dataTables.min.js"></script>
     <script type="text/javascript">
-        $(document).ready(function () {               
-            $.ajax({
-                type: "POST",
-                contentType: "application/json; charset:utf-8",
-                url: localStorage.getItem('WcfURL') + "/GetOrderDetails",
-                data:"{}",
-                dataType: "json",                
-                async: true,
-                cache: false,
+        $(document).ready(function () { 
+        var id = localStorage.getItem('customerid');
+            var ur = "index.html";
+            if (id == "0") {
+                
+                $(location).attr('href', ur);
+            } else {
+                
 
-                success: function(response) {
-                    
-                    var data = jQuery.parseJSON(response.d.toString());                
-                    
-                    if (data.NewDataSet.Table.length == undefined) {
-                    var tr;
-                    tr = $("<thead>");
-                    tr.append("<tr><th style='text-align:left'>Job_ID</th><th style='text-align:left'>OrderDate</th><th style='text-align:left'>DueDate</th><th style='text-align:left'>Status</th></tr>"); // bind table header row
-                    $("#OrderTable").append(tr);
-                    tr.append("</thead>");
-                    $("#OrderTable").append(tr);
-                    
-                    var tbody = $("<tbody>");
-                    $("#OrderTable").append(tbody);
-                    $("#OrderTable").append(tr);                    
-                    
-                        tr = $("<tr></tr>");
-                        tr.append("<td><a href='#' data-rel='dialog' onclick='popup(" + data.NewDataSet.Table.Job_ID + ")'>" + data.NewDataSet.Table.Job_ID + "</a></td><td>" +
-                            data.NewDataSet.Table.OrderDate + "</td><td>" +
-                            data.NewDataSet.Table.DueDate + "</td><td>" +
-                            data.NewDataSet.Table.Status + "</td>");
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset:utf-8",
+                    url: localStorage.getItem('WcfURL') + "/GetOrderDetails",
+                    data: "{}",
+                    dataType: "json",
+                    async: true,
+                    cache: false,
 
-                        $("#OrderTable").append(tr);
-                        
-                    } else {
-                    var tr;
-                    tr = $("<thead>");
-                    tr.append("<tr><th style='text-align:left'>Job_ID</th><th style='text-align:left'>OrderDate</th><th style='text-align:left'>DueDate</th><th style='text-align:left'>Status</th></tr>"); // bind table header row
-                    $("#OrderTable").append(tr);
-                    tr.append("</thead>");
-                    $("#OrderTable").append(tr);
-                    
-                    var tbody = $("<tbody>");
-                    $("#OrderTable").append(tbody);
-                    $("#OrderTable").append(tr);                    
-                    tr = $("<tr></tr>");
-                        for (var i = 0; i < data.NewDataSet.Table.length; i++) {                        
+                    success: function(response) {
+
+                        var data = jQuery.parseJSON(response.d.toString());
+
+                        if (data.NewDataSet.Table.length == undefined) {
+                            var tr;
+                            tr = $("<thead>");
+                            tr.append("<tr><th style='text-align:left'>Job_ID</th><th style='text-align:left'>OrderDate</th><th style='text-align:left'>DueDate</th><th style='text-align:left'>Status</th></tr>"); // bind table header row
+                            $("#OrderTable").append(tr);
+                            tr.append("</thead>");
+                            $("#OrderTable").append(tr);
+
+                            var tbody = $("<tbody>");
+                            $("#OrderTable").append(tbody);
+                            $("#OrderTable").append(tr);
+
                             tr = $("<tr></tr>");
-                            tr.append("<td><a href='#popup' data-rel='dialog' onclick='popup(" + data.NewDataSet.Table[i].Job_ID + ")' >" + data.NewDataSet.Table[i].Job_ID + "</a></td><td>" +
-                                data.NewDataSet.Table[i].OrderDate + "</td><td>" +
-                                data.NewDataSet.Table[i].DueDate + "</td><td>" +
-                                data.NewDataSet.Table[i].Status + "</td>");
-                            $("#OrderTable").append(tr);                        
+                            tr.append("<td><a href='#popup' data-rel='dialog' onclick='popup(" + data.NewDataSet.Table.Job_ID + ")'>" + data.NewDataSet.Table.Job_ID + "</a></td><td>" +
+                                data.NewDataSet.Table.OrderDate + "</td><td>" +
+                                data.NewDataSet.Table.DueDate + "</td><td>" +
+                                data.NewDataSet.Table.Status + "</td>");
+
+                            $("#OrderTable").append(tr);
+
+                        } else {
+                            var tr;
+                            tr = $("<thead>");
+                            tr.append("<tr><th style='text-align:left'>Job_ID</th><th style='text-align:left'>OrderDate</th><th style='text-align:left'>DueDate</th><th style='text-align:left'>Status</th></tr>"); // bind table header row
+                            $("#OrderTable").append(tr);
+                            tr.append("</thead>");
+                            $("#OrderTable").append(tr);
+
+                            var tbody = $("<tbody>");
+                            $("#OrderTable").append(tbody);
+                            $("#OrderTable").append(tr);
+                            tr = $("<tr></tr>");
+                            for (var i = 0; i < data.NewDataSet.Table.length; i++) {
+                                tr = $("<tr></tr>");
+                                tr.append("<td><a href='#popup' data-rel='dialog' onclick='popup(" + data.NewDataSet.Table[i].Job_ID + ")' >" + data.NewDataSet.Table[i].Job_ID + "</a></td><td>" +
+                                    data.NewDataSet.Table[i].OrderDate + "</td><td>" +
+                                    data.NewDataSet.Table[i].DueDate + "</td><td>" +
+                                    data.NewDataSet.Table[i].Status + "</td>");
+                                $("#OrderTable").append(tr);
+                            }
                         }
+
+                        $('#OrderTable').append(tbody);
+                        $('#OrderTable').dataTable({
+                            "bInfo": false,
+                            "bLengthChange": false,
+                        });
+                    },
+                    error: function(response) {
                     }
-                    
-                    $('#OrderTable').append(tbody); 
-                    $('#OrderTable').dataTable({
-                        "bInfo":false,
-                        "bLengthChange":false,
-                    }); 
-                },
-                error: function (response) {                                       
-                }
-            });                                                
+                });
+            }
         });
         function popup(e) {
-            debugger;
+            
             $("#OrderTable thead").remove();
                     $("#ParticularJobTable tr").remove();
                     $("#ParticularJobTable th").remove();
@@ -87,7 +96,7 @@
             var jobid = e;
             localStorage.removeItem(jobid);                           
             localStorage.setItem('jobid', jobid);
-            debugger;
+            
             $.ajax({
                 type: "POST",
                 contentType: "application/json; charset:utf-8",
@@ -132,7 +141,7 @@
                     $("#ParticularJobTable").append(tbody);
                     $("#ParticularJobTable").append(tr);                    
                     tr = $("<tr></tr>");
-                        debugger;
+                        
                         for (var i = 0; i < data.NewDataSet.Table.length; i++) {                        
                             tr = $("<tr></tr>");
                             tr.append("<td>"+ data.NewDataSet.Table[i].Job_ID +"</td><td>" +
@@ -234,11 +243,7 @@
                          <table  id="ParticularJobTable"  class="table table-striped">	                        
                         </table>                                
 		  </ul>							
-	</div><!-- /content -->
-	
-	<div data-role="footer">
-		<h4>Inventrace Powered By CAS</h4>
-	</div><!-- /footer -->
+	</div><!-- /content -->		
 </div><!-- /page popup -->
 </body>
 </html>

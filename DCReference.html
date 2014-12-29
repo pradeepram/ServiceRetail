@@ -13,72 +13,58 @@
     <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>  
     <script type="text/javascript">
         $(document).ready(function() {
-            debugger;
-            jobid = new Array();
-            $.ajax({
-                type: "POST",
-                contentType: "application/json; charset=utf-8",
-                url: localStorage.getItem('WcfURL') + "/BindDc",
-                data: "{}",
-                dataType: "json",
-                success: function(data) {
-                    $.each(data.d, function(key, value) {
-                        // $("#ddpState").prepend("");
-                        //                        $("#ddpDC option:first").attr('selected', 'selected');
-                        $("#ddpDC option[value='']").remove();
-                        $("#ddpDC").append($("<option></option>").val(value.DC_Id).html(value.DC_Id));
-                        $("#ddpDC")[0].selectedIndex = -1;
-                    });
-                },
-                error: function(Result) {
+                   var id = localStorage.getItem('customerid');
+            var ur = "index.html";
+            if (id == "0") {
+                
+                $(location).attr('href', ur);
+            } else {
+                
 
 
-                }
-            });
-            $("#ddpDC").change(function() {
+                jobid = new Array();
                 $.ajax({
                     type: "POST",
-                    contentType: "application/json; charset:utf-8",
-                    url: localStorage.getItem('WcfURL') + "/DcJobDetails",
-                    data: "{'DcNumber':'" + $('#ddpDC :selected').val() + "'}",
+                    contentType: "application/json; charset=utf-8",
+                    url: localStorage.getItem('WcfURL') + "/BindDc",
+                    data: "{}",
                     dataType: "json",
-                    async: true,
-                    cache: false,
+                    success: function(data) {
+                        $.each(data.d, function(key, value) {
+                            // $("#ddpState").prepend("");
+                            //                        $("#ddpDC option:first").attr('selected', 'selected');
+                            $("#ddpDC option[value='']").remove();
+                            $("#ddpDC").append($("<option></option>").val(value.DC_Id).html(value.DC_Id));
+                            $("#ddpDC")[0].selectedIndex = -1;
+                        });
+                    },
+                    error: function(Result) {
 
-                    success: function(response) {
-                        $("#jobid thead").remove();
-                        $("#jobid tr").remove();
-                        $("#jobid th").remove();
-                        $("#jobid tbody").remove();
-                        $("#jobid td").remove();
-                        debugger;
 
-                        var data = jQuery.parseJSON(response.d.toString());
-                        if (data.NewDataSet.Table.length == undefined) {
-                            debugger;
-                            var tr;
-                            tr = $("<thead>");
-                            tr.append("<tr><th style='text-align:left'>CompanyReferenceNo</th><th style='text-align:left'>JobID</th></tr>"); // bind table header row
-                            $("#jobid").append(tr);
-                            tr.append("</thead>");
-                            $("#jobid").append(tr);
+                    }
+                });
+                $("#ddpDC").change(function() {
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json; charset:utf-8",
+                        url: localStorage.getItem('WcfURL') + "/DcJobDetails",
+                        data: "{'DcNumber':'" + $('#ddpDC :selected').val() + "'}",
+                        dataType: "json",
+                        async: true,
+                        cache: false,
 
-                            var tbody = $("<tbody>");
-                            $("#jobid").append(tbody);
-                            $("#jobid").append(tr);
-                            tr = $("<tr></tr>");
+                        success: function(response) {
+                            $("#jobid thead").remove();
+                            $("#jobid tr").remove();
+                            $("#jobid th").remove();
+                            $("#jobid tbody").remove();
+                            $("#jobid td").remove();
+                            
 
-                            jobid.push(data.NewDataSet.Table.Job_Id);
-                            tr = $("<tr></tr>");
-                            if (data.NewDataSet.Table.ReferenceNo == "0") {
-                                tr.append("<td><input type='text' id='tblRef' >" + "</td><td>" + data.NewDataSet.Table.Job_Id + "</td>");
-                                $("#jobid").append(tr);
-                            } else {
-                                tr.append("<td><input type='text' id='tblRef' value=" + data.NewDataSet.Table.ReferenceNo + " disabled >" + "</td><td>" + data.NewDataSet.Table.Job_Id + "</td>");
-                                $("#jobid").append(tr);
-                            }
-                        } else {
-                            var tr;
+                            var data = jQuery.parseJSON(response.d.toString());
+                            if (data.NewDataSet.Table.length == undefined) {
+                                
+                                var tr;
                                 tr = $("<thead>");
                                 tr.append("<tr><th style='text-align:left'>CompanyReferenceNo</th><th style='text-align:left'>JobID</th></tr>"); // bind table header row
                                 $("#jobid").append(tr);
@@ -90,119 +76,141 @@
                                 $("#jobid").append(tr);
                                 tr = $("<tr></tr>");
 
-                            for (var i = 0; i < data.NewDataSet.Table.length; i++) {
-                                
-                                jobid.push(data.NewDataSet.Table[i].Job_Id);
+                                jobid.push(data.NewDataSet.Table.Job_Id);
                                 tr = $("<tr></tr>");
-                                if (data.NewDataSet.Table[i].ReferenceNo == "0") {
-                                    tr.append("<td><input type='text' id='tblRef' >" + "</td><td>" + data.NewDataSet.Table[i].Job_Id + "</td>");
+                                if (data.NewDataSet.Table.ReferenceNo == "0") {
+                                    tr.append("<td><input type='text' id='tblRef' >" + "</td><td>" + data.NewDataSet.Table.Job_Id + "</td>");
                                     $("#jobid").append(tr);
                                 } else {
-                                    tr.append("<td><input type='text' id='tblRef' value=" + data.NewDataSet.Table[i].ReferenceNo + " disabled>" + "</td><td>" + data.NewDataSet.Table[i].Job_Id + "</td>");
+                                    tr.append("<td><input type='text' id='tblRef' value=" + data.NewDataSet.Table.ReferenceNo + " disabled >" + "</td><td>" + data.NewDataSet.Table.Job_Id + "</td>");
                                     $("#jobid").append(tr);
                                 }
+                            } else {
+                                var tr;
+                                tr = $("<thead>");
+                                tr.append("<tr><th style='text-align:left'>CompanyReferenceNo</th><th style='text-align:left'>JobID</th></tr>"); // bind table header row
+                                $("#jobid").append(tr);
+                                tr.append("</thead>");
+                                $("#jobid").append(tr);
+
+                                var tbody = $("<tbody>");
+                                $("#jobid").append(tbody);
+                                $("#jobid").append(tr);
+                                tr = $("<tr></tr>");
+
+                                for (var i = 0; i < data.NewDataSet.Table.length; i++) {
+
+                                    jobid.push(data.NewDataSet.Table[i].Job_Id);
+                                    tr = $("<tr></tr>");
+                                    if (data.NewDataSet.Table[i].ReferenceNo == "0") {
+                                        tr.append("<td><input type='text' id='tblRef' >" + "</td><td>" + data.NewDataSet.Table[i].Job_Id + "</td>");
+                                        $("#jobid").append(tr);
+                                    } else {
+                                        tr.append("<td><input type='text' id='tblRef' value=" + data.NewDataSet.Table[i].ReferenceNo + " disabled>" + "</td><td>" + data.NewDataSet.Table[i].Job_Id + "</td>");
+                                        $("#jobid").append(tr);
+                                    }
+                                }
                             }
+                            $('#jobid').append(tbody);
+                            $('#jobid').dataTable({
+                                "bInfo": false,
+                                "bLengthChange": false,
+                                "bPaginate": false,
+                                "bFilter": false,
+                                "destroy": true
+
+                            });
+                        },
+                        error: function(response) {
                         }
-                        $('#jobid').append(tbody);
-                        $('#jobid').dataTable({
-                            "bInfo": false,
-                            "bLengthChange": false,
-                            "bPaginate": false,
-                            "bFilter": false,
-                            "destroy": true
-
-                        });
-                    },
-                    error: function(response) {
-                    }
+                    });
                 });
-            });
-          $("#submit").click(function() {
-                debugger;
-                $("#dcRef").validate({
-                    rules: {
-                        DC: {
-                            required: true
-                        },
-                    },
-                    errorPlacement: function(error, element) {
-                      error.appendTo(element.parent().parent().after());
-                  },
-                  messages: {
-                      
-                      DC:"Select DC",                                           
-                  },
-                    submitHandler: function(form) {
-                        var selectedLanguage = new Array();
-                        $('input[id="tblRef"]').each(function() {
-                            selectedLanguage.push(this.value);
-                        });
-                        var urlref = "DCReference.html";
-                        $.ajax({
-                            type: "POST",
-                            contentType: "application/json; charset=utf-8",
-                            url: localStorage.getItem('WcfURL') + "/DcRefernceNo",
-                            data: "{'JobID':'" + JSON.stringify(jobid) + "','ReferenceNo':'" + JSON.stringify(selectedLanguage) + "','createdby': '" + localStorage.getItem('customerid') + "'}",
-                            dataType: "json",
-
-                            success: function(data) {
-
-                                $.each(data.d, function(key, value) {
-                                    if (value.result == "1") {
-                                        alert("success");
-                                        $(location).attr('href', urlref);
-                                    } else {
-                                        alert("success");
-                                        $(location).attr('href', urlref);
-                                    }
-                                });
+                $("#submit").click(function() {
+                    
+                    $("#dcRef").validate({
+                        rules: {
+                            DC: {
+                                required: true
                             },
-                            error: function(data) {
-                            }
-                        });
-                    }
-                });
-            });
-            $("#Cancel").click(function() {
-                $("#dcRef").validate({
-                    rules: {
-                        DC: {
-                            required: true
                         },
-                    },
-                    errorPlacement: function(error, element) {
-                      error.appendTo(element.parent().parent().after());
-                  },
-                  messages: {
-                      DC:"Select DC ",                                                              
-                  },
-                    submitHandler: function(form) {
+                        errorPlacement: function(error, element) {
+                            error.appendTo(element.parent().parent().after());
+                        },
+                        messages: {
+                            DC: "Select DC",
+                        },
+                        submitHandler: function(form) {
+                            var selectedLanguage = new Array();
+                            $('input[id="tblRef"]').each(function() {
+                                selectedLanguage.push(this.value);
+                            });
+                            var urlref = "DCReference.html";
+                            $.ajax({
+                                type: "POST",
+                                contentType: "application/json; charset=utf-8",
+                                url: localStorage.getItem('WcfURL') + "/DcRefernceNo",
+                                data: "{'JobID':'" + JSON.stringify(jobid) + "','ReferenceNo':'" + JSON.stringify(selectedLanguage) + "','createdby': '" + localStorage.getItem('customerid') + "'}",
+                                dataType: "json",
 
-                        $.ajax({
-                            type: "POST",
-                            contentType: "application/json; charset=utf-8",
-                            url: localStorage.getItem('WcfURL') + "/DcCancel",
-                            data: "{'DcNumber':'" + $('#ddpDC :selected').val() + "'}",
-                            dataType: "json",
+                                success: function(data) {
 
-                            success: function(data) {
-
-                                $.each(data.d, function(key, value) {
-                                    if (value.result == "1") {
-
-                                        alert("success");
-                                    } else {
-                                        alert("Invalid Data");
-                                        return false;
-                                    }
-                                });
-                            },
-                            error: function(data) {
-                            }
-                        });
-                    }
+                                    $.each(data.d, function(key, value) {
+                                        if (value.result == "1") {
+                                            alert("success");
+                                            $(location).attr('href', urlref);
+                                        } else {
+                                            alert("success");
+                                            $(location).attr('href', urlref);
+                                        }
+                                    });
+                                },
+                                error: function(data) {
+                                }
+                            });
+                        }
+                    });
                 });
-            });
+                $("#Cancel").click(function() {
+                    $("#dcRef").validate({
+                        rules: {
+                            DC: {
+                                required: true
+                            },
+                        },
+                        errorPlacement: function(error, element) {
+                            error.appendTo(element.parent().parent().after());
+                        },
+                        messages: {
+                            DC: "Select DC ",
+                        },
+                        submitHandler: function(form) {
+
+                            $.ajax({
+                                type: "POST",
+                                contentType: "application/json; charset=utf-8",
+                                url: localStorage.getItem('WcfURL') + "/DcCancel",
+                                data: "{'DcNumber':'" + $('#ddpDC :selected').val() + "'}",
+                                dataType: "json",
+
+                                success: function(data) {
+
+                                    $.each(data.d, function(key, value) {
+                                        if (value.result == "1") {
+
+                                            alert("success");
+                                        } else {
+                                            alert("Invalid Data");
+                                            return false;
+                                        }
+                                    });
+                                },
+                                error: function(data) {
+                                }
+                            });
+                        }
+                    });
+                });
+            }
         });
         function popup(e) {
             

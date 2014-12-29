@@ -13,82 +13,90 @@
      <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
+        var id = localStorage.getItem('customerid');
+            var ur = "index.html";
+            if (id == "0") {
+                
+             $(location).attr('href', ur);
+            } else {
+                
+
 //            $("#submit").hide();
-$("#btnsubmit").button('disable');
-            $("#clear").button('disable');	
-            $("#table").children().prop('disabled',true);
-            jobid = new Array();
-            Invoice = new Array();
-            Parts = new Array();
-            ServiceCharge = new Array();
-            QualityCheck = new Array();
-            Remarks = new Array();
-            $("#submit").click(function(event) {
+                $("#btnsubmit").button('disable');
+                $("#clear").button('disable');
+                $("#table").children().prop('disabled', true);
+                jobid = new Array();
+                Invoice = new Array();
+                Parts = new Array();
+                ServiceCharge = new Array();
+                QualityCheck = new Array();
+                Remarks = new Array();
+                $("#submit").click(function(event) {
 
-                $("#ToBeReceived").validate({
-                    rules: {
-                        JobId: {
-                            required: true
+                    $("#ToBeReceived").validate({
+                        rules: {
+                            JobId: {
+                                required: true
+                            },
+                            radiochoiceh2: {
+                                required: true
+                            },
                         },
-                        radiochoiceh2: {
-                            required:true
+                        errorPlacement: function(error, element) {
+                            error.appendTo(element.parent().parent().after());
                         },
-                    },
-                    errorPlacement: function(error, element) {
-                      error.appendTo(element.parent().parent().after());
-                  },
-                  messages: {
-                      JobId:"Enter the Id ",
-                      radiochoiceh2:"Select Option to Search",                                                             
-                  },
-                    submitHandler: function(form) {
+                        messages: {
+                            JobId: "Enter the Id ",
+                            radiochoiceh2: "Select Option to Search",
+                        },
+                        submitHandler: function(form) {
 
-                        $.ajax({
-                            type: "POST",
-                            contentType: "application/json; charset=utf-8",
-                            url: localStorage.getItem('WcfURL') + "/ToBereceived",
-                            data: "{'id':'" + parseInt($('#txtJobId').val(), 10) + "','category':'" + $('input[name=radiochoiceh2]:checked').val() + "'}",
-                            dataType: "json",
-                            async: true,
-                            cache: false,
+                            $.ajax({
+                                type: "POST",
+                                contentType: "application/json; charset=utf-8",
+                                url: localStorage.getItem('WcfURL') + "/ToBereceived",
+                                data: "{'id':'" + parseInt($('#txtJobId').val(), 10) + "','category':'" + $('input[name=radiochoiceh2]:checked').val() + "'}",
+                                dataType: "json",
+                                async: true,
+                                cache: false,
 
-                            success: function(response) {
-                                $("#btnsubmit").button('enable');
-            $("#clear").button('enable');	
-                                $("#InvoiceTable thead").remove();
-                                $("#InvoiceTable tr").remove();
-                                $("#InvoiceTable th").remove();
-                                $("#InvoiceTable tbody").remove();
-                                $("#InvoiceTable td").remove();
+                                success: function(response) {
+                                    $("#btnsubmit").button('enable');
+                                    $("#clear").button('enable');
+                                    $("#InvoiceTable thead").remove();
+                                    $("#InvoiceTable tr").remove();
+                                    $("#InvoiceTable th").remove();
+                                    $("#InvoiceTable tbody").remove();
+                                    $("#InvoiceTable td").remove();
 //                                var table = $('#InvoiceTable').dataTable();
 //                                        table.fnClearTable();
-                    
-                                var data = jQuery.parseJSON(response.d.toString());
 
-                                if (data.NewDataSet.Table.length == undefined) {
-                                    
-                                    var tr;
-                                    tr = $("<thead>");
-                                    tr.append("<tr><th style='text-align:left'>Job_ID</th><th style='text-align:left'>Invoice</th><th style='text-align:left'>PartsRate</th><th style='text-align:left'>ServiceCharge</th><th style='text-align:left'>QualityCheck</th><th style='text-align:left'>Remarks</th></tr>"); // bind table header row
-                                    $("#InvoiceTable").append(tr);
-                                    tr.append("</thead>");
-                                    $("#InvoiceTable").append(tr);
+                                    var data = jQuery.parseJSON(response.d.toString());
 
-                                    var tbody = $("<tbody>");
-                                    $("#InvoiceTable").append(tbody);
-                                    $("#InvoiceTable").append(tr);
-                                    tr = $("<tr></tr>");
-                                    if (data.NewDataSet.Table.M_Invoice == "0" || data.NewDataSet.Table.M_QC == "" || data.NewDataSet.Table.M_PartsRate == "0" || data.NewDataSet.Table.M_ServiceCharge == "0" || data.NewDataSet.Table.M_Remarks == "0") {
-                                        tr.append("<td><a href='#popupDialog1' data-rel='dialog' onclick='popup(" + data.NewDataSet.Table.Id + ")'>" + "<span id='tbljobid'>" + data.NewDataSet.Table.Id + "</span>" + "</a></td>" +
-                                            "<td><input type='text' id='tblInvoice' >" + "</td><td><input type='number' id='tblParts' >" + "</td><td><input type='number' id='tbtSer' >" + "</td><td><select name='QualityCheck' id='QualityCheck' data-role='slider'><option value='1'>Pass</option><option value='0'>Fail</option></select>" + "</td><td><input type='text' id='tblRemarks' >" + "</td>");
+                                    if (data.NewDataSet.Table.length == undefined) {
+
+                                        var tr;
+                                        tr = $("<thead>");
+                                        tr.append("<tr><th style='text-align:left'>Job_ID</th><th style='text-align:left'>Invoice</th><th style='text-align:left'>PartsRate</th><th style='text-align:left'>ServiceCharge</th><th style='text-align:left'>QualityCheck</th><th style='text-align:left'>Remarks</th></tr>"); // bind table header row
+                                        $("#InvoiceTable").append(tr);
+                                        tr.append("</thead>");
+                                        $("#InvoiceTable").append(tr);
+
+                                        var tbody = $("<tbody>");
+                                        $("#InvoiceTable").append(tbody);
+                                        $("#InvoiceTable").append(tr);
+                                        tr = $("<tr></tr>");
+                                        if (data.NewDataSet.Table.M_Invoice == "0" || data.NewDataSet.Table.M_QC == "" || data.NewDataSet.Table.M_PartsRate == "0" || data.NewDataSet.Table.M_ServiceCharge == "0" || data.NewDataSet.Table.M_Remarks == "0") {
+                                            tr.append("<td><a href='#popupDialog1' data-rel='dialog' onclick='popup(" + data.NewDataSet.Table.Id + ")'>" + "<span id='tbljobid'>" + data.NewDataSet.Table.Id + "</span>" + "</a></td>" +
+                                                "<td><input type='text' id='tblInvoice' >" + "</td><td><input type='number' id='tblParts' >" + "</td><td><input type='number' id='tbtSer' >" + "</td><td><select name='QualityCheck' id='QualityCheck' data-role='slider'><option value='1'>Pass</option><option value='0'>Fail</option></select>" + "</td><td><input type='text' id='tblRemarks' >" + "</td>");
+                                        } else {
+                                            tr.append("<td><a href='#popupDialog1' data-rel='dialog' onclick='popup(" + data.NewDataSet.Table.Id + ")'>" + "<span id='tbljobid'>" + data.NewDataSet.Table.Id + "</span>" + "</a></td>" +
+                                                "<td><input type='text' id='tblInvoice' value=" + data.NewDataSet.Table.M_Invoice + " disabled>" + "</td><td><input type='number' id='tblParts' value=" + data.NewDataSet.Table.M_PartsRate + " disabled>" + "</td><td><input type='number' id='tbtSer' value=" + data.NewDataSet.Table.M_ServiceCharge + " disabled>" + "</td><td><select name='QualityCheck' id='QualityCheck' data-role='slider' disabled><option value='1'>Pass</option><option value='0'>Fail</option></select>" + "</td><td><input type='text' id='tblRemarks' value=" + data.NewDataSet.Table.M_Remarks + " disabled>" + "</td>");
+                                        }
+                                        $("#InvoiceTable").append(tr);
+
                                     } else {
-                                        tr.append("<td><a href='#popupDialog1' data-rel='dialog' onclick='popup(" + data.NewDataSet.Table.Id + ")'>" + "<span id='tbljobid'>" + data.NewDataSet.Table.Id + "</span>" + "</a></td>" +
-                                            "<td><input type='text' id='tblInvoice' value=" + data.NewDataSet.Table.M_Invoice + " disabled>" + "</td><td><input type='number' id='tblParts' value=" + data.NewDataSet.Table.M_PartsRate + " disabled>" + "</td><td><input type='number' id='tbtSer' value=" + data.NewDataSet.Table.M_ServiceCharge + " disabled>" + "</td><td><select name='QualityCheck' id='QualityCheck' data-role='slider' disabled><option value='1'>Pass</option><option value='0'>Fail</option></select>" + "</td><td><input type='text' id='tblRemarks' value=" + data.NewDataSet.Table.M_Remarks + " disabled>" + "</td>");
-                                    }
-                                    $("#InvoiceTable").append(tr);
-
-                                } else {
-                                 var tr;
+                                        var tr;
                                         tr = $("<thead>");
                                         tr.append("<tr><th style='text-align:left'>Job_ID</th><th style='text-align:left'>Invoice</th><th style='text-align:left'>PartsRate</th><th style='text-align:left'>ServiceCharge</th><th style='text-align:left'>QualityCheck</th><th style='text-align:left'>Remarks</th></tr>"); // bind table header row
                                         $("#InvoiceTable").append(tr);
@@ -98,84 +106,86 @@ $("#btnsubmit").button('disable');
                                         $("#InvoiceTable").append(tbody);
                                         $("#InvoiceTable").append(tr);
                                         tr = $("<tr></tr>");
-                                       
-                                    for (var i = 0; i < data.NewDataSet.Table.length; i++) {
-                                    tr = $("<tr></tr>");
-                                        if (data.NewDataSet.Table[i].M_Invoice == "0" || data.NewDataSet.Table[i].M_QC == "" || data.NewDataSet.Table[i].M_PartsRate == "0" || data.NewDataSet.Table[i].M_ServiceCharge == "0" || data.NewDataSet.Table[i].M_Remarks == "0") {
-                                          tr.append("<td><a href='#popupDialog1' data-rel='dialog' onclick='popup(" + data.NewDataSet.Table[i].Id + ")'>" + "<span id='tbljobid'>" + data.NewDataSet.Table[i].Id + "</span>" + "</a></td>" +
-                                            "<td><input type='text' id='tblInvoice' >" + "</td><td><input type='number' id='tblParts' >" + "</td><td><input type='number' id='tbtSer' >" + "</td><td><select name='QualityCheck' id='QualityCheck' data-role='slider'><option value='1'>Pass</option><option value='0'>Fail</option></select>" + "</td><td><input type='text' id='tblRemarks' >" + "</td>");
-                                    } else {
-                                        tr.append("<td><a href='#popupDialog1' data-rel='dialog' onclick='popup(" + data.NewDataSet.Table[i].Id + ")'>" + "<span id='tbljobid'>" + data.NewDataSet.Table[i].Id + "</span>" + "</a></td>" +
-                                            "<td><input type='text' id='tblInvoice' value=" + data.NewDataSet.Table[i].M_Invoice + " disabled>" + "</td><td><input type='number' id='tblParts' value=" + data.NewDataSet.Table[i].M_PartsRate + " disabled>" + "</td><td><input type='number' id='tbtSer' value=" + data.NewDataSet.Table[i].M_ServiceCharge + " disabled>" + "</td><td><select name='QualityCheck' id='QualityCheck' data-role='slider' disabled><option value='1'>Pass</option><option value='0'>Fail</option></select>" + "</td><td><input type='text' id='tblRemarks' value=" + data.NewDataSet.Table[i].M_Remarks + " disabled>" + "</td>");
-                                    } $("#InvoiceTable").append(tr);
 
+                                        for (var i = 0; i < data.NewDataSet.Table.length; i++) {
+                                            tr = $("<tr></tr>");
+                                            if (data.NewDataSet.Table[i].M_Invoice == "0" || data.NewDataSet.Table[i].M_QC == "" || data.NewDataSet.Table[i].M_PartsRate == "0" || data.NewDataSet.Table[i].M_ServiceCharge == "0" || data.NewDataSet.Table[i].M_Remarks == "0") {
+                                                tr.append("<td><a href='#popupDialog1' data-rel='dialog' onclick='popup(" + data.NewDataSet.Table[i].Id + ")'>" + "<span id='tbljobid'>" + data.NewDataSet.Table[i].Id + "</span>" + "</a></td>" +
+                                                    "<td><input type='text' id='tblInvoice' >" + "</td><td><input type='number' id='tblParts' >" + "</td><td><input type='number' id='tbtSer' >" + "</td><td><select name='QualityCheck' id='QualityCheck' data-role='slider'><option value='1'>Pass</option><option value='0'>Fail</option></select>" + "</td><td><input type='text' id='tblRemarks' >" + "</td>");
+                                            } else {
+                                                tr.append("<td><a href='#popupDialog1' data-rel='dialog' onclick='popup(" + data.NewDataSet.Table[i].Id + ")'>" + "<span id='tbljobid'>" + data.NewDataSet.Table[i].Id + "</span>" + "</a></td>" +
+                                                    "<td><input type='text' id='tblInvoice' value=" + data.NewDataSet.Table[i].M_Invoice + " disabled>" + "</td><td><input type='number' id='tblParts' value=" + data.NewDataSet.Table[i].M_PartsRate + " disabled>" + "</td><td><input type='number' id='tbtSer' value=" + data.NewDataSet.Table[i].M_ServiceCharge + " disabled>" + "</td><td><select name='QualityCheck' id='QualityCheck' data-role='slider' disabled><option value='1'>Pass</option><option value='0'>Fail</option></select>" + "</td><td><input type='text' id='tblRemarks' value=" + data.NewDataSet.Table[i].M_Remarks + " disabled>" + "</td>");
+                                            }
+                                            $("#InvoiceTable").append(tr);
+
+                                        }
                                     }
-                                }
 //                        $("#table").children().prop("disabled", false);
-                                //                        $("#content").children().prop("disabled", true);
-                                $('#InvoiceTable').append(tbody);
-                                $('#InvoiceTable').dataTable({
-                                    "bInfo": false,
-                                    "bLengthChange": false,
-                                    "bPaginate": false,
-                                    "bFilter": false,
-                                    "scrollX":true,
-                                    "destroy": true
-                                });
-                            },
-                            error: function(response) {
-                            }
-                        });
-                    }
+                                    //                        $("#content").children().prop("disabled", true);
+                                    $('#InvoiceTable').append(tbody);
+                                    $('#InvoiceTable').dataTable({
+                                        "bInfo": false,
+                                        "bLengthChange": false,
+                                        "bPaginate": false,
+                                        "bFilter": false,
+                                        "scrollX": true,
+                                        "destroy": true
+                                    });
+                                },
+                                error: function(response) {
+                                }
+                            });
+                        }
+                    });
                 });
-            });
-            $("#btnsubmit").click(function(event) {
-                $('span[id="tbljobid"]').each(function() {                    
-                    jobid.push(this.innerText);                    
-                });                
-                $('input[id="tblInvoice"]').each(function() {                    
-                    Invoice.push(this.value);                    
-                });                
-                $('input[id="tblParts"]').each(function() {                    
-                    Parts.push(this.value);                    
-                });
-                $('input[id="tbtSer"]').each(function () {
-                    ServiceCharge.push(this.value);
-                });                
-                $('select[id="QualityCheck"]').each(function() {                    
-                    QualityCheck.push(this.value);                    
-                });                
-                $('input[id="tblRemarks"]').each(function() {                    
-                    Remarks.push(this.value);                    
-                });
-                var urlRef = "Company_Inward.html";                
-                $.ajax({
-                    type: "POST",
-                    contentType: "application/json; charset=utf-8",
-                    url: localStorage.getItem('WcfURL') + "/ToBeReceivedDetails",
-                    data: "{'jobid':'" + JSON.stringify(jobid) + "','Invoice':'" + JSON.stringify(Invoice) + "','Parts':'" + JSON.stringify(Parts) + "','ServiceCharge':'" + JSON.stringify(ServiceCharge) + "','QualityCheck':'" + JSON.stringify(QualityCheck) + "','Remarks':'" + JSON.stringify(Remarks) + "','createdby':'" + localStorage.getItem('customerid') + "'}",
-                    dataType: "json",
-                    async: false,
-                    cache: false,
+                $("#btnsubmit").click(function(event) {
+                    $('span[id="tbljobid"]').each(function() {
+                        jobid.push(this.innerText);
+                    });
+                    $('input[id="tblInvoice"]').each(function() {
+                        Invoice.push(this.value);
+                    });
+                    $('input[id="tblParts"]').each(function() {
+                        Parts.push(this.value);
+                    });
+                    $('input[id="tbtSer"]').each(function() {
+                        ServiceCharge.push(this.value);
+                    });
+                    $('select[id="QualityCheck"]').each(function() {
+                        QualityCheck.push(this.value);
+                    });
+                    $('input[id="tblRemarks"]').each(function() {
+                        Remarks.push(this.value);
+                    });
+                    var urlRef = "Company_Inward.html";
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        url: localStorage.getItem('WcfURL') + "/ToBeReceivedDetails",
+                        data: "{'jobid':'" + JSON.stringify(jobid) + "','Invoice':'" + JSON.stringify(Invoice) + "','Parts':'" + JSON.stringify(Parts) + "','ServiceCharge':'" + JSON.stringify(ServiceCharge) + "','QualityCheck':'" + JSON.stringify(QualityCheck) + "','Remarks':'" + JSON.stringify(Remarks) + "','createdby':'" + localStorage.getItem('customerid') + "'}",
+                        dataType: "json",
+                        async: false,
+                        cache: false,
 
-                    success: function(response) {
-                        alert("success");
-                                $(location).attr('href', urlRef);
-                        $.each(data.d, function(key, value) {
-                            if (value.result == "1") {
-                                alert("success");
-                                $(location).attr('href', urlRef);
-                            } else {
-                                // alert("Invalid Data");
-                                alert("success");
-                                $(location).attr('href', urlRef);
-                            }
-                        });
-                    },
-                    error: function(data) {                                                
-                    }
+                        success: function(response) {
+                            alert("success");
+                            $(location).attr('href', urlRef);
+                            $.each(data.d, function(key, value) {
+                                if (value.result == "1") {
+                                    alert("success");
+                                    $(location).attr('href', urlRef);
+                                } else {
+                                    // alert("Invalid Data");
+                                    alert("success");
+                                    $(location).attr('href', urlRef);
+                                }
+                            });
+                        },
+                        error: function(data) {
+                        }
+                    });
                 });
-            });
+            }
         });
         function popup(e) {
             

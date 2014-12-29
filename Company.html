@@ -14,146 +14,152 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            $.ajax({
-                type: "POST",
-                contentType: "application/json; charset=utf-8",
-                url: localStorage.getItem('WcfURL') + "/BindStore",
-                data: "{}",
-                dataType: "json",
-                success: function (data) {                                        
-                    $.each(data.d, function (key, value) {      
-                     $("#ddpStore option[value='']").remove();                  
-                        $("#ddpStore").append($("<option></option>").val(value.Store_Id).html(value.Store_Name));
-                        $("#ddpStore")[0].selectedIndex = -1;
-                    });
-                },
-                error: function (Result) {
-                    
-                    
-                }
-            });                        
-            
-            
-            $.ajax({
-                type: "POST",
-                contentType: "application/json; charset:utf-8",
-                url: localStorage.getItem('WcfURL') + "/ManufacturerOrderDetails",
-                data: "{}",
-                dataType: "json",
-                async: true,
-                cache: false,
+        var id = localStorage.getItem('customerid');
+            var ur = "index.html";
+            if (id == "0") {
+                
+                $(location).attr('href', ur);
+            } else {
+                
 
-                success: function (response) {
-                    
-                    var data = jQuery.parseJSON(response.d.toString());
-                                                            
-                    if (data.NewDataSet.Table.length == undefined) {
-                    var tr;                    
-                    tr = $("<thead>");
-                    tr.append("<tr><th></th><th style='text-align:left'>Job_ID</th><th style='text-align:left'>Brand</th><th style='text-align:left'>Model</th><th style='text-align:left'>warranty</th><th style='text-align:left'>problems</th></tr>"); // bind table header row
-                    $("#ManufacturerTable").append(tr);
-                    tr.append("</thead>");
-                    $("#ManufacturerTable").append(tr);
-                    var tbody = $("<tbody>");
-                    $("#ManufacturerTable").append(tbody);
-                    $("#ManufacturerTable").append(tr);
-                    tr = $("<tr></tr>");
-                        tr = $("<tr></tr>");
-                        tr.append("<td><input type='checkbox' name='tblChk' id='tblChk' value=" + data.NewDataSet.Table.Job_ID + ">" + "</td><td style='text-align:left'>" + data.NewDataSet.Table.Job_ID + "</td><td>" +
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: localStorage.getItem('WcfURL') + "/BindStore",
+                    data: "{}",
+                    dataType: "json",
+                    success: function(data) {
+                        $.each(data.d, function(key, value) {
+                            $("#ddpStore option[value='']").remove();
+                            $("#ddpStore").append($("<option></option>").val(value.Store_Id).html(value.Store_Name));
+                            $("#ddpStore")[0].selectedIndex = -1;
+                        });
+                    },
+                    error: function(Result) {
+
+
+                    }
+                });
+
+
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset:utf-8",
+                    url: localStorage.getItem('WcfURL') + "/ManufacturerOrderDetails",
+                    data: "{}",
+                    dataType: "json",
+                    async: true,
+                    cache: false,
+
+                    success: function(response) {
+
+                        var data = jQuery.parseJSON(response.d.toString());
+
+                        if (data.NewDataSet.Table.length == undefined) {
+                            var tr;
+                            tr = $("<thead>");
+                            tr.append("<tr><th></th><th style='text-align:left'>Job_ID</th><th style='text-align:left'>Brand</th><th style='text-align:left'>Model</th><th style='text-align:left'>warranty</th><th style='text-align:left'>problems</th></tr>"); // bind table header row
+                            $("#ManufacturerTable").append(tr);
+                            tr.append("</thead>");
+                            $("#ManufacturerTable").append(tr);
+                            var tbody = $("<tbody>");
+                            $("#ManufacturerTable").append(tbody);
+                            $("#ManufacturerTable").append(tr);
+                            tr = $("<tr></tr>");
+                            tr = $("<tr></tr>");
+                            tr.append("<td><input type='checkbox' name='tblChk' id='tblChk' value=" + data.NewDataSet.Table.Job_ID + ">" + "</td><td style='text-align:left'>" + data.NewDataSet.Table.Job_ID + "</td><td>" +
                                 data.NewDataSet.Table.BrandName + "</td><td>" +
                                 data.NewDataSet.Table.ModelName + "</td><td>" +
                                 data.NewDataSet.Table.Warranty + "</td><td>" +
                                 data.NewDataSet.Table.Problem + "</td>");
-                        $("#ManufacturerTable").append(tr);
-                    }
-                    else
-                    {
-                    var tr;                    
-                    tr = $("<thead>");
-                    tr.append("<tr><th></th><th style='text-align:left'>Job_ID</th><th style='text-align:left'>Brand</th><th style='text-align:left'>Model</th><th style='text-align:left'>warranty</th><th style='text-align:left'>problems</th></tr>"); // bind table header row
-                    $("#ManufacturerTable").append(tr);
-                    tr.append("</thead>");
-                    $("#ManufacturerTable").append(tr);
-                    var tbody = $("<tbody>");
-                    $("#ManufacturerTable").append(tbody);
-                    $("#ManufacturerTable").append(tr);
-                    tr = $("<tr></tr>");                            
-                        for (var i = 0; i < data.NewDataSet.Table.length; i++) {                            
-                            tr.append("<td><input type='checkbox' name='tblChk' id='tblChk' value="+ data.NewDataSet.Table[i].Job_ID +">" + "</td><td>" + data.NewDataSet.Table[i].Job_ID + "</td><td>" +
-                                data.NewDataSet.Table[i].BrandName + "</td><td>" +
-                                data.NewDataSet.Table[i].ModelName + "</td><td>" +
-                                data.NewDataSet.Table[i].Warranty + "</td><td>" +
-                                data.NewDataSet.Table[i].Problem + "</td><td>");
-
                             $("#ManufacturerTable").append(tr);
-                            
-                        }
-                    }
-                    $('#ManufacturerTable').append(tbody); 
-                    $('#ManufacturerTable').dataTable({
-                        "bInfo":false,
-                        "bLengthChange":false,
-                    });
-                },
-                error: function (response) {                                        
-                }
-            });
-            $("#submit").click(function() {            
-                $("#ToBePush").validate({
+                        } else {
+                            var tr;
+                            tr = $("<thead>");
+                            tr.append("<tr><th></th><th style='text-align:left'>Job_ID</th><th style='text-align:left'>Brand</th><th style='text-align:left'>Model</th><th style='text-align:left'>warranty</th><th style='text-align:left'>problems</th></tr>"); // bind table header row
+                            $("#ManufacturerTable").append(tr);
+                            tr.append("</thead>");
+                            $("#ManufacturerTable").append(tr);
+                            var tbody = $("<tbody>");
+                            $("#ManufacturerTable").append(tbody);
+                            $("#ManufacturerTable").append(tr);
+                            tr = $("<tr></tr>");
+                            for (var i = 0; i < data.NewDataSet.Table.length; i++) {
+                                tr.append("<td><input type='checkbox' name='tblChk' id='tblChk' value=" + data.NewDataSet.Table[i].Job_ID + ">" + "</td><td>" + data.NewDataSet.Table[i].Job_ID + "</td><td>" +
+                                    data.NewDataSet.Table[i].BrandName + "</td><td>" +
+                                    data.NewDataSet.Table[i].ModelName + "</td><td>" +
+                                    data.NewDataSet.Table[i].Warranty + "</td><td>" +
+                                    data.NewDataSet.Table[i].Problem + "</td><td>");
 
-                    rules: {                        
-                        tblChk: {
-                            required: true,
-                            minlength: 1
-                        },
-                        store : {
-                  required:true                  
-                      },
-                      Mode: {
-                  required:true                  
-                      },
-                    },
-                    errorPlacement: function(error, element) {
-                      error.appendTo(element.parent().parent().after());
-                  },
-                  messages: {
-                      tblChk:"Check the JobId ",
-                      store:"Select Store",
-                      Mode:"Enter Mode Of Transport",                                           
-                  },
-                    submitHandler: function(form) {
-                           var selectedLanguage = new Array();
-                        var urlref = "Company.html";
-                        $('input[id="tblChk"]:checked').each(function() {                            
-                            selectedLanguage.push(this.value);                            
-                        });                        
-                        $.ajax({
-                            type: "POST",
-                            contentType: "application/json; charset=utf-8",
-                            url: localStorage.getItem('WcfURL') + "/ToBePushed1",
-                            data: "{'JobID':'" + JSON.stringify(selectedLanguage) + "','StoreId':'" + $('#ddpStore :selected').val() + "','Mode':'" + $('#txtMode').val() + "','createdby': '" + localStorage.getItem('customerid') + "'}",
-                            dataType: "json",
+                                $("#ManufacturerTable").append(tr);
 
-                            success: function(data) {
-                                debugger;
-                                $.each(data.d, function(key, value) {                                    
-                                     if (value.result == "1") {
-                                         debugger;
-                                      alert("success");
-                                      //                                      Location.reload(true);
-                                      $(location).attr('href', urlref);
-                                  } else {
-                                      alert("Success");
-                                        $(location).attr('href', urlref);
-                                  }
-                                });
-                            },
-                            error: function(data) {                                                                
                             }
+                        }
+                        $('#ManufacturerTable').append(tbody);
+                        $('#ManufacturerTable').dataTable({
+                            "bInfo": false,
+                            "bLengthChange": false,
                         });
-                     }
+                    },
+                    error: function(response) {
+                    }
                 });
-            });
+                $("#submit").click(function() {
+                    $("#ToBePush").validate({
+                        rules: {
+                            tblChk: {
+                                required: true,
+                                minlength: 1
+                            },
+                            store: {
+                                required: true
+                            },
+                            Mode: {
+                                required: true
+                            },
+                        },
+                        errorPlacement: function(error, element) {
+                            error.appendTo(element.parent().parent().after());
+                        },
+                        messages: {
+                            tblChk: "Check the JobId ",
+                            store: "Select Store",
+                            Mode: "Enter Mode Of Transport",
+                        },
+                        submitHandler: function(form) {
+                            var selectedLanguage = new Array();
+                            var urlref = "Company.html";
+                            $('input[id="tblChk"]:checked').each(function() {
+                                selectedLanguage.push(this.value);
+                            });
+                            $.ajax({
+                                type: "POST",
+                                contentType: "application/json; charset=utf-8",
+                                url: localStorage.getItem('WcfURL') + "/ToBePushed1",
+                                data: "{'JobID':'" + JSON.stringify(selectedLanguage) + "','StoreId':'" + $('#ddpStore :selected').val() + "','Mode':'" + $('#txtMode').val() + "','createdby': '" + localStorage.getItem('customerid') + "'}",
+                                dataType: "json",
+
+                                success: function(data) {
+                                    
+                                    $.each(data.d, function(key, value) {
+                                        if (value.result == "1") {
+                                            
+                                            alert("success");
+                                            //                                      Location.reload(true);
+                                            $(location).attr('href', urlref);
+                                        } else {
+                                            alert("Success");
+                                            $(location).attr('href', urlref);
+                                        }
+                                    });
+                                },
+                                error: function(data) {
+                                }
+                            });
+                        }
+                    });
+                });
+            }
         });
 //        function popup(e) {
 //            

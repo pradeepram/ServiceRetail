@@ -13,181 +13,189 @@
     <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>  		
     <script type="text/javascript">
         $(document).ready(function () {
-            //alert(localStorage.getItem('jobid'));
-            $('#txtSearch').val(localStorage.getItem('jobid'));
-            
-            $.ajax({
-                type: "POST",
-                contentType: "application/json; charset=utf-8",
-                url: localStorage.getItem('WcfURL') + "/GetCompletionList",
-                data: "{'ServiceJobID': '" + localStorage.getItem('jobid') + "'}",
-
-                dataType: "json",
-
-                success: function (data) {                        
-                    $.each(data.d, function (key, value) {                            
-                        $("#txtBrand").val(value.brand);                            
-                        $("#txtModel").val(value.model);                            
-                        $("#txtWarranty").val(value.warranty);                            
-                        $("#txtProblem").val(value.problem);
-                        $("#txtComplaints").val(value.complaint);
-                        $("#txtSer").val(value.servicecharge);
-                    });
-                },                        
-                error: function (data) {                                        
-                }
-            });            
-            $("#submit").click(function() {
-            $.validator.addMethod("maxDate", function(value, element) {
-	var curDate = new Date();
+        var id = localStorage.getItem('customerid');
+            var ur = "index.html";
+            if (id == "0") {
                 
-    var inputDate = new Date(value);
-    if (inputDate > curDate)
-		return true;
-	return false;
-}, "Invalid Date!");
-                $("#servicesheet").validate({
-                    rules: {
-                        textComplaints: {
-                            required: true
-                        },
-                        txtSer: {
-                            required: true
-                        },
-                        date: {
-                            required: true,
-                            date: true,
-                            maxDate: true
-                        },
-                        tblChk: {
-                            required: true,
-                            minlength: 1
-                        },
-                    },
-                    errorPlacement: function(error, element) {
-                      error.appendTo(element.parent().parent().after());
-                  },
-                  messages: {
-                      textComplaints:"Enter Complaints",
-                      txtSer:"Enter Service Charge",
-                      date:"Enter Valid Date",
-                      tblChk:"Check the Spare Parts",                      
-                  },
-                    submitHandler: function(form) {
-                                            var url = "Service.htm";
-                        var selectedLanguage = new Array();
-                        $('input[id="tblChk"]:checked').each(function() {
-                            selectedLanguage.push(this.value);
-                        });                        
-                        $.ajax({
-                            type: "POST",
-                            contentType: "application/json; charset=utf-8",
-                            url: localStorage.getItem('WcfURL') + "/ServiceCharge",
-                            data: "{'job_id':'" + parseInt($('#txtSearch').val(), 10) + "', 'complaints':'" + $('#txtComplaints').val() + "','spare_parts':'" + JSON.stringify(selectedLanguage) + "','service_charge': '" + $('#txtSer').val() + "','duedate': '" + $('#date').val() + "','createdby': '" + localStorage.getItem('customerid') + "'}",
-                            dataType: "json",
-                            success: function(data) {
-                                $.each(data.d, function(key, value) {
-                                    if (value.result == "1") {
-                                        alert("success");
-                                        $(location).attr('href', url);
-                                    } else {
-                                        alert("Invalid Data");
-                                    }
-                                });
-                            },
-                            error: function(data) {
-                                
-                                
-                            }
+                $(location).attr('href', ur);
+            } else {
+                
+
+                //alert(localStorage.getItem('jobid'));
+                $('#txtSearch').val(localStorage.getItem('jobid'));
+
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: localStorage.getItem('WcfURL') + "/GetCompletionList",
+                    data: "{'ServiceJobID': '" + localStorage.getItem('jobid') + "'}",
+
+                    dataType: "json",
+
+                    success: function(data) {
+                        $.each(data.d, function(key, value) {
+                            $("#txtBrand").val(value.brand);
+                            $("#txtModel").val(value.model);
+                            $("#txtWarranty").val(value.warranty);
+                            $("#txtProblem").val(value.problem);
+                            $("#txtComplaints").val(value.complaint);
+                            $("#txtSer").val(value.servicecharge);
                         });
+                    },
+                    error: function(data) {
                     }
                 });
-            });
-            $("#pushtocompany").click(function() {
-                
-                $("#servicesheet").validate({                    
-                    rules: {
-                        textComplaints: {
-                            required: true
-                        },                        
-                    },
-                    errorPlacement: function(error, element) {
-                      error.appendTo(element.parent().parent().after());
-                  },
-                  messages: {
-                      textComplaints:"Enter Complaints",
-                      
-                  },
-                    submitHandler: function(form) {
-                        var url = "Service.htm";
-                        
-                        $.ajax({
-                        type: "POST",
-                        contentType: "application/json; charset=utf-8",
-                        url: localStorage.getItem('WcfURL') + "/PushToCompany",
-                        data: "{'job_id':'" + parseInt($('#txtSearch').val(), 10) + "', 'complaints':'" + $('#txtComplaints').val() + "','createdby': '" + localStorage.getItem('customerid') + "'}",
-                        dataType: "json",
-                        success: function(data) {
-                            $.each(data.d, function (key, value) {
-                                if (value.result == "1") {
-                                    alert("success");
-                                    $(location).attr('href', url);
-                                } else {
-                                    alert("Invalid Data");
+                $("#submit").click(function() {
+                    $.validator.addMethod("maxDate", function(value, element) {
+                        var curDate = new Date();
+
+                        var inputDate = new Date(value);
+                        if (inputDate > curDate)
+                            return true;
+                        return false;
+                    }, "Invalid Date!");
+                    $("#servicesheet").validate({
+                        rules: {
+                            textComplaints: {
+                                required: true
+                            },
+                            txtSer: {
+                                required: true
+                            },
+                            date: {
+                                required: true,
+                                date: true,
+                                maxDate: true
+                            },
+                            tblChk: {
+                                required: true,
+                                minlength: 1
+                            },
+                        },
+                        errorPlacement: function(error, element) {
+                            error.appendTo(element.parent().parent().after());
+                        },
+                        messages: {
+                            textComplaints: "Enter Complaints",
+                            txtSer: "Enter Service Charge",
+                            date: "Enter Valid Date",
+                            tblChk: "Check the Spare Parts",
+                        },
+                        submitHandler: function(form) {
+                            var url = "Service.htm";
+                            var selectedLanguage = new Array();
+                            $('input[id="tblChk"]:checked').each(function() {
+                                selectedLanguage.push(this.value);
+                            });
+                            $.ajax({
+                                type: "POST",
+                                contentType: "application/json; charset=utf-8",
+                                url: localStorage.getItem('WcfURL') + "/ServiceCharge",
+                                data: "{'job_id':'" + parseInt($('#txtSearch').val(), 10) + "', 'complaints':'" + $('#txtComplaints').val() + "','spare_parts':'" + JSON.stringify(selectedLanguage) + "','service_charge': '" + $('#txtSer').val() + "','duedate': '" + $('#date').val() + "','createdby': '" + localStorage.getItem('customerid') + "'}",
+                                dataType: "json",
+                                success: function(data) {
+                                    $.each(data.d, function(key, value) {
+                                        if (value.result == "1") {
+                                            alert("success");
+                                            $(location).attr('href', url);
+                                        } else {
+                                            alert("Invalid Data");
+                                        }
+                                    });
+                                },
+                                error: function(data) {
+
+
                                 }
                             });
-                        },
-                        error: function(data) {
-                            
-                            
                         }
                     });
+                });
+                $("#pushtocompany").click(function() {
+
+                    $("#servicesheet").validate({
+                        rules: {
+                            textComplaints: {
+                                required: true
+                            },
+                        },
+                        errorPlacement: function(error, element) {
+                            error.appendTo(element.parent().parent().after());
+                        },
+                        messages: {
+                            textComplaints: "Enter Complaints",
+
+                        },
+                        submitHandler: function(form) {
+                            var url = "Service.htm";
+
+                            $.ajax({
+                                type: "POST",
+                                contentType: "application/json; charset=utf-8",
+                                url: localStorage.getItem('WcfURL') + "/PushToCompany",
+                                data: "{'job_id':'" + parseInt($('#txtSearch').val(), 10) + "', 'complaints':'" + $('#txtComplaints').val() + "','createdby': '" + localStorage.getItem('customerid') + "'}",
+                                dataType: "json",
+                                success: function(data) {
+                                    $.each(data.d, function(key, value) {
+                                        if (value.result == "1") {
+                                            alert("success");
+                                            $(location).attr('href', url);
+                                        } else {
+                                            alert("Invalid Data");
+                                        }
+                                    });
+                                },
+                                error: function(data) {
+
+
+                                }
+                            });
+                        }
+                    });
+                });
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset:utf-8",
+                    url: localStorage.getItem('WcfURL') + "/PartsID",
+                    data: "{'job_id':'" + parseInt($('#txtSearch').val(), 10) + "'}",
+                    dataType: "json",
+                    async: true,
+                    cache: false,
+
+                    success: function(response) {
+
+                        var data = jQuery.parseJSON(response.d.toString());
+                        var tr;
+                        tr = $("<thead>");
+                        tr.append("<th></th><th>PartsName</th>"); // bind table header row
+                        $('#PartsTable').append(tr);
+                        tr.append("</thead>");
+                        $('#PartsTable').append(tr);
+                        var tbody = $("<tbody>");
+
+                        $('#PartsTable').append(tbody);
+                        $('#PartsTable').append(tr);
+                        tr = $("<tr></tr>");
+                        if (data.NewDataSet.Table.length == undefined) {
+                            tr = $("<tr></tr>");
+                            tr.append("<td><input type='checkbox' name='tblChk' id='tblChk' onclick='popup(" + data.NewDataSet.Table.PartsID + ")'>" + "</td><td>" + data.NewDataSet.Table.PartsName + "</td><td>");
+                            $("#PartsTable").append(tr);
+                        } else {
+                            for (var i = 0; i < data.NewDataSet.Table.length; i++) {
+                                tr = $("<tr></tr>");
+                                tr.append("<td><input type='checkbox' name='tblChk' id='tblChk' value=" + data.NewDataSet.Table[i].PartsID + " " + data.NewDataSet.Table[i].selected + ">" + "</td><td>" + data.NewDataSet.Table[i].PartsName + "</td><td>");
+                                $("#PartsTable").append(tr);
+                            }
+                        }
+                        $('#PartsTable').append(tbody);
+                        $('#PartsTable').dataTable();
+                    },
+                    error: function(response) {
+
+
                     }
                 });
-            });            
-            $.ajax({
-                type: "POST",
-                contentType: "application/json; charset:utf-8",
-               url: localStorage.getItem('WcfURL') + "/PartsID",
-                data: "{'job_id':'" + parseInt($('#txtSearch').val(), 10) + "'}",
-                dataType: "json",
-                async: true,
-                cache: false,
-
-                success: function (response) {
-                    
-                    var data = jQuery.parseJSON(response.d.toString());
-                    var tr;
-                    tr = $("<thead>");
-                    tr.append("<th></th><th>PartsName</th>"); // bind table header row
-                    $('#PartsTable').append(tr);
-                    tr.append("</thead>");
-                    $('#PartsTable').append(tr);
-                    var tbody = $("<tbody>");
-
-                    $('#PartsTable').append(tbody);
-                    $('#PartsTable').append(tr);
-                    tr = $("<tr></tr>");                                                            
-                    if (data.NewDataSet.Table.length == undefined) {
-                         tr = $("<tr></tr>");
-                        tr.append("<td><input type='checkbox' name='tblChk' id='tblChk' onclick='popup(" + data.NewDataSet.Table.PartsID + ")'>" + "</td><td>" + data.NewDataSet.Table.PartsName + "</td><td>");                                
-                        $("#PartsTable").append(tr);
-                    }
-                    else {
-                        for (var i = 0; i < data.NewDataSet.Table.length; i++) {
-                            tr = $("<tr></tr>");
-                            tr.append("<td><input type='checkbox' name='tblChk' id='tblChk' value=" + data.NewDataSet.Table[i].PartsID +" "+   data.NewDataSet.Table[i].selected+">" + "</td><td>" + data.NewDataSet.Table[i].PartsName + "</td><td>");                            
-                            $("#PartsTable").append(tr);                            
-                        }
-                    }
-                    $('#PartsTable').append(tbody);
-                    $('#PartsTable').dataTable();
-                },
-                error: function (response) {
-                    
-                    
-                }
-            });
+            }
         });
     </script>    
     <style>
@@ -270,7 +278,7 @@
 		            <td style="width: 25%"><label for="name">Service Charge</label></td>
 		            <td style="width: 25%"><input type="number" id="txtSer" name="txtSer" /></td>		    
 		            <td style="width: 12%"><label for="duedate">Date</label></td>
-		            <td style="width: 25%"><input type="number" name="date" id="date" placeholder="MM/DD/YYYY" /></td>
+		            <td style="width: 25%"><input type="text" name="date" id="date" placeholder="MM/DD/YYYY" /></td>
                     </tr>
 		        </table>            
 			<li class="ui-body ui-body-b">
