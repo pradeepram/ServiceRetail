@@ -19,12 +19,8 @@
               url: localStorage.getItem('WcfURL') + "/BindState",
               data: "{}",
               dataType: "json",
-              success: function(data) {
-                  //$("#ddpState").append($("<option value='' selected>Select</option>"));
-                  $.each(data.d, function(key, value) {
-                      // $("#ddpState").prepend("");
-                    //  $("#ddpState option:first").attr('selected',true);
-                      //                      $("#ddpState")[0].selectedIndex = -1;
+              success: function(data) {                  
+                  $.each(data.d, function(key, value) {                      
                       $("#ddpState option[value='']").remove();
                       $("#ddpState").append($("<option></option>").val(value.State_Id).html(value.State_Name));
                       $("#ddpState")[0].selectedIndex = -1;
@@ -120,8 +116,9 @@
                   rules: {
                       number: {
                           required: true,
+                          minlength: 10,
                           maxlength: 12,
-                          minlength: 12,
+                          
                       },                  
                   custname : {
                   required:true
@@ -209,8 +206,7 @@
                           dataType: "json",
                           success: function(data) {
                               $.each(data.d, function(key, value) {
-                                  if (value.result == "1") {
-                                      
+                                  if (value.result == "1") {                                      
                                       alert("success");
                                       //                                      Location.reload(true);
                                       $(location).attr('href', url);
@@ -230,52 +226,6 @@
 
               });
 
-//          function ajaxSubmit() {
-//                                                                    
-//                  var state = $('#ddpState option:selected').val();                  
-//                  var brand = $('#ddpBrand option:selected').val();
-//                  var model = $('#ddpModel option:selected').val();
-//                  var Warranty = $('#ddpWarranty option:selected').val();
-//                  var serviceengg = $('#ddpServiceEngg option:selected').val();
-//                  if (state == "" || brand == "" || model == "" || serviceengg == "" || Warranty=="") {
-//                      
-//                      alert("select the dropdown");
-//                  } else if (brand == "0" || model == "0") {
-//                      
-//                      $('#txtBrand').css('border-color', 'red');
-//                      $('#txtModel').css('border-color', 'red');                      
-//                      alert("Enter Brand and Model Name");
-//                      
-//                  } 
-//                  else {
-//                      
-//                      $.ajax({
-//                          type: "POST",
-//                          contentType: "application/json; charset=utf-8",
-//                          url: "MyWebService.asmx/JobSheet",                          
-//                          data: "{'phoneno':'" + parseInt($('#txtPhone').val(), 10) + "', 'job_id':'" + parseInt($('#txtJobId').val(), 10) + "', 'cust_name':'" + $('#txtCustName').val() + "', 'email':'" + $('#txtEmail').val() + "','address1':'" + $('#txtAddress1').val() + "', 'address2':'" + $('#txtAddress2').val() + "', 'city':'" + $('#txtCity').val() + "','state':'" + $('#ddpState option:selected').val() + "', 'pincode': '" + parseInt($('#txtPincode').val(), 10) + "','purchasedate':'" + $('#txtPurDate').val() + "', 'brand': '" + $('#ddpBrand  :selected').val() + "','brandddpname':'" + $('#ddpBrand option:selected').text() + "', 'brandname':'" + $('#txtBrand').val() + "','model':'" + $('#ddpModel  :selected').val() + "', 'modelddpname':'" + $('#ddpModel option:selected').text() + "', 'modelname':'" + $('#txtModel').val() + "', 'warranty':'" + $('#ddpWarranty option:selected').val() + "', 'problems':'" + $('#txtProblem').val() + "', 'remarks':'" + $('#txtRemarks').val() + "','serviveengg':'" + $('#ddpServiceEngg  :selected').val() + "', 'createdby':'" + localStorage.getItem('customerid') + "'}",
-//                          dataType: "json",
-//                          success: function(data) {
-//                              $.each(data.d, function(key, value) {
-//                                  if (value.result == "1") {
-//                                      
-//                                      alert("success");
-//                                      //                                      Location.reload(true);
-//                                      $(location).attr('href', url);
-//                                  } else {
-//                                      alert("Invalid Data");
-//                                      return false;
-//                                  }
-//                              });
-//                          },
-//                          error: function(data) {
-//                              
-//                              alert(data);
-//                          }
-
-//                      });
-//                  }
-//              }
 $("#clear").click(function(event) {
               
               location.reload(true);
@@ -370,120 +320,127 @@ $("#clear").click(function(event) {
     </style>
 </head>
 <body>
-	<div data-role="page" data-theme="a">
-		<div data-role="header" data-position="fixed" >
-			<h1>Parsn Retail Watch Square</h1>
+    <div data-role="page" data-theme="a">
+        <div data-role="header" data-position="fixed" >
+            <h1>Parsn Retail Watch Square</h1>
             <a href="jobsheet.html" data-theme="a" data-inline="true" data-icon="home" data-iconpos="notext" data-direction="reverse" rel="external">Home</a>
             <a href="index.html"  data-theme="a" data-inline="true" data-icon="power" data-iconpos="notext" data-direction="reverse" rel="external">Logout</a>           
             <div data-role="navbar" data-grid="d">
-			<ul>
-				<li><a href="jobsheet.html" class="ui-btn-active">Job Sheet</a></li>
-			    <li><a href="Order_Details.html" rel="external">Order details</a></li>
-                <li><a href="Service.htm" rel="external">Service</a></li>								
-				<li><a href="Company.html" rel="external">Manufacturer</a></li>
-                <li><a href="Invoice.html" rel="external">Invoice</a></li>
-			</ul>
-		</div>
-		</div>
-		<div data-role="content"  data-theme="a">
-			<form id="jobsheet" method="POST" action="">
-			    <ul data-role="listview" data-inset="true">
-			        <li data-role="fieldcontain">
-			        <table width="100%">
-			            <tr>
-			                <td style="width: 10%"><label for="lblJobID">Job Id</label></td>
-			                <td style="width: 30%"><input id="txtJobId" type="text"   disabled> </td> 
+                <ul>
+                    <li><a href="jobsheet.html" class="ui-btn-active">Job Sheet</a></li>
+                    <li><a href="Order_Details.html" rel="external">Order details</a></li>
+                    <li><a href="Service.htm" rel="external">Service</a></li>								
+                    <li><a href="Company.html" rel="external">Manufacturer</a></li>
+                    <li><a href="Invoice.html" rel="external">Invoice</a></li>
+                </ul>
+            </div>
+        </div>
+        <div data-role="content"  data-theme="a">
+            <form id="jobsheet" method="POST" action="">
+                <ul data-role="listview" data-inset="true">
+                    <li data-role="fieldcontain">
+                        <table width="100%">
+                            <tr>
+                                <td style="width: 10%"><label for="lblJobID">Job Id</label></td>
+                                <td style="width: 30%"><input id="txtJobId" type="text"   disabled> </td> 
       
-			                <td><label for="number">Phone</label></td>
-			                <td><input required aria-required="true" type="number"  id="txtPhone" name="number">  </td>
-			            </tr>
+                                <td><label for="number">Phone</label></td>
+                                <td><input required aria-required="true" type="number"  id="txtPhone" name="number">  </td>
+                            </tr>
 			        
-			            <tr>
-			            <td style="width:10%"><label for="custname">Name</label></td>
-			            <td style="width:30%"><input style="resize:none" type="text" name="custname" id="txtCustName" required></td>			        			        
-			           <td style="width: 13%"><label for="lblEmail">Email Id</label></td>
-			            <td><input style="resize:none" type="email" name="email" id="txtEmail"  required ></td>
-			            </tr>
+                            <tr>
+                                <td style="width:10%"><label for="custname">Name</label></td>
+                                <td style="width:30%"><input style="resize:none" type="text" name="custname" id="txtCustName" required></td>			        			        
+                                <td style="width: 13%"><label for="lblEmail">Email Id</label></td>
+                                <td><input style="resize:none" type="email" name="email" id="txtEmail"  required ></td>
+                            </tr>
                         </table>
 			        
-			            <table width="100%">
-			                <tr>
-			                <td style="width: 10%"><label  for="lblAddress1">Address</label></td>
-			                <td><input style="width: 100%;resize:none" type="text" name="txtAddress1" id="txtAddress1" value="" required >    </td>
+                        <table width="100%">
+                            <tr>
+                                <td style="width: 10%"><label  for="lblAddress1">Address</label></td>
+                                <td><input style="width: 100%;resize:none" type="text" name="txtAddress1" id="txtAddress1" value="" required >    </td>
                             </tr>
-			            </table>			        			        
-			            <table width="100%">
-			                <tr>
-			                <td style="width: 10%"><label for="lblCity" >City</label></td>
-			                <td style="width: 50%" ><input style="resize:none" type="text"  id="txtCity"  name="city" required ></td>			        			        			                
-			                <td style="width: 40%"><select name="state" id="ddpState">
-			                <option value="" selected>Select State</option>                   
-			                </select></td>
+                        </table>			        			        
+                        <table width="100%">
+                            <tr>
+                                <td style="width: 10%"><label for="lblCity" >City</label></td>
+                                <td style="width: 50%" ><input style="resize:none" type="text"  id="txtCity"  name="city" required ></td>			        			        			                
+                                <td style="width: 40%"><select name="state" id="ddpState">
+                                                           <option value="" selected>Select State</option>                   
+                                                       </select></td>
                             </tr>
-			            </table>        
+                        </table>        
 			        
-			            <table width="100%">
-			                <tr>			                    
-			             <td><label for="lblPincode">Pincode</label></td>
-			            <td><input style="resize:none" type="number" name="pincode" id="txtPincode" required></td>			        			        
-			            <td><label for="lblPurchaseDate">Purchase Date</label></td>
-			                <td><input style="resize:none" type="number" name="date" id="txtPurDate" placeholder="MM/DD/YYYY" required/>			</td>
+                        <table width="100%">
+                            <tr>			                    
+                                <td><label for="lblPincode">Pincode</label></td>
+                                <td><input style="resize:none" type="number" name="pincode" id="txtPincode" required></td>			        			        
+                                <td><label for="lblPurchaseDate">Purchase Date</label></td>
+                                <td><input style="resize:none" type="text" name="date" id="txtPurDate" placeholder="MM/DD/YYYY" required/>			</td>
                             </tr>
-			            </table>
+                        </table>
 			        
-			            <table width="100%">
-			                <tr>
-			                    <td style="width: 50%"><select name="Brand" id="ddpBrand" onchange='checkbrand(this.value)'   required>
-			                            <option value="" selected>Select Brand</option>                                   
-			                        </select></td>
-			                    <td style="width: 50%"><select name="ddpModel" id="ddpModel" onchange='checkmodel(this.value)' required>
-			                               <option value="" selected>Select Model</option>                                   
-			                           </select>
-			                    </td>
-			                </tr>
+                        <table width="100%">
+                            <tr>
+                                <td style="width: 50%"><select name="Brand" id="ddpBrand" onchange='checkbrand(this.value)'   required>
+                                                           <option value="" selected>Select Brand</option>                                   
+                                                       </select></td>
+                                <td style="width: 50%"><select name="ddpModel" id="ddpModel" onchange='checkmodel(this.value)' required>
+                                                           <option value="" selected>Select Model</option>                                   
+                                                       </select>
+                                </td>
+                            </tr>
                             <tr>			               
-			                <td><input type="text" id="txtBrand" name="txtBrand" style='display:none'/></td>			            			            
-			                <td><input type="text" id="txtModel" name="txtModel" style='display:none'/></td>
+                                <td><input type="text" id="txtBrand" name="txtBrand" style='display:none'/></td>			            			            
+                                <td><input type="text" id="txtModel" name="txtModel" style='display:none'/></td>
                             </tr>
                         </table>			            
-			            <table>
-			                <tr>
-			                    <td >
-			                    <label for="txtProblems">Problems</label></td>
-			                    <td style="width: 100%"><textarea rows="5" style="resize:none" id="txtProblem" name="txtProblems" required></textarea></td>
-			                </tr>
-			            </table>
-			            <table>
-			                <tr>
-			                    <td>
+                        <table>
+                            <tr>
+                                <td >
+                                    <label for="txtProblems">Problems</label></td>
+                                <td style="width: 100%"><textarea rows="5" style="resize:none" id="txtProblem" name="txtProblems" required></textarea></td>
+                            </tr>
+                        </table>
+                        <table>
+                            <tr>
+                                <td>
 			                
-			                <label for="lblRemarks">Remarks</label></td>
-			                <td style="width: 100%"><textarea rows="5" style="resize:none" id="txtRemarks" name="txtRemarks" required></textarea></td>
+                                    <label for="lblRemarks">Remarks</label></td>
+                                <td style="width: 100%"><textarea rows="5" style="resize:none" id="txtRemarks" name="txtRemarks" required></textarea></td>
                             </tr>
-			            </table>        
-			            <table width="100%">
-			                <tr>
-			                    <td style="width: 50%"><select name="warranty" id="ddpWarranty"  required>
-			                                <option value="" selected>Select Warranty</option>                                   
-			                            </select></td>                                        			        			            
-			                <td style="width: 50%"><select id="ddpServiceEngg"  name="serviceengg" required>
-			                    <option value="" selected>Select Service</option>                                   
-			                </select>     </td>                          
+                        </table>        
+                        <table width="100%">
+                            <tr>
+                                <td style="width: 50%"><select name="warranty" id="ddpWarranty"  required>
+                                                           <option value="" selected>Select Warranty</option>                                   
+                                                       </select></td>                                        			        			            
+                                <td style="width: 50%"><select id="ddpServiceEngg"  name="serviceengg" required>
+                                                           <option value="" selected>Select Service</option>                                   
+                                                       </select>     </td>                          
                             </tr>
-			            </table>
-			        </li>
-			        <li class="ui-body ui-body-b">
-			            <fieldset class="ui-grid-a">
-			                <div class="ui-block-a"><input type="button" name="Clear" id="clear" value="Clear" data-icon="alert" /></div>                  
-			                <div class="ui-block-b"><input aria-required="true" class="required" data-theme=a type="submit" data-icon="check" name="submit" id="submit" value="Submit"></div>
-			            </fieldset>
-			        </li>                
-			    </ul>
-</form>
-		</div>
+                        </table>
+                    </li>
+                    <li class="ui-body ui-body-b">
+                        <fieldset class="ui-grid-a">
+                            <div class="ui-block-a"><input type="button" name="Clear" id="clear" value="Clear" data-icon="alert" /></div>                  
+                            <div class="ui-block-b"><input aria-required="true" class="required" data-theme=a type="submit" data-icon="check" name="submit" id="submit" value="Submit"></div>
+                        </fieldset>
+                    </li>                
+                </ul>
+            </form>
+        </div>
         <div data-role="footer" data-position="fixed">
-       <h4>Inventrace Powered By CAS</h4>
-    </div> 
-	</div>
+            <h4>Inventrace Powered By CAS</h4>
+        </div> 
+    </div>
+     <div data-role="page" id="popup">	
+	<div data-role="content" data-theme="d">	
+	    <ul data-role="listview" data-inset="true">
+	      <h1>JobId: has been added successfully</h1>		                                                               
+	    </ul>							
+	</div><!-- /content -->		
+</div>
 </body>
 </html>
