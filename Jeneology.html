@@ -78,8 +78,16 @@
             });                                                
         });
         function popup(e) {
-            debugger;                                          
-            localStorage.setItem('jobid', e);            
+            debugger;
+            $("#OrderTable thead").remove();
+                    $("#ParticularJobTable tr").remove();
+                    $("#ParticularJobTable th").remove();
+                    $("#ParticularJobTable tbody").remove();
+                    $("#ParticularJobTable td").remove();                                        
+            var jobid = e;
+            localStorage.removeItem(jobid);                           
+            localStorage.setItem('jobid', jobid);
+            debugger;
             $.ajax({
                 type: "POST",
                 contentType: "application/json; charset:utf-8",
