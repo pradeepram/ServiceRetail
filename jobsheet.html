@@ -111,7 +111,7 @@
 
 
                   }
-              });
+              });                             
               $.validator.addMethod("maxDate", function(value, element) {
                   var curDate = new Date();
 
@@ -216,9 +216,14 @@
                               $.each(data.d, function(key, value) {
                                   
                                   if (value.result == "1") {
-                                      alert("success");
-                                      //                                      Location.reload(true);
-                                      $(location).attr('href', url);
+                                      $.mobile.changePage('#popup');
+                                      
+//                                      $("#popup").dialog().dialog("open");
+//                                      $("#popup").dialog("open");
+//                                      alert("success");
+
+//                                      //                                      Location.reload(true);
+//                                      $(location).attr('href', url);
                                   } else {
                                       alert("Invalid Data");
                                       return false;
