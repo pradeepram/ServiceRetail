@@ -13,6 +13,7 @@
      <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
+        var urlRef = "Company_Inward.html";
         var id = localStorage.getItem('customerid');
             var ur = "index.html";
             if (id == "0") {
@@ -138,6 +139,16 @@
                         }
                     });
                 });
+                $("#popup").dialog({
+                    autoOpen: false,
+                    dialogClass: "no-close",
+                    closeOnEscape: false,
+                    modal: true,
+                    close: function () {
+                        debugger;
+                        $(location).attr('href', url);
+                    }                    
+                });
                 $("#btnsubmit").click(function(event) {
                     $('span[id="tbljobid"]').each(function() {
                         jobid.push(this.innerText);
@@ -157,7 +168,7 @@
                     $('input[id="tblRemarks"]').each(function() {
                         Remarks.push(this.value);
                     });
-                    var urlRef = "Company_Inward.html";
+                    
                     $.ajax({
                         type: "POST",
                         contentType: "application/json; charset=utf-8",
@@ -168,22 +179,35 @@
                         cache: false,
 
                         success: function(response) {
-                            alert("success");
-                            $(location).attr('href', urlRef);
+                        var tag1 = "Jobid " + jobid + " updated successfully";                                         
+                                            $('#lblPopup').html(tag1);                                            
+                                            $.mobile.changePage('#popup');                               
+//                            alert("success");
+//                            $(location).attr('href', urlRef);
                             $.each(data.d, function(key, value) {
                                 if (value.result == "1") {
-                                    alert("success");
-                                    $(location).attr('href', urlRef);
+                                 var tag1 = "Jobid " + jobid + " updated successfully";                                         
+                                            $('#lblPopup').html(tag1);                                            
+                                            $.mobile.changePage('#popup');
+//                                    alert("success");
+//                                    $(location).attr('href', urlRef);
                                 } else {
+                                var tag0 = "Jobid " + jobid + " updated successfully";                                         
+                                            $('#lblPopup').html(tag0);                                            
+                                            $.mobile.changePage('#popup');
                                     // alert("Invalid Data");
-                                    alert("success");
-                                    $(location).attr('href', urlRef);
+//                                    alert("success");
+//                                    $(location).attr('href', urlRef);
                                 }
                             });
                         },
                         error: function(data) {
                         }
                     });
+                });
+                 $("#reset").click(function (event) {
+                    location.reload(true);
+                    $(location).attr('href', urlref);
                 });
             }
         });
@@ -374,6 +398,12 @@
                             	   	                        
 	                    </ul>							
 			</div>
-		</div>   
+       </div>   
+       <div data-role="page" id="popup">                
+        <div data-role="content" data-theme="d">	            
+                <label style="text-align: center" id="lblPopup"></label>      
+                <button style="width: 10%; float: right;" id="reset">Ok</button>                                                                     			        
+        </div><!-- /content -->		
+    </div>
 </body>
 </html>

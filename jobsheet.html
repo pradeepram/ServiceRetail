@@ -111,7 +111,21 @@
 
 
                   }
-              });                             
+              });  
+                 $("#popup").dialog({
+                autoOpen: false,
+                dialogClass: "no-close",
+                closeOnEscape: false,
+                modal: true,
+                 close : function() {
+                     debugger;
+                   $(location).attr('href', url);
+              }  
+//                buttons: [{
+//                    text: "Ok",
+//                    click: function () { $(this).dialog("close"); }
+//                }]
+            });                           
               $.validator.addMethod("maxDate", function(value, element) {
                   var curDate = new Date();
 
@@ -155,7 +169,7 @@
                           maxDate: true
                       },
                       Brand: {
-                          required: true,
+                          required: true
                       },
                       ddpModel: {
                           required: true
@@ -216,16 +230,28 @@
                               $.each(data.d, function(key, value) {
                                   
                                   if (value.result == "1") {
+//                                                                        $(location).attr('href', url);
+                                      var jobid = $('#txtJobId').val();
+                                      var tag = "JobId "+jobid+" is placed successfully";
+//                                      $('#lblPopup').val(tag+jobid);
+                                      $('#lblPopup').html(tag);
+                                      debugger;
                                       $.mobile.changePage('#popup');
-                                      
+//                                      $.mobile.dialog('#popup');
 //                                      $("#popup").dialog().dialog("open");
 //                                      $("#popup").dialog("open");
 //                                      alert("success");
+//$('#popup').dialog('open');
 
 //                                      //                                      Location.reload(true);
-//                                      $(location).attr('href', url);
+
                                   } else {
-                                      alert("Invalid Data");
+                                  var jobid0 = $('#txtJobId').val();
+                                      var tag0 = "JobId "+jobid0+" is Can't Be Placed";//                                     
+                                      $('#lblPopup').html(tag0);
+                                      debugger;
+                                      $.mobile.changePage('#popup');
+//                                      alert("Invalid Data");
                                       return false;
                                   }
                               });
@@ -243,6 +269,10 @@
               $("#clear").click(function(event) {
 
                   location.reload(true);
+              });
+              $("#reset").click(function(event) {
+                  location.reload(true);
+                   $(location).attr('href', url);
               });
           }
       });
@@ -440,7 +470,7 @@
                     <li class="ui-body ui-body-b">
                         <fieldset class="ui-grid-a">
                             <div class="ui-block-a"><input type="button" name="Clear" id="clear" value="Clear" data-icon="alert" /></div>                  
-                            <div class="ui-block-b"><input aria-required="true" class="required" data-theme=a type="submit" data-icon="check" name="submit" id="submit" value="Submit"></div>
+                            <div class="ui-block-b"><input aria-required="true" data-rel="dialog" class="required" data-theme=a type="submit" data-icon="check" name="submit" id="submit" value="Submit"></div>
                         </fieldset>
                     </li>                
                 </ul>
@@ -450,12 +480,11 @@
             <h4>Inventrace Powered By CAS</h4>
         </div> 
     </div>
-     <div data-role="page" id="popup">	
-	<div data-role="content" data-theme="d">	
-	    <ul data-role="listview" data-inset="true">
-	      <h1>JobId: has been added successfully</h1>		                                                               
-	    </ul>							
-	</div><!-- /content -->		
-</div>
+    <div data-role="page" id="popup">                
+        <div data-role="content" data-theme="d">	            
+                <label style="text-align: center" id="lblPopup"></label>      
+                <button style="width: 10%; float: right;" id="reset">Ok</button>                                                                     			        
+        </div><!-- /content -->		
+    </div>
 </body>
 </html>

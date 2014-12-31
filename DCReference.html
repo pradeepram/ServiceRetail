@@ -13,15 +13,13 @@
     <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>  
     <script type="text/javascript">
         $(document).ready(function() {
+        var urlref = "DCReference.html";
                    var id = localStorage.getItem('customerid');
             var ur = "index.html";
             if (id == "0") {
                 
                 $(location).attr('href', ur);
-            } else {
-                
-
-
+            } else {                
                 jobid = new Array();
                 $.ajax({
                     type: "POST",
@@ -39,8 +37,6 @@
                         });
                     },
                     error: function(Result) {
-
-
                     }
                 });
                 $("#ddpDC").change(function() {
@@ -125,6 +121,16 @@
                         }
                     });
                 });
+                $("#popup").dialog({
+                    autoOpen: false,
+                    dialogClass: "no-close",
+                    closeOnEscape: false,
+                    modal: true,
+                    close: function () {
+                        debugger;
+                        $(location).attr('href', url);
+                    }                    
+                });
                 $("#submit").click(function() {
                     
                     $("#dcRef").validate({
@@ -144,7 +150,7 @@
                             $('input[id="tblRef"]').each(function() {
                                 selectedLanguage.push(this.value);
                             });
-                            var urlref = "DCReference.html";
+                            
                             $.ajax({
                                 type: "POST",
                                 contentType: "application/json; charset=utf-8",
@@ -156,11 +162,17 @@
 
                                     $.each(data.d, function(key, value) {
                                         if (value.result == "1") {
-                                            alert("success");
-                                            $(location).attr('href', urlref);
+                                        var tag1 = "Jobid " + jobid + " updated successfully";                                         
+                                            $('#lblPopup').html(tag1);                                            
+                                            $.mobile.changePage('#popup');
+//                                            alert("success");
+//                                            $(location).attr('href', urlref);
                                         } else {
-                                            alert("success");
-                                            $(location).attr('href', urlref);
+                                        var tag0 = "Jobid " + jobid + " updated successfully";                                         
+                                            $('#lblPopup').html(tag0);                                            
+                                            $.mobile.changePage('#popup');
+//                                            alert("success");
+//                                            $(location).attr('href', urlref);
                                         }
                                     });
                                 },
@@ -196,11 +208,16 @@
 
                                     $.each(data.d, function(key, value) {
                                         if (value.result == "1") {
-
-                                            alert("success");
+                                        var tag1 = "DC " + $('#ddpDC :selected').val() + " is cancelled ";                                         
+                                            $('#lblPopup').html(tag1);                                            
+                                            $.mobile.changePage('#popup');                                      
+//                                            alert("success");
                                         } else {
-                                            alert("Invalid Data");
-                                            return false;
+                                        var tag0 = "DC " + $('#ddpDC :selected').val() + " can't be cancelled";                                         
+                                            $('#lblPopup').html(tag0);                                            
+                                            $.mobile.changePage('#popup');
+//                                            alert("Invalid Data");
+//                                            return false;
                                         }
                                     });
                                 },
@@ -209,6 +226,10 @@
                             });
                         }
                     });
+                });
+                $("#reset").click(function (event) {
+                    location.reload(true);
+                    $(location).attr('href', urlref);
                 });
             }
         });
@@ -259,57 +280,63 @@
     </style>
 </head>
 <body>
-	<div data-role="page" data-theme="a">
-		<div data-role="header" data-position="fixed" >
-			<h1>Parsn Retail Watch Square</h1>
+    <div data-role="page" data-theme="a">
+        <div data-role="header" data-position="fixed" >
+            <h1>Parsn Retail Watch Square</h1>
             <a href="jobsheet.html" data-theme="a" data-inline="true" data-icon="home" data-iconpos="notext" data-direction="reverse" rel="external">Home</a>
-           <a href="index.html"  data-theme="a" data-inline="true" data-icon="power" data-iconpos="notext" data-direction="reverse" rel="external">Logout</a>
+            <a href="index.html"  data-theme="a" data-inline="true" data-icon="power" data-iconpos="notext" data-direction="reverse" rel="external">Logout</a>
             <div data-role="navbar" data-grid="d">
-			<ul>
-				<li><a href="jobsheet.html" rel="external">Job Sheet</a></li>
-                <li><a href="Order_Details.html" rel="external">Order details</a></li>
-				<li><a href="Service.htm" rel="external">Service</a></li>								
-				<li><a href="Company.html" rel="external" class="ui-btn-active">Manufacturer</a></li>
-                <li><a href="Invoice.html" rel="external">Invoice</a></li>
-			</ul>
-		</div>
+                <ul>
+                    <li><a href="jobsheet.html" rel="external">Job Sheet</a></li>
+                    <li><a href="Order_Details.html" rel="external">Order details</a></li>
+                    <li><a href="Service.htm" rel="external">Service</a></li>								
+                    <li><a href="Company.html" rel="external" class="ui-btn-active">Manufacturer</a></li>
+                    <li><a href="Invoice.html" rel="external">Invoice</a></li>
+                </ul>
+            </div>
             <div data-role="navbar" data-grid="b">
-			<ul>
-			    <li><a href="Company.html" rel="external">To Be Pushed</a></li>
-                <li><a href="DCReference.html" rel="external" class="ui-btn-active">DC</a></li>			
-			    <li><a href="Company_Inward.html" rel="external">To Be Received</a></li>
+                <ul>
+                    <li><a href="Company.html" rel="external">To Be Pushed</a></li>
+                    <li><a href="DCReference.html" rel="external" class="ui-btn-active">DC</a></li>			
+                    <li><a href="Company_Inward.html" rel="external">To Be Received</a></li>
                 					
-			</ul>
-		</div>
+                </ul>
+            </div>
 
-		</div>
-		<div data-role="content"  data-theme="a">
-		<form id="dcRef" method="POST" action="">
-		    <ul data-role="listview" data-inset="true">
-		        <li data-role="fieldcontain">
-		            <label for="lblDC">DC</label>
-		            <select name="DC" id="ddpDC">
-		                 <option value="" selected>Select DC</option>                                   		                                
-		            </select>        
-		        </li>		        
-		        <li data-role="fieldcontain">		            
-   <table  id="jobid"  class="table table-striped">	                        
-	                    </table>  
+        </div>
+        <div data-role="content"  data-theme="a">
+            <form id="dcRef" method="POST" action="">
+                <ul data-role="listview" data-inset="true">
+                    <li data-role="fieldcontain">
+                        <label for="lblDC">DC</label>
+                        <select name="DC" id="ddpDC">
+                            <option value="" selected>Select DC</option>                                   		                                
+                        </select>        
+                    </li>		        
+                    <li data-role="fieldcontain">		            
+                        <table  id="jobid"  class="table table-striped">	                        
+                        </table>  
 
 		                     
-		        </li>
-                <li class="ui-body ui-body-b">
-				<fieldset class="ui-grid-a">
-					 <div class="ui-block-a"><input type="submit" name="Clear" id="Cancel" value="Cancel" data-icon="alert" /></div>                  
-                     <div class="ui-block-b"><input aria-required="true" data-theme=a type="submit" data-icon="check" name="submit" id="submit" value="Submit"></div>
-			    </fieldset>
-			</li>
-		    </ul>
-        </form>
-		</div>
+                    </li>
+                    <li class="ui-body ui-body-b">
+                        <fieldset class="ui-grid-a">
+                            <div class="ui-block-a"><input type="submit" name="Clear" id="Cancel" value="Cancel" data-icon="alert" /></div>                  
+                            <div class="ui-block-b"><input aria-required="true" data-theme=a type="submit" data-icon="check" name="submit" id="submit" value="Submit"></div>
+                        </fieldset>
+                    </li>
+                </ul>
+            </form>
+        </div>
         <div data-role="footer" data-position="fixed">
-         <h4>Inventrace Powered By CAS</h4>
-    </div> 
-	</div>
+            <h4>Inventrace Powered By CAS</h4>
+        </div> 
+    </div>
+    <div data-role="page" id="popup">                
+        <div data-role="content" data-theme="d">	            
+                <label style="text-align: center" id="lblPopup"></label>      
+                <button style="width: 10%; float: right;" id="reset">Ok</button>                                                                     			        
+        </div><!-- /content -->		
+    </div>
 </body>
 </html>

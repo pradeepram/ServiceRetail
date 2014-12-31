@@ -14,6 +14,7 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+        var urlref = "Company.html";
         var id = localStorage.getItem('customerid');
             var ur = "index.html";
             if (id == "0") {
@@ -21,7 +22,16 @@
                 $(location).attr('href', ur);
             } else {
                 
-
+                $("#popup").dialog({
+                    autoOpen: false,
+                    dialogClass: "no-close",
+                    closeOnEscape: false,
+                    modal: true,
+                    close: function () {
+                        debugger;
+                        $(location).attr('href', url);
+                    }                    
+                });
                 $.ajax({
                     type: "POST",
                     contentType: "application/json; charset=utf-8",
@@ -128,7 +138,7 @@
                         },
                         submitHandler: function(form) {
                             var selectedLanguage = new Array();
-                            var urlref = "Company.html";
+                            
                             $('input[id="tblChk"]:checked').each(function() {
                                 selectedLanguage.push(this.value);
                             });
@@ -142,14 +152,18 @@
                                 success: function(data) {
                                     
                                     $.each(data.d, function(key, value) {
-                                        if (value.result == "1") {
-                                            
-                                            alert("success");
-                                            //                                      Location.reload(true);
-                                            $(location).attr('href', urlref);
-                                        } else {
-                                            alert("Success");
-                                            $(location).attr('href', urlref);
+                                        if (value.result == "1") {                                             
+                                            var tag1 = "JobId " + selectedLanguage + " is pushed successfully";                                         
+                                            $('#lblPopup').html(tag1);                                            
+                                            $.mobile.changePage('#popup');
+//                                            alert("success");                                       
+//                                            $(location).attr('href', urlref);
+                                        } else {                                         
+                                            var tag0 = "JobId " + selectedLanguage + " can't be pushed";                                         
+                                            $('#lblPopup').html(tag0);                                            
+                                            $.mobile.changePage('#popup');
+//                                            alert("Success");
+//                                            $(location).attr('href', urlref);
                                         }
                                     });
                                 },
@@ -158,6 +172,10 @@
                             });
                         }
                     });
+                });
+                $("#reset").click(function (event) {
+                    location.reload(true);
+                    $(location).attr('href', urlref);
                 });
             }
         });
@@ -264,5 +282,11 @@
          <h4>Inventrace Powered By CAS</h4>
     </div> 
 	</div>
+    <div data-role="page" id="popup">                
+        <div data-role="content" data-theme="d">	            
+                <label style="text-align: center" id="lblPopup"></label>      
+                <button style="width: 10%; float: right;" id="reset">Ok</button>                                                                     			        
+        </div><!-- /content -->		
+    </div>
 </body>
 </html>
