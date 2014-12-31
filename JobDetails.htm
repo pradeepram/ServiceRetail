@@ -62,7 +62,7 @@
                                 $("input[type=radio]").prop('disabled', false);
                             } else {
 
-                                $("input[type=radio][value=0]").attr("checked", true);
+                                $("input[type=radio][value=2]").attr("checked", true);
                                 $("input[type=radio]").attr('disabled', true);
                             }
                             $("#txtCost").val(value.cost);
@@ -73,6 +73,16 @@
 
                     }
 
+                });
+                $("#popup").dialog({
+                    autoOpen: false,
+                    dialogClass: "no-close",
+                    closeOnEscape: false,
+                    modal: true,
+                    close: function () {
+                        debugger;
+                        $(location).attr('href', url);
+                    }                    
                 });
                 // });
                 $("#submit").click(function(event) {
@@ -88,7 +98,6 @@
                         var servicecharge = $('#txtServiceCharge').val();
                         var callconfirm = $('input[name=radio-choice-2]:checked').val();
                         if (callconfirm == undefined) {
-
                             callconfirm = 0;
                             alert("check callconfirm");
                         } else if (callconfirm == "" || servicecharge == "") {
@@ -106,10 +115,17 @@
                                 success: function(data) {
                                     $.each(data.d, function(key, value) {
                                         if (value.result == "1") {
-
-                                            alert("success");
-                                            $(location).attr('href', urlpage);
+                                            var jobid1 = $('#txtJobId').val();
+                                            var tag1 = "JobId " + jobid1 + " is updated successfully";                                         
+                                            $('#lblPopup').html(tag1);                                            
+                                            $.mobile.changePage('#popup');
+//                                            alert("success");
+//                                            $(location).attr('href', urlpage);
                                         } else {
+                                            var jobid = $('#txtJobId').val();
+                                            var tag = "JobId " + jobid + " can't be updated";
+                                            $('#lblPopup').html(tag);
+                                            $.mobile.changePage('#popup');
                                             alert("Invalid Data");
                                         }
                                     });
@@ -134,11 +150,18 @@
                         success: function(data) {
                             $.each(data.d, function(key, value) {
                                 if (value.result == "1") {
-
-                                    alert("success");
-                                    $(location).attr('href', urlpage);
+                                    var jobid = $('#txtJobId').val();
+                                    var tag = "JobId " + jobid + " is cancelled ";
+                                    $('#lblPopup').html(tag);
+                                    $.mobile.changePage('#popup');
+//                                    alert("success");
+//                                    $(location).attr('href', urlpage);
                                 } else {
-                                    alert("Invalid Data");
+                                    var jobid = $('#txtJobId').val();
+                                    var tag = "JobId " + jobid + " can't be cancelled ";
+                                    $('#lblPopup').html(tag);
+                                    $.mobile.changePage('#popup');
+//                                    alert("Invalid Data");
                                 }
                             });
                         },
@@ -147,6 +170,10 @@
 
                         }
                     });
+                });
+                $("#reset").click(function (event) {
+                    location.reload(true);
+                    $(location).attr('href', urlpage);
                 });
             }
         });        
@@ -170,107 +197,113 @@
     </style>
 </head>
 <body>
-	<div data-role="page" data-theme="a">
-		<div data-role="header" data-position="fixed" >
-			<h1>Parsn Retail Watch Square</h1>
-             <a href="jobsheet.html" data-theme="a" data-inline="true" data-icon="home" data-iconpos="notext" data-direction="reverse" rel="external">Home</a>
-           <a href="index.html"  data-theme="a" data-inline="true" data-icon="power" data-iconpos="notext" data-direction="reverse" rel="external">Logout</a>
+    <div data-role="page" data-theme="a">
+        <div data-role="header" data-position="fixed" >
+            <h1>Parsn Retail Watch Square</h1>
+            <a href="jobsheet.html" data-theme="a" data-inline="true" data-icon="home" data-iconpos="notext" data-direction="reverse" rel="external">Home</a>
+            <a href="index.html"  data-theme="a" data-inline="true" data-icon="power" data-iconpos="notext" data-direction="reverse" rel="external">Logout</a>
             <div data-role="navbar" data-grid="d">
-			<ul>
-				<li><a href="jobsheet.html" rel="external">Job Sheet</a></li>
-				<li><a href="Order_Details.html" rel="external" >Order Details</a></li>
-                <li><a href="Service.htm" rel="external">Service</a></li>								
-				<li><a href="Company.html" rel="external">Company</a></li>
-                <li><a href="Invoice.html" rel="external">Invoice</a></li>
-			</ul>
-		</div>
-		</div>
-		<div data-role="content" data-theme="a">		
-	<form id="jobDetails" method="POST" action="">
-		  <ul data-role="listview" data-inset="true">
-		      <li data-role="fieldcontain">
-		      <table width="100%">
-		          <tr>
-		              <td style="width: 12%"><label for="lblJobID">Job Id</label></td>
-		              <td style="width: 40%"><input id="txtJobId" type="text"   disabled> </td> 
-      
-		              <td style="width: 12%"><label for="lblPhoneNo">Phone</label></td>
-		              <td style="width: 40%"><input type="text" name="password" id="txtPhone" value=""   disabled/></td>
-		          </tr>
-		      </table>
-		      <li data-role="fieldcontain">
-		          <table width="100%">
-		              <tr>
-		              <td style="width: 12%"><label for="lblCustName">Customer Name</label></td>
-		                  <td style="width: 40%"><input type="text"  id="txtCustName" name="txtCustname" disabled></td>
-		                  <td style="width: 12%"><label for="name">Warranty</label></td>
-	                            <td style="width: 40%"><input type="text" name="name" id="txtWarranty" value=""   disabled/></td>
-                      </tr>
-		          </table>
-		      </li>	                        
-		                 <li data-role="fieldcontain">
-		                     <table width="100%">
-		                         <tr>
-		                     <td style="width: 12%">    <label for="name">Brand</label></td>
-		                       <td style="width: 40%">  <input type="text" name="name" id="txtBrand" value=""   disabled/></td>		      	             
-		                       <td style="width: 12%">  <label for="name">Model</label></td>
-		                         <td style="width: 40%"><input type="text" name="name" id="txtModel" value=""   disabled/></td>
-                                 </tr>
-		                     </table>
-	                        </li>	                        
-	                        <li data-role="fieldcontain">
-	                            <label for="textarea">Problems</label>
-	                            <textarea cols="40" rows="8" name="textarea" id="txtProblem"  disabled></textarea>
-	                        </li>									
-	                        <li data-role="fieldcontain">
-	                            <label for="textarea">Complaints</label>
-	                            <textarea cols="40" rows="8" name="textarea" id="txtComplaints"  disabled></textarea>
-	                        </li>						
-                            	<li data-role="fieldcontain">
-	                            <label for="textarea">Parts</label>
-	                            <textarea cols="40" rows="8" name="textarea" id="txtParts"  disabled></textarea>
-                            	</li>	
-		      <li data-role="fieldcontain">
-		          <table width="100%">
-		              <tr>		                  
-		                  <td style="width: 30%"><label for="textarea">Service Charge</label>                                 </td>
-		                  <td style="width: 20%"><input type="number" name="txtServiceCharge" id="txtServiceCharge" value=""   required/></td>	                        
-		                  <td style="width: 30%"><label for="name">Estimated Cost</label></td>
-		                  <td style="width: 20%"><input type="text" name="name" id="txtCost" disabled/></td>
-		              </tr>
-		          </table>
-		      </li>
-		      <li data-role="fieldcontain">
-	                            <fieldset data-role="controlgroup" data-type="horizontal">
-	                                <legend>Call Confirm:</legend>
-	                                <input type="radio" name="radio-choice-2" id="radio-choice-21" value="1" />
-	                                <label for="radio-choice-21">Yes</label>
-
-	                                <input type="radio" name="radio-choice-2" id="radio-choice-22" value="0"/>
-	                                <label for="radio-choice-22">No</label>         	
-                                    
-                                    <input type="radio" name="radio-choice-2" id="radio-choice-23" value="2"/>
-	                                <label for="radio-choice-23">Didn't PickUp</label>         	
-                                    <!--<input type="radio" name="sex" value="0">Male<br>
-	                                <input type="radio" name="sex" value="1">Female-->                                     
-	                            </fieldset>
-		      </li>	
-
-		      <li data-role="fieldcontain">
-	                            
-	                        </li>            
-	                        <li class="ui-body ui-body-b">
-	                            <fieldset class="ui-grid-a">
-	                                <div class="ui-block-a"><input aria-required="true" class="required" data-theme=a type="reset" data-icon="delete" name="cancel" id="cancel" value="Cancel Order"></div>
-	                                <div class="ui-block-b"><input aria-required="true" class="required" data-theme=a type="submit" data-icon="check" name="submit" id="submit" value="Update"></div>
-	                            </fieldset>
-	                        </li>			
-	                    </ul>			
-		</form>				
+                <ul>
+                    <li><a href="jobsheet.html" rel="external">Job Sheet</a></li>
+                    <li><a href="Order_Details.html" rel="external" >Order Details</a></li>
+                    <li><a href="Service.htm" rel="external">Service</a></li>								
+                    <li><a href="Company.html" rel="external">Company</a></li>
+                    <li><a href="Invoice.html" rel="external">Invoice</a></li>
+                </ul>
             </div>
-        <div data-role="footer" data-position="fixed">
-        <h4>Inventrace Powered By CAS</h4>
-    </div> 	
         </div>
+        <div data-role="content" data-theme="a">		
+            <form id="jobDetails" method="POST" action="">
+                <ul data-role="listview" data-inset="true">
+                    <li data-role="fieldcontain">
+                    <table width="100%">
+                        <tr>
+                            <td style="width: 12%"><label for="lblJobID">Job Id</label></td>
+                            <td style="width: 40%"><input id="txtJobId" type="text"   disabled> </td> 
+      
+                            <td style="width: 12%"><label for="lblPhoneNo">Phone</label></td>
+                            <td style="width: 40%"><input type="text" name="password" id="txtPhone" value=""   disabled/></td>
+                        </tr>
+                    </table>
+                    <li data-role="fieldcontain">
+                        <table width="100%">
+                            <tr>
+                                <td style="width: 12%"><label for="lblCustName">Customer Name</label></td>
+                                <td style="width: 40%"><input type="text"  id="txtCustName" name="txtCustname" disabled></td>
+                                <td style="width: 12%"><label for="name">Warranty</label></td>
+                                <td style="width: 40%"><input type="text" name="name" id="txtWarranty" value=""   disabled/></td>
+                            </tr>
+                        </table>
+                    </li>	                        
+                    <li data-role="fieldcontain">
+                        <table width="100%">
+                            <tr>
+                                <td style="width: 12%">    <label for="name">Brand</label></td>
+                                <td style="width: 40%">  <input type="text" name="name" id="txtBrand" value=""   disabled/></td>		      	             
+                                <td style="width: 12%">  <label for="name">Model</label></td>
+                                <td style="width: 40%"><input type="text" name="name" id="txtModel" value=""   disabled/></td>
+                            </tr>
+                        </table>
+                    </li>	                        
+                    <li data-role="fieldcontain">
+                        <label for="textarea">Problems</label>
+                        <textarea cols="40" rows="8" name="textarea" id="txtProblem"  disabled></textarea>
+                    </li>									
+                    <li data-role="fieldcontain">
+                        <label for="textarea">Complaints</label>
+                        <textarea cols="40" rows="8" name="textarea" id="txtComplaints"  disabled></textarea>
+                    </li>						
+                    <li data-role="fieldcontain">
+                        <label for="textarea">Parts</label>
+                        <textarea cols="40" rows="8" name="textarea" id="txtParts"  disabled></textarea>
+                    </li>	
+                    <li data-role="fieldcontain">
+                        <table width="100%">
+                            <tr>		                  
+                                <td style="width: 30%"><label for="textarea">Service Charge</label>                                 </td>
+                                <td style="width: 20%"><input type="number" name="txtServiceCharge" id="txtServiceCharge" value=""   required/></td>	                        
+                                <td style="width: 30%"><label for="name">Estimated Cost</label></td>
+                                <td style="width: 20%"><input type="text" name="name" id="txtCost" disabled/></td>
+                            </tr>
+                        </table>
+                    </li>
+                    <li data-role="fieldcontain">
+                        <fieldset data-role="controlgroup" data-type="horizontal">
+                            <legend>Call Confirm:</legend>
+                            <input type="radio" name="radio-choice-2" id="radio-choice-21" value="1" />
+                            <label for="radio-choice-21">Yes</label>
+
+                            <input type="radio" name="radio-choice-2" id="radio-choice-22" value="0"/>
+                            <label for="radio-choice-22">No</label>         	
+                                    
+                            <input type="radio" name="radio-choice-2" id="radio-choice-23" value="2"/>
+                            <label for="radio-choice-23">Didn't PickUp</label>         	
+                            <!--<input type="radio" name="sex" value="0">Male<br>
+                                <input type="radio" name="sex" value="1">Female-->                                     
+                        </fieldset>
+                    </li>	
+
+                    <li data-role="fieldcontain">
+	                            
+                    </li>            
+                    <li class="ui-body ui-body-b">
+                        <fieldset class="ui-grid-a">
+                            <div class="ui-block-a"><input aria-required="true" class="required" data-theme=a type="reset" data-icon="delete" name="cancel" id="cancel" value="Cancel Order"></div>
+                            <div class="ui-block-b"><input aria-required="true" class="required" data-theme=a type="submit" data-icon="check" name="submit" id="submit" value="Update"></div>
+                        </fieldset>
+                    </li>			
+                </ul>			
+            </form>				
+        </div>
+        <div data-role="footer" data-position="fixed">
+            <h4>Inventrace Powered By CAS</h4>
+        </div> 	
+    </div>
+    <div data-role="page" id="popup">                
+        <div data-role="content" data-theme="d">	            
+                <label style="text-align: center" id="lblPopup"></label>      
+                <button style="width: 10%; float: right;" id="reset">Ok</button>                                                                     			        
+        </div><!-- /content -->		
+    </div>
 </body>
 </html>
