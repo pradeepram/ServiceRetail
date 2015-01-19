@@ -1,0 +1,73 @@
+﻿<html style="height: 100%;">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>jobsheet</title>
+	<link rel="stylesheet" href="themes/JobSheet1.min.css" />
+	<link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
+	<link rel="stylesheet" href="Script/jquery.mobile.structure-1.4.5.min.css" />
+	<script src="Script/jquery-1.11.2.js" type="text/javascript"></script>
+	<script src="Script/jquery.mobile-1.4.5.min.js" type="text/javascript"></script>        
+     <script type="text/javascript" src="Script/jquery.validate.min.js"></script>     
+</head>
+<body style="height: 100%;">
+    <div data-role="page" data-theme="a">
+        <div data-role="header" data-position="fixed" >
+            <h1>Parsn Retail Watch Square</h1>
+            <a href="jobsheet.html" data-theme="a" data-inline="true" data-icon="home" data-iconpos="notext" data-direction="reverse" rel="external">Home</a>
+            <a href="index.html"  data-theme="a" data-inline="true" data-icon="power" data-iconpos="notext" data-direction="reverse" rel="external">Logout</a>                     
+        </div>
+        <div data-role="content"  data-theme="a" style="margin: 0 auto;">
+            <form id="jobsheet" method="POST" action="" style="height: 100%;">
+                <table style="height: 100%;width: 100%;">
+                    
+                    <tr style="width: 100%;height: 50%">
+                        <td style="width: 33%"><a  href="jobsheet.html" >
+                                                   <img src="themes/images/account_group-64.png" style="border: 0; float: left; margin-right: 15px" /> 
+                                                   <p style="clear: both;">Jobsheet</p>
+                                               </a>  
+                        </td>
+                        <td style="width: 33%"><a  href="Order_Details.html" >
+                                                   <img src="themes/images/checklist-64.png" style="border: 0; float: left; margin-right: 15px" /> <br/>
+                                                   <p style="clear: both;">All Orders</p>
+                                               </a>  
+                        </td>
+                        <td style="width: 33%"><a  href="Service.htm" >
+                                                   <img src="themes/images/service-64.png" style="border: 0; float: left; margin-right: 15px" /> <br/>
+                                                   <p style="clear: both;">Service</p>
+                                               </a>  
+                        </td>          
+                    </tr>
+                    <tr style="width: 100%;height: 50%">
+                        <td style="width: 33%"><a  href="Company.html" >
+                                                   <img src="themes/images/Industry.png" style="border: 0; float: left; margin-right: 15px" /> 
+                                                   <p style="clear: both;">Manufacturer</p>
+                                               </a>  
+                        </td>
+                        <td style="width: 33%"><a  href="Invoice.html" >
+                                                   <img src="themes/images/invoice-64.png" style="border: 0; float: left; margin-right: 15px" /> <br/>
+                                                   <p style="clear: both;">Invoice</p>
+                                               </a>  
+                        </td>
+                        <td style="width: 33%"><a  href="#" >
+                                                   <img src="themes/images/charts-64.png" style="border: 0; float: left; margin-right: 15px" /> <br/>
+                                                   <p style="clear: both;">Reports</p>
+                                               </a>  
+                        </td>          
+                    </tr>
+                </table>
+            </form>
+           
+        </div>
+        <div data-role="footer" data-position="fixed">
+            <h4>Inventrace Powered By CAS</h4>
+        </div> 
+    </div>
+    <div data-role="page" id="popup">                
+        <div data-role="content" data-theme="d">	            
+                <label style="text-align: center" id="lblPopup"></label>      
+                <button style="width: 10%; float: right;" id="reset">Ok</button>                                                                     			        
+        </div><!-- /content -->		
+    </div>
+</body>
+</html>

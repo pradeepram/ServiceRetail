@@ -61,11 +61,13 @@
                             $("#ServiceEngg").append(tbody);
                             $("#ServiceEngg").append(tr);
                             tr = $("<tr></tr>");
+                            $("#ServiceEngg").append(tr);
                             for (var i = 0; i < data.NewDataSet.Table.length; i++) {
-                                tr = $("<tr></tr>");
-                                tr.append("<td><a href='#' data-rel='popup' onclick='popup(" + data.NewDataSet.Table[i].CustomerRole + ")'>" + data.NewDataSet.Table[i].FirstName + "-" + data.NewDataSet.Table[i].JobInProcess + "/" + data.NewDataSet.Table[i].Total + "</a></td>");
-                                $("#ServiceEngg").append(tr);
+                                debugger;
+                                td = $("<td style='width:3%'><a href='#' data-rel='popup' onclick='popup(" + data.NewDataSet.Table[i].CustomerRole + ")'>" + data.NewDataSet.Table[i].FirstName + "-" + data.NewDataSet.Table[i].JobInProcess + "/" + data.NewDataSet.Table[i].Total + "</a></td>");
+                                $("#ServiceEngg").append(td);
                             }
+                            $("#ServiceEngg").append(tr);
                         }
 
                         $('#ServiceEngg').append(tbody);
@@ -111,7 +113,7 @@
                                 data.NewDataSet.Table1.BrandName + "</td><td>" +
                                 data.NewDataSet.Table1.ModelName + "</td><td>" +
                                 data.NewDataSet.Table1.CallConfirm + "</td><td>" +
-                                data.NewDataSet.Table1.ServiceEngg + "</td><td>< input type='button' id='tbljobid' name='tbljobid' onclick='button(" + data.NewDataSet.Table1.Job_ID + ")'></td>");
+                                data.NewDataSet.Table1.ServiceEngg + "</td><td><a  href='#' name='tbljobid' onclick='button(" + data.NewDataSet.Table1.Job_ID + ")'><img src='themes/images/next-1.png' style='border: 0; float: left; margin-right: 15px' /> </a></td>");
                             $('#ServiceEnggDetails').append(tr);
                         } else {
                             var tr;
@@ -132,7 +134,7 @@
                                     data.NewDataSet.Table1[i].BrandName + "</td><td>" +
                                     data.NewDataSet.Table1[i].ModelName + "</td><td>" +
                                     data.NewDataSet.Table1[i].CallConfirm + "</td><td>" +
-                                    data.NewDataSet.Table1[i].ServiceEngg + "</td><td><input type='button' id='tbljobid' name='tbljobid' value='Push' onclick='button(" + data.NewDataSet.Table1[i].Job_ID + ")'></td>");
+                                    data.NewDataSet.Table1[i].ServiceEngg + "</td><td><a  href='#' name='tbljobid' onclick='button(" + data.NewDataSet.Table1[i].Job_ID + ")'><img src='themes/images/next-1.png' style='border: 0; float: left; margin-right: 15px' /> </a></td>");
                                 $('#ServiceEnggDetails').append(tr);
                             }
                         }
@@ -268,9 +270,9 @@
 	<div data-role="page" data-theme="a">
 		<div data-role="header" data-position="fixed" >
 		    <h1>Parsn Retail Watch Square</h1>
-            <a href="jobsheet.html" data-theme="a" data-inline="true" data-icon="home" data-iconpos="notext" data-direction="reverse" rel="external">Home</a>
+            <a href="Menu.html" data-theme="a" data-inline="true" data-icon="home" data-iconpos="notext" data-direction="reverse" rel="external">Home</a>
            <a href="index.html"  data-theme="a" data-inline="true" data-icon="power" data-iconpos="notext" data-direction="reverse" rel="external">Logout</a>
-           		    <div data-role="navbar" data-grid="d">
+           		  <!--  <div data-role="navbar" data-grid="d">
 		        <ul>
 		            <li><a href="jobsheet.html" rel="external">Job Sheet</a></li>
 		            <li><a href="Order_Details.html" rel="external">Order details</a></li>
@@ -278,7 +280,7 @@
 		            <li><a href="Company.html" rel="external">Manufacturer</a></li>
 		            <li><a href="Invoice.html" rel="external">Invoice</a></li>
 		        </ul>
-		    </div>
+		    </div>-->
 
 		</div>
 		<div data-role="content" data-theme="a">		

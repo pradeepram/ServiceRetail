@@ -231,9 +231,9 @@
 	<div data-role="page" data-theme="a">
 		<div data-role="header" data-position="fixed" >
 			<h1>Parsn Retail Watch Square</h1>
-           <a href="jobsheet.html" data-theme="a" data-inline="true" data-icon="home" data-iconpos="notext" data-direction="reverse" rel="external">Home</a>
+           <a href="Menu.html" data-theme="a" data-inline="true" data-icon="home" data-iconpos="notext" data-direction="reverse" rel="external">Home</a>
            <a href="index.html"  data-theme="a" data-inline="true" data-icon="power" data-iconpos="notext" data-direction="reverse" rel="external">Logout</a>            
-            <div data-role="navbar" data-grid="d">
+            <!--<div data-role="navbar" data-grid="d">
 			<ul>
 				<li><a href="jobsheet.html" rel="external">Job Sheet</a></li>
                 <li><a href="Order_Details.html" rel="external">Order details</a></li>
@@ -241,7 +241,7 @@
 				<li><a href="Company.html" class="ui-btn-active">Manufacturer</a></li>
                 <li><a href="Invoice.html" rel="external">Invoice</a></li>
 			</ul>
-		</div>
+		</div>-->
             <div data-role="navbar" data-grid="b">
 			<ul>
 				<li><a href="Company.html" rel="external" class="ui-btn-active">To Be Pushed</a></li>
@@ -256,14 +256,18 @@
 		<form id="ToBePush" method="POST" action="">
 		    <ul data-role="listview" data-inset="true">
 		        <li data-role="fieldcontain">
-		            <label for="lblStore">Store</label>
-		            <select id="ddpStore" name="store" >
-		                <option value="" selected>Select Store</option>                   		                                
-		            </select>        
+		            <table width="100%">
+		                <tr>
+		                    <td style="width: 50%"><select id="ddpStore" name="store" >
+		                                               <option value="" selected>Select Store</option>                   		                                
+		                                           </select>        		        	</td>	        		            
+		                    <td style="width: 50%"><input type="text"  id="txtMode" name="Mode" placeholder="Enter Mode" required></td>
+		                </tr>
+		            </table>
 		        </li>
-		        <li data-role="fieldcontain">
-		            <label for="Mode">Mode</label>
-		            <input type="text"  id="txtMode" name="Mode" required>
+                <li data-role="fieldcontain">		            
+		                <table  id="ManufacturerTable"  class="table table-striped">	                        
+	                    </table>      		            
 		        </li>
                 <li class="ui-body ui-body-b">
 				<fieldset class="ui-grid-a">
@@ -271,10 +275,7 @@
 		             <div class="ui-block-b"><input aria-required="true" class="required" data-theme=a type="submit" data-icon="check" name="submit" id="submit" value="Submit"></div>
                 </fieldset>
 		        </>
-		        <li data-role="fieldcontain">		            
-		                <table  id="ManufacturerTable"  class="table table-striped">	                        
-	                    </table>      		            
-		        </li>
+		        
 		    </ul>
         </form>
 		</div>

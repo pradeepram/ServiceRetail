@@ -125,7 +125,7 @@
                         tr = $("<tr></tr>");
                         tr.append("<td>" + data.NewDataSet.Table.Job_ID + "</td><td>" +
                             data.NewDataSet.Table.Status + "</td><td>" +
-                            data.NewDataSet.Table.UpdatedDate + "</td>");
+                            data.NewDataSet.Table.UpdatedDate +" "+data.NewDataSet.Table.UpdatedTime + "</td>");
 
                         $("#ParticularJobTable").append(tr);
                         
@@ -144,9 +144,9 @@
                         
                         for (var i = 0; i < data.NewDataSet.Table.length; i++) {                        
                             tr = $("<tr></tr>");
-                            tr.append("<td>"+ data.NewDataSet.Table[i].Job_ID +"</td><td>" +
-                                data.NewDataSet.Table[i].Status + "</td><td>" +
-                                data.NewDataSet.Table[i].UpdatedDate + "</td>");
+                            tr.append("<td style='text-align:left'>"+ data.NewDataSet.Table[i].Job_ID +"</td><td style='text-align:left'>" +
+                                data.NewDataSet.Table[i].Status + "</td><td style='text-align:left'>" +
+                                data.NewDataSet.Table[i].UpdatedDate +" "+data.NewDataSet.Table[i].UpdatedTime + "</td>");
                             $("#ParticularJobTable").append(tr);                        
                         }
                     }
@@ -194,9 +194,9 @@
     <div data-role="page" data-theme="a">
         <div data-role="header" data-position="fixed">
             <h1>Parsn Retail Watch Square</h1>               
-            <a href="jobsheet.html" data-theme="a" data-inline="true" data-icon="home" data-iconpos="notext" data-direction="reverse" rel="external">Home</a>
+            <a href="Menu.html" data-theme="a" data-inline="true" data-icon="home" data-iconpos="notext" data-direction="reverse" rel="external">Home</a>
             <a href="index.html"  data-theme="a" data-inline="true" data-icon="power" data-iconpos="notext" data-direction="reverse" rel="external">Logout</a>
-            <div data-role="navbar" data-grid="d">		        
+            <!--<div data-role="navbar" data-grid="d">		        
                 <ul>
                     <li><a href="jobsheet.html" rel="external">Job Sheet</a></li>
                     <li><a href="Order_Details.html" rel="external" class="ui-btn-active">Order Details</a></li>
@@ -204,7 +204,7 @@
                     <li><a href="Company.html" rel="external">Company</a></li>
                     <li><a href="Invoice.html" rel="external">Invoice</a></li>
                 </ul>
-            </div>      
+            </div>  -->    
             <div data-role="navbar" data-grid="c">
                 <ul>
                     <li><a href="Order_Details.html" rel="external" >All Orders</a></li>
